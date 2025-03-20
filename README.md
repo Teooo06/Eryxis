@@ -1,4 +1,3 @@
-[20/3/25, 08:32:21] ~18002428478: ```markdown
 Eryxis Bank - Gestionale Bancario
 
 Eryxis è un gestionale bancario innovativo sviluppato con Spring Boot e Java, progettato per fornire una soluzione sicura, scalabile e moderna per la gestione delle operazioni bancarie. Il sistema è in grado di gestire conti correnti, prestiti, transazioni, carte di credito, investimenti e molto altro, con un'interfaccia user-friendly e un alto livello di sicurezza.
@@ -18,7 +17,7 @@ Caratteristiche principali
 •⁠  ⁠Gestione Prestiti  
   - Creazione e gestione di prestiti con piani di rimborso personalizzati.
   - Monitoraggio dello stato delle rate e solleciti di pagamento.
-[20/3/25, 08:32:29] ~18002428478: •⁠  ⁠Gestione Carte di Credito/Debito  
+•⁠  ⁠Gestione Carte di Credito/Debito  
   - Emissione, blocco e gestione delle carte.
   - Monitoraggio delle spese e dei saldi disponibili.
 
@@ -50,10 +49,10 @@ Tecnologie utilizzate
   - Docker (per la containerizzazione dell'applicazione)
   - Maven o Gradle (per la gestione delle dipendenze)
 
-[20/3/25, 08:32:29] ~18002428478: Come Avviare il Progetto
+Come Avviare il Progetto
 
 1.⁠ ⁠Clona il repository:
-[20/3/25, 08:32:36] ~18002428478: ⁠ bash
+    bash
    git clone https://github.com/tuo-username/eryxis-bank.git
     ⁠
    
@@ -93,6 +92,5 @@ Distribuito sotto la licenza MIT. Vedi [LICENSE](LICENSE) per maggiori dettagli.
 ---
 
 Eryxis Bank: una banca solida come il destino e forte come il futuro. 💳💰
-```
 
 ---
