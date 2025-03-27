@@ -32,10 +32,9 @@ public class MainController {
     public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
         // Verifica credenziali (qui dovresti fare un controllo sul DB quando lo implemento)
         boolean isValidUser = true;
+        boolean otpValid = true;
 
         if (isValidUser) {
-            // Redirect alla chiamata dell'endpoint /auth/send-otp con l'email come parametro
-
             // Reindirizza alla pagina OTP
             String redirectUrl = "/auth/otp?email=" + email;
             return ResponseEntity.status(HttpStatus.FOUND)

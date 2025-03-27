@@ -17,7 +17,13 @@ public class AuthController {
     // Metodo iniziale che ritorna la pagina per l'inserimento dell'OTP
     @GetMapping("/otp")
     public String otpPage(@RequestParam String email, Model model) {
-        otpService.generateOTP(email);
+        boolean otpGoogle = false;
+
+        if (otpGoogle) {
+
+        }else {
+            otpService.generateOTP(email);
+        }
         model.addAttribute("email", email);
         return "otp";
     }
@@ -30,15 +36,24 @@ public class AuthController {
 
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp) {
-        if (otpService.validateOTP(email, otp)) {
-              return ResponseEntity.status(HttpStatus.FOUND)
-                    .header(HttpHeaders.LOCATION, "/home")
+        boolean otpGoogle = true;
+
+
+        if (otpGoogle) {
+            return null;
+
+        }else {
+            if (otpService.validateOTP(email, otp)) {
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header(HttpHeaders.LOCATION, "/home")
+                        .build();
+            }
+            // OTP errato: Resta nella pagina OTP con un messaggio di errore
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .header(HttpHeaders.LOCATION, "/auth/otp?email=" + email + "&msg=OTP%20non%20valido")
                     .build();
         }
-        // OTP errato: Resta nella pagina OTP con un messaggio di errore
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .header(HttpHeaders.LOCATION, "/auth/otp?email=" + email + "&msg=OTP%20non%20valido")
-                .build();
+
     }
 
 
