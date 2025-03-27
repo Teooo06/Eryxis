@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Random;
@@ -57,7 +59,7 @@ public class OTPService {
                 +"                </body></html>";
         // Crea l'oggetto MimeMessage
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        codeOTP();
+        //codeOTP();
 
         try {
             // Crea un MimeMessageHelper per impostare correttamente l'email
@@ -96,7 +98,8 @@ public class OTPService {
     }
 
     public void codeOTP() {
-        String secretKey = generateSecretKey();
+        //String secretKey = generateSecretKey();
+        String secretKey = "D6OCEYRYTVYMSOSP3MCYMZJJIGATLWGT";
         String lastCode = null;
         System.out.println(secretKey);
         while (true) {
@@ -109,6 +112,17 @@ public class OTPService {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
             };
+        }
+    }
+
+    public static String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
+        try {
+            return "otpauth://totp/"
+                    + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
+                    + "?secret=" + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
+                    + "&issuer=" + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
         }
     }
 
