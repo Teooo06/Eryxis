@@ -37,17 +37,24 @@ public class OTPService {
 
     private void sendOTPEmail(String email, String otp) {
         String htmlContent = "<html><body>"
-                + "<p>Caro client,</p>"
-                + "<p>Il tuo codice OTP è: " + otp + "</p>"
-                + "<br><br>"
-                + "<p>--</p>"
-                + "<p>Se la mail non la riguarda ignori il messaggio</p>"
-                + "<p>--</p>"
-                + "<p>Eryxis Bank</p>"
-                + "<p>Soluzioni bancarie sicure e moderne</p>"
-                + "<p>info.eryxis@gmail.com</p>"
-                + "<p>Orari di supporto: Lun-Ven 9:00 - 9:01</p>"
-                + "</body></html>";
+                + "<h2 style=\"margin: 0; padding-bottom: 10px; color: #FFD709; text-align: center;\">Eryxsis Bank</h2>"
+                + "<hr style=\"border: none; height: 2px; background-color: #ccc; margin: 10px 0;\">"
+                + "<h3>Hey USER,</h3>"
+                + "<p>Qualcuno che conosce la password ha provato ad accedere al tuo account</p>"
+                + "<h4>Se sei stato tu, ecco il codice di verifica:</h4>"
+                + "<div style=\"width: 300px; margin: 0 auto; background-color: #f0f0f0; border-radius: 10px; padding: 20px; text-align: center;\">"
+                + "<p>Il tuo codice OTP è: <strong>" + otp + "</strong></p>"
+                + "</div>"
+                + "<h5>Se non sei tu ad aver provato l'accesso, per favore, ignora questa Mail</h5>"
+                + "<hr style=\"border: none; height: 2px; background-color: #ccc; margin: 10px 0;\">"
+                + "<div style=\"width: 100%; margin: 0px; background-color: #f8f8f8; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);\">"
+                + "<h2>Eryxis Bank</h2>"
+                + "<p style=\"font-size: 18px; font-weight: bold; color: #333;\">\uD83D\uDCB3 Soluzioni Bancarie Sicure e Moderne</p>"
+                + "<hr style=\"border: none; height: 2px; background-color: #FFD700; margin: 10px auto; width: 80%;\">"
+                + "<p style=\"font-size: 16px; color: #555;\">\uD83D\uDCE7 <a href=\"mailto:info.eryxis@gmail.com\" style=\"color: #0073e6; text-decoration: none;\">info.eryxis@gmail.com</a></p>"
+                + "<p style=\"font-size: 14px; color: #777;\">\uD83D\uDD52 Orari di supporto: <strong>Lun-Ven 9:00 - 9:01</strong></p>"
+                + "</div>"
+                +"                </body></html>";
         // Crea l'oggetto MimeMessage
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         codeOTP();
