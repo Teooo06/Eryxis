@@ -1,6 +1,7 @@
 package com.eryxis.eryxis.controller;
 import com.eryxis.eryxis.service.OTPService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth") // http://localhost:8080/auth/send-otp
 @RequiredArgsConstructor
 public class AuthController {
-    private final OTPService otpService;
+    @Autowired
+    private OTPService otpService;
 
     // Metodo iniziale che ritorna la pagina per l'inserimento dell'OTP
     @GetMapping("/otp")

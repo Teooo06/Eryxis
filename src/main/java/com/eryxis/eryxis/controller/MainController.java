@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
-    private final OTPService otpService;
 
     @GetMapping("/")
     public String index(Model model, @RequestParam(required = false)  String msg) {

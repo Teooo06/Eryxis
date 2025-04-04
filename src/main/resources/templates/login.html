@@ -12,6 +12,7 @@
         body {
             display: flex;
             height: 100vh;
+            font-family: "Roboto", sans-serif;
         }
         .left-section {
             width: 50%;
@@ -26,15 +27,16 @@
         }
         .form-container {
             width: 100%;
-            max-width: 350px;
+            max-width: 400px;
         }
-        .social-buttons button {
-            width: 100%;
-            margin-bottom: 10px;
+        .form-control {
+            height: 60px;
+            font-size: 16px;
+            border-radius: 5px !important;
         }
-
-        body {
-            font-family: "Roboto", sans-serif;
+        .btn {
+            height: 60px;
+            border-radius: 5px;
         }
         .title {
             position: absolute;
@@ -91,6 +93,20 @@
         .prev:hover, .next:hover {
             background: rgba(0, 0, 0, 0.8);
         }
+
+        .input-group {
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
@@ -101,14 +117,15 @@
     </div>
     <div class="form-container text-center">
         <form action="/login" method="post">
-            <h1 class="mb-3" style="align-items: flex-start;text-align: left;">Sign In</h1>
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <h4 class="mb-1" style="align-items: flex-start; text-align: left; font-weight: 300; color: #6c757d;">welcome back</h4>
+            <h1 class="mb-5" style="align-items: flex-start;text-align: left;">Sign In to Eryxis</h1>
+            <div class="input-group mb-4">
                 <input type="text" name="email" class="form-control" placeholder="example@email.com" required>
+                <span class="input-icon"><i class="bi bi-envelope"></i></span>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <div class="input-group mb-4">
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <span class="input-icon"><i class="bi bi-lock"></i></span>
             </div>
             <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
             <input type="submit" value="Sign In" class="btn btn-primary w-100 mb-3 ">
