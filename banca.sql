@@ -13,7 +13,7 @@ USE `banca`;
 
 -- DUMP
 -- Struttura tabella banca.utente
-CREATE TABLE `utente`(
+CREATE TABLE `utenti`(
     `idUtente` INT PRIMARY KEY NOT NULL,
     `nome` VARCHAR(50) NOT NULL,
     `cognome` VARCHAR(50) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `utente`(
 
 -- DUMP
 -- Struttura tabella banca.permesso
-CREATE TABLE `permesso`(
+CREATE TABLE `permessi`(
     `idPermesso` INT PRIMARY KEY NOT NULL,
     `ruolo` VARCHAR(10) NOT NULL,
     `codicePermesso` VARCHAR(2) NOT NULL
@@ -39,7 +39,7 @@ CREATE TABLE `permesso`(
 
 -- DUMP
 -- Struttura tabella banca.ticket
-CREATE TABLE `ticket`(
+CREATE TABLE `tickets`(
     `idTicket` INT PRIMARY KEY,
     `titolo` VARCHAR(20) NOT NULL,
     `descrizione` VARCHAR(500) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `ticket`(
 
 -- DUMP
 -- Struttura tabella banca.rubrica
-CREATE TABLE `rubrica`(
+CREATE TABLE `rubriche`(
     `idContatto` INT PRIMARY KEY NOT NULL,
     `nome` VARCHAR(100) NOT NULL,
     `cognome` VARCHAR(100) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE `rubrica`(
 
 -- DUMP
 -- Struttura tabella banca.log
-CREATE TABLE `log`(
+CREATE TABLE `logs`(
     `idLog` INT PRIMARY KEY NOT NULL,
     `dataModifica` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `tipoModifica` VARCHAR(50) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `log`(
 
 -- DUMP
 -- Struttura tabella banca.conto
-CREATE TABLE `conto` (
+CREATE TABLE `conti` (
     `IBAN` VARCHAR(27) PRIMARY KEY NOT NULL,
     `SWIFT` VARCHAR(8) DEFAULT 'ERXSITMM',
     `saldo` DECIMAL(20, 2) DEFAULT 0,
@@ -87,7 +87,7 @@ CREATE TABLE `conto` (
 
 -- DUMP
 -- Struttura tabella banca.transazione
-CREATE TABLE `transazione`(
+CREATE TABLE `transazioni`(
     `idTransazione` INT PRIMARY KEY NOT NULL, 
     `importo` DECIMAL(20, 2) DEFAULT 0,
     `dataTransazione` DATE DEFAULT CURRENT_DATE,
@@ -99,7 +99,7 @@ CREATE TABLE `transazione`(
 
 -- DUMP
 -- Struttura tabella banca.carta
-CREATE TABLE `carta`(
+CREATE TABLE `carte`(
     `numeroCarta` VARCHAR(16) PRIMARY KEY NOT NULL,
     `CVV` VARCHAR(4) UNIQUE NOT NULL,
     `dataScadenza` DATE NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE `carta`(
 
 -- DUMP
 -- Struttura tabella banca.investimento
-CREATE TABLE `investimento`(
+CREATE TABLE `investimenti`(
     `ISIN` VARCHAR(12) PRIMARY KEY NOT NULL,
     `settore` VARCHAR(50) NOT NULL,
     `divisa` VARCHAR(50) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE `investimento`(
 
 -- DUMP
 -- Struttura tabella banca.finanziamento
-CREATE TABLE `finanziamento`(
+CREATE TABLE `finanziamenti`(
     `idFinanziamento` INT PRIMARY KEY NOT NULL,
     `tipo` VARCHAR(8) NOT NULL,
     `importo` DECIMAL(20, 2) DEFAULT 0,
