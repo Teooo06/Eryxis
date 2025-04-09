@@ -1,5 +1,5 @@
 package com.eryxis.eryxis.controller;
-import com.eryxis.eryxis.service.OTPService;
+import com.eryxis.eryxis.service.Security.OTPService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

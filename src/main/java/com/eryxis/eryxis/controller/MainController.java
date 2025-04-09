@@ -1,6 +1,5 @@
 package com.eryxis.eryxis.controller;
 
-import com.eryxis.eryxis.service.OTPService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
