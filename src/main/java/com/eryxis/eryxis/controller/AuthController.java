@@ -38,8 +38,7 @@ public class AuthController {
 
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp) {
-        boolean otpGoogle = true;
-
+        boolean otpGoogle = false;
 
         if (otpGoogle) {
             return null;
