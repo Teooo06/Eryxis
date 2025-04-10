@@ -11,7 +11,7 @@ public class UtentiService {
     private UtentiRepository utentiRepository;
 
     public Utenti findByIdUtente(int idUtente) {
-        return utentiRepository.findBYIdUtente(idUtente);
+        return utentiRepository.findByIdUtente(idUtente);
     }
 
     public Utenti findByMailAndPassword(String mail, String password) {
