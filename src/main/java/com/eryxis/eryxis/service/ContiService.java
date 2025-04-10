@@ -31,6 +31,10 @@ public class ContiService {
         contiRepository.save(conto);
     }
 
+    public Conti getSave(Conti conto) {
+        return contiRepository.save(conto);
+    }
+
     public void deleteById(String iban) {
         contiRepository.deleteById(iban);
     }

@@ -31,6 +31,10 @@ public class CarteService {
         carteRepository.save(carta);
     }
 
+    public Carte getSave(Carte carta) {
+        return carteRepository.save(carta);
+    }
+
     public void deleteById(String numeroCarta) {
         carteRepository.deleteById(numeroCarta);
     }
