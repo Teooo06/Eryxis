@@ -26,25 +26,6 @@ public class MainController {
         return "index"; // Ritorna la vista home.html o home.jsp
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-        // Verifica credenziali (qui dovresti fare un controllo sul DB quando lo implemento)
-        boolean isValidUser = true;
-        boolean otpValid = true;
 
-        if (isValidUser) {
-            // Reindirizza alla pagina OTP
-            String redirectUrl = "/auth/otp?email=" + email;
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .header(HttpHeaders.LOCATION, redirectUrl)
-                    .build();
-
-        }
-
-        // Reindirizza alla pagina di login con messaggio di errore
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .header(HttpHeaders.LOCATION, "/?msg=Credenziali errate")
-                .build();
-    }
 
 }

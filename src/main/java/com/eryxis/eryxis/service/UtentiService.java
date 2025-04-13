@@ -14,8 +14,17 @@ public class UtentiService {
         return utentiRepository.findByIdUtente(idUtente);
     }
 
+    public boolean esisteByMail(String mail) {
+        return utentiRepository.existsByMail(mail);
+    }
+
     public Utenti findByMailAndPassword(String mail, String password) {
         return utentiRepository.findByMailAndPassword(mail, password);
+    }
+
+    public boolean findByMailAndPasswordBool(String mail, String password) {
+        Utenti utente = utentiRepository.findByMailAndPassword(mail, password);
+        return utente != null;
     }
 
 

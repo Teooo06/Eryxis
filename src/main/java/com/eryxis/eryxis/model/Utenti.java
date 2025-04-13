@@ -12,6 +12,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Utenti {
+    public Utenti(String nome, String cognome, java.sql.Date dataNascita, String indirizzo,
+                  String codiceFiscale, String mail, String prefisso, String telefono, String password) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
+        this.indirizzo = indirizzo;
+        this.codiceFiscale = codiceFiscale;
+        this.mail = mail;
+        this.prefisso = prefisso;
+        this.telefono = telefono;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUtente;
