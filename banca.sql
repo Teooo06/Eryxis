@@ -129,7 +129,7 @@ CREATE TABLE `finanziamenti`(
     `spesaIncasso` DECIMAL(5, 2) DEFAULT 2.5,
     `tipoRata` VARCHAR(20) NOT NULL,
     `valoreRata` DECIMAL(10, 2) DEFAULT 0 CHECK ( valoreRata >= 0 ),
-    `inizioPagamento` DATE NOT NULL CHECK ( inizioPagamento >= finanziamenti.dataErogazione ),
+    `inizioPagamento` DATE NOT NULL,
     `importoPagato` DECIMAL(15, 2) DEFAULT 0,
     `id_utente` INT NOT NULL,
     CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
@@ -184,6 +184,21 @@ BEGIN
  IF NEW.dataScadenza <= CURDATE() THEN
  SIGNAL SQLSTATE '45000'
  SET MESSAGE_TEXT = 'dataNascita fuori dal range consentito';
+END IF;
+END;
+//
+
+DELIMITER ;
+
+-- Check if the first payment is before the financing of projects, if so it will generate an error
+DELIMITER //
+
+CREATE TRIGGER check_inizioPagamento BEFORE INSERT ON finanziamenti
+    FOR EACH ROW
+BEGIN
+    IF NEW.inizioPagamento < NEW.dataErogazione THEN
+ SIGNAL SQLSTATE '45000'
+ SET MESSAGE_TEXT = 'Inizio Pagamento non può iniziare prima della erogazione del finanziamento';
 END IF;
 END;
 //
