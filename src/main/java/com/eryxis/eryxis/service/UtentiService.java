@@ -27,6 +27,22 @@ public class UtentiService {
         return utente != null;
     }
 
+    public String findPassPhrase(String mail) {
+        Utenti utente = utentiRepository.findByMail(mail);
+        if (utente != null) {
+            return utente.getPassPhrase();
+        }
+        return null;
+    }
+
+    public boolean useOTP(String mail) {
+        Utenti utente = utentiRepository.findByMail(mail);
+        if (utente != null) {
+            return utente.isOTP();
+        }
+        return true;
+    }
+
 
     // funzioni di base per aggiungere o rimuovere
     public void save(Utenti utente) {

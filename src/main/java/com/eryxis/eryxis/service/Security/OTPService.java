@@ -1,8 +1,10 @@
 package com.eryxis.eryxis.service.Security;
+import com.eryxis.eryxis.service.UtentiService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ import de.taimos.totp.TOTP;
 public class OTPService {
     private final JavaMailSender mailSender;
     private final Map<String, String> otpStorage = new ConcurrentHashMap<>();
+
+    @Autowired
+    private UtentiService utentiService;
 
     // istanza per l'OTP service
     //private GoogleAuthenticator googleAuthenticator;
@@ -79,13 +84,19 @@ public class OTPService {
     }
 
 
-    // Metodi per l'utilizzo dell'OTP con Google Authenticator
+    /* Metodi per l'utilizzo dell'OTP con Google Authenticator
     public static String generateSecretKey() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
         random.nextBytes(bytes);
         Base32 base32 = new Base32();
         return base32.encodeToString(bytes);
+    }
+     */
+
+    public String generateSecretKey() {
+        String secretKey = generateSecretKey();
+        return secretKey;
     }
 
 
@@ -96,22 +107,8 @@ public class OTPService {
         return TOTP.getOTP(hexKey);
     }
 
-    public void codeOTP() {
-        //String secretKey = generateSecretKey();
-        String secretKey = "D6OCEYRYTVYMSOSP3MCYMZJJIGATLWGT";
-        String lastCode = null;
-        System.out.println(secretKey);
-        while (true) {
-            String code = getTOTPCode(secretKey);
-            if (!code.equals(lastCode)) {
-                System.out.println(code);
-            }
-            lastCode = code;
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            };
-        }
+    public boolean validateOTPGoogle(String mail, String codice) {
+        return codice.equals(getTOTPCode(utentiService.findPassPhrase(mail)));
     }
 
     public static String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {

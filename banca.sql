@@ -35,8 +35,8 @@ CREATE TABLE `utenti`(
     `prefisso` VARCHAR(6) NOT NULL,
     `telefono` VARCHAR(15) NOT NULL,
     `password` VARCHAR(100) UNIQUE NOT NULL,
-    `passPhrase` VARCHAR(255) UNIQUE NOT NULL,
-    `OTP` TINYINT(1) DEFAULT 1,
+    `passPhrase` VARCHAR(255) UNIQUE,
+    `OTP` BOOLEAN not null,
     `id_permesso` INT NOT NULL,
     CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -46,9 +46,9 @@ CREATE TABLE `conti` (
     `IBAN` CHAR(27) PRIMARY KEY,
     `SWIFT` VARCHAR(8) DEFAULT 'ERXSITMM',
     `saldo` DECIMAL(20, 2) DEFAULT 0,
-    `stato` TINYINT(1) DEFAULT 1,
+    `stato` BOOLEAN DEFAULT TRUE,
     `valuta` VARCHAR(3) NOT NULL,
-    `dataApertura` DATE DEFAULT CURRENT_DATE,
+    `dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `id_utente` INT NOT NULL,
     `id_consulente` INT NOT NULL,
     CONSTRAINT `fk_conto_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE,
@@ -86,7 +86,7 @@ CREATE TABLE `logs`(
 CREATE TABLE `transazioni`(
     `idTransazione` INT PRIMARY KEY AUTO_INCREMENT,
     `importo` DECIMAL(20, 2) DEFAULT 0 CHECK ( importo > 0 ),
-    `dataTransazione` DATE DEFAULT CURRENT_TIMESTAMP,
+    `dataTransazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `tipo` VARCHAR(10) NOT NULL,
     `destinatario` VARCHAR(100) NOT NULL,
     `IBAN` CHAR(27) NOT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE `investimenti`(
     `tipo` VARCHAR(11) NOT NULL,
     `nomeTitolo` VARCHAR(50) NOT NULL,
     `descrizione` VARCHAR(255) NOT NULL,
-    `dataAcquisto` DATE DEFAULT CURRENT_DATE,
+    `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `quantitaDenaro` DECIMAL(20, 2) DEFAULT 0 CHECK ( quantitaDenaro > 0 ),
     `quantitaTotale` INT DEFAULT 0 CHECK ( quantitaTotale > 0 ),
     `id_utente` INT NOT NULL,
@@ -124,12 +124,12 @@ CREATE TABLE `finanziamenti`(
     `idFinanziamento` INT PRIMARY KEY AUTO_INCREMENT,
     `tipo` VARCHAR(8) NOT NULL,
     `importo` DECIMAL(20, 2) DEFAULT 0 CHECK ( importo > 0 ),
-    `dataErogazione` DATE DEFAULT CURRENT_DATE,
+    `dataErogazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `interessi` DECIMAL(15, 2) DEFAULT 0 CHECK ( interessi >= 0 ),
     `spesaIncasso` DECIMAL(5, 2) DEFAULT 2.5,
     `tipoRata` VARCHAR(20) NOT NULL,
     `valoreRata` DECIMAL(10, 2) DEFAULT 0 CHECK ( valoreRata >= 0 ),
-    `inizioPagamento` DATE NOT NULL CHECK ( inizioPagamento >= finanziamenti.dataErogazione ),
+    `inizioPagamento` DATE NOT NULL,
     `importoPagato` DECIMAL(15, 2) DEFAULT 0,
     `id_utente` INT NOT NULL,
     CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
@@ -184,6 +184,21 @@ BEGIN
  IF NEW.dataScadenza <= CURDATE() THEN
  SIGNAL SQLSTATE '45000'
  SET MESSAGE_TEXT = 'dataNascita fuori dal range consentito';
+END IF;
+END;
+//
+
+DELIMITER ;
+
+-- Check if the first payment is before the financing of projects, if so it will generate an error
+DELIMITER //
+
+CREATE TRIGGER check_inizioPagamento BEFORE INSERT ON finanziamenti
+    FOR EACH ROW
+BEGIN
+    IF NEW.inizioPagamento < NEW.dataErogazione THEN
+ SIGNAL SQLSTATE '45000'
+ SET MESSAGE_TEXT = 'Inizio Pagamento non può iniziare prima della erogazione del finanziamento';
 END IF;
 END;
 //

@@ -86,13 +86,18 @@
     <h2 class="mb-3 title">Eryxis Bank</h2>
   </div>
   <div class="form-container text-center">
-    <form action="/verifica-codice" method="post">
+    <form action="/auth/verify-otp" method="post">
       <h4 class="mb-1 text-start" style="color: #6c757d;">verifica in due passaggi</h4>
       <h1 class="mb-5 text-start">Inserisci il codice</h1>
+
+      <!-- Campo nascosto per l'email -->
+      <input type="hidden" name="email" th:value="${email}">
+
       <div class="input-group mb-4">
-        <input type="text" name="codice" class="form-control" placeholder="Inserisci il codice di verifica" required>
+        <input type="text" name="otp" class="form-control" placeholder="Inserisci il codice di verifica" required>
         <span class="input-icon"><i class="bi bi-shield-lock"></i></span>
       </div>
+
       <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
       <input type="submit" value="Verifica" class="btn btn-primary w-100 mb-3">
     </form>

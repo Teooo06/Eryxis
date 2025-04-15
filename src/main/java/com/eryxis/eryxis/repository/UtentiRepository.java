@@ -9,5 +9,5 @@ public interface UtentiRepository extends JpaRepository<Utenti, Integer> {
     boolean existsByMail (String mail);
     Utenti findByIdUtente (int idUtente);
     Utenti findByMailAndPassword (String mail, String password);
-
+    Utenti findByMail (String mail);
 }

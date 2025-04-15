@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Utenti {
     public Utenti(String nome, String cognome, java.sql.Date dataNascita, String indirizzo,
-                  String codiceFiscale, String mail, String prefisso, String telefono, String password) {
+                  String codiceFiscale, String mail, String prefisso, String telefono, String password, boolean OTP) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
@@ -23,6 +23,7 @@ public class Utenti {
         this.prefisso = prefisso;
         this.telefono = telefono;
         this.password = password;
+        this.OTP = OTP;
     }
 
     @Id
@@ -58,6 +59,9 @@ public class Utenti {
 
     @Column(nullable = false, length = 255, unique = true)
     private String passPhrase;
+
+    @Column(nullable = false)
+    private boolean OTP = false;
 
     @ManyToOne
     @JoinColumn(name = "id_permesso", nullable = false)

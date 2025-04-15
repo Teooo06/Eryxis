@@ -1,5 +1,6 @@
 package com.eryxis.eryxis.controller;
 import com.eryxis.eryxis.service.Security.OTPService;
+import com.eryxis.eryxis.service.UtentiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,35 +16,26 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private OTPService otpService;
+    @Autowired
+    private UtentiService utentiService;
 
     // Metodo iniziale che ritorna la pagina per l'inserimento dell'OTP
     @GetMapping("/otp")
     public String otpPage(@RequestParam String email, Model model) {
-        boolean otpGoogle = false;
 
-        if (otpGoogle) {
-
-        }else {
+        if (utentiService.useOTP(email)) {
             otpService.generateOTP(email);
         }
-        model.addAttribute("email", email);
-        return "otp";
-    }
 
-    @PostMapping("/send-otp")
-    public ResponseEntity<String> sendOTP(@RequestParam String email) {
-        otpService.generateOTP(email);
-        return ResponseEntity.ok("OTP inviato all'email " + email);
+        model.addAttribute("email", email);
+        return "verifyCodePage";
     }
 
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp) {
-        boolean otpGoogle = false;
 
-        if (otpGoogle) {
-            return null;
+        if (utentiService.useOTP(email)) {
 
-        }else {
             if (otpService.validateOTP(email, otp)) {
                 return ResponseEntity.status(HttpStatus.FOUND)
                         .header(HttpHeaders.LOCATION, "/home")
@@ -53,8 +45,18 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .header(HttpHeaders.LOCATION, "/auth/otp?email=" + email + "&msg=OTP%20non%20valido")
                     .build();
-        }
 
+        }else {
+            if (otpService.validateOTPGoogle(email, otp)) {
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header(HttpHeaders.LOCATION, "/home")
+                        .build();
+            }
+            // OTP errato: Resta nella pagina OTP con un messaggio di errore
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .header(HttpHeaders.LOCATION, "/auth/otp?email=" + email + "&msg=OTP%20non%20valido")
+                    .build();
+        }
     }
 
 
