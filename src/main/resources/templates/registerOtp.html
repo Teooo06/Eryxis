@@ -145,7 +145,7 @@
         <h2 class="mb-3 title">Eryxis Bank</h2>
     </div>
     <div class="form-container text-center">
-        <form action="/register" method="post">
+        <form action="/registerUser" method="post">
             <h4 class="mb-1" style="align-items: flex-start; text-align: left; font-weight: 300; color: #6c757d;">create an account</h4>
             <h1 class="mb-5" style="align-items: flex-start;text-align: left;">Join Eryxis</h1>
 
@@ -165,9 +165,9 @@
                 </div>
             </div>
 
-            <div id="qrCodeSection" class="mb-4 text-center d-none">
+            <div id="qrCodeSection" class="mb-4 text-center">
                 <p>Scansiona il codice QR con Google Authenticator:</p>
-                <img src="/images/fake-qr-code.png" alt="QR Code" width="200" height="200">
+                <img th:src="@{/qr-code(secret=${secret}, user=${accountName})}" alt="QR Code Google Authenticator">
             </div>
 
             <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>

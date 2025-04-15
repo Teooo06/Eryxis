@@ -1,5 +1,9 @@
 package com.eryxis.eryxis.service.Security;
 import com.eryxis.eryxis.service.UtentiService;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.codec.binary.Base32;
@@ -9,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
@@ -34,7 +39,22 @@ public class OTPService {
         //this.googleAuthenticator = new GoogleAuthenticator();
     }
 
-    public String generateOTP(String email) {
+    public static String generateOTP(String secret) {
+        if (!isValidBase32(secret)) {
+            throw new IllegalArgumentException("Segreto OTP non valido: " + secret);
+        }
+        String otpCode = TOTP.getOTP(secret);
+        System.out.println("Codice OTP generato: " + otpCode);  // Stampa nel terminale
+        return otpCode;
+    }
+
+    private static boolean isValidBase32(String secret) {
+        // Una funzione di validazione base32 semplice
+        return secret.matches("[A-Z2-7]*");
+    }
+
+
+    public String generateOTPa(String email) {
         String otp = String.valueOf(new Random().nextInt(900000) + 100000); // 6 cifre
         otpStorage.put(email, otp);
         sendOTPEmail(email, otp);
@@ -84,7 +104,7 @@ public class OTPService {
     }
 
 
-    /* Metodi per l'utilizzo dell'OTP con Google Authenticator
+    //Metodi per l'utilizzo dell'OTP con Google Authenticator
     public static String generateSecretKey() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
@@ -92,11 +112,16 @@ public class OTPService {
         Base32 base32 = new Base32();
         return base32.encodeToString(bytes);
     }
-     */
 
-    public String generateSecretKey() {
-        String secretKey = generateSecretKey();
-        return secretKey;
+    public static void generateQRCodeImage(String text, int width, int height, String filePath) throws Exception {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+        MatrixToImageWriter.writeToFile(bitMatrix, "PNG", new File(filePath));
+    }
+
+    public static String getQRCodeURL(String user, String secret) {
+        // Costruisci l'URL del codice QR
+        return "otpauth://totp/MyApp:" + user + "?secret=" + secret + "&issuer=MyApp";
     }
 
 
@@ -111,15 +136,29 @@ public class OTPService {
         return codice.equals(getTOTPCode(utentiService.findPassPhrase(mail)));
     }
 
-    public static String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
-        try {
-            return "otpauth://totp/"
-                    + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
-                    + "?secret=" + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
-                    + "&issuer=" + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e);
-        }
+
+    // Funzione per debuggare
+    public static void startOtpLoop(String secret) {
+        Runnable otpLoop = new Runnable() {
+            @Override
+            public void run() {
+                String lastCode = null;
+                System.out.println(secret);
+                while (true) {
+                    String code = getTOTPCode(secret);
+                    if (!code.equals(lastCode)) {
+                        System.out.println(code);
+                    }
+                    lastCode = code;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    };
+                }
+            }
+        };
+        new Thread(otpLoop).start();  // Avvia il thread
     }
+
 
 }
