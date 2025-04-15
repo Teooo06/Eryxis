@@ -145,23 +145,29 @@
         <h2 class="mb-3 title">Eryxis Bank</h2>
     </div>
     <div class="form-container text-center">
-        <form action="/registerInfo" method="post">
+        <form action="/register" method="post">
             <h4 class="mb-1" style="align-items: flex-start; text-align: left; font-weight: 300; color: #6c757d;">create an account</h4>
             <h1 class="mb-5" style="align-items: flex-start;text-align: left;">Join Eryxis</h1>
 
-            <div class="input-group mb-3">
-                <input type="text" name="firstName" class="form-control" placeholder="First Name" required>
-                <span class="input-icon"><i class="bi bi-person"></i></span>
+            <div class="mb-4 text-start">
+                <label class="form-label">Metodo OTP</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="otpMethod" id="otpEmail" value="email" checked onchange="toggleOtpMethod()">
+                    <label class="form-check-label" for="otpEmail">
+                        Via Email
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="otpMethod" id="otpAuthenticator" value="authenticator" onchange="toggleOtpMethod()">
+                    <label class="form-check-label" for="otpAuthenticator">
+                        Google Authenticator
+                    </label>
+                </div>
             </div>
 
-            <div class="input-group mb-3">
-                <input type="text" name="lastName" class="form-control" placeholder="Last Name" required>
-                <span class="input-icon"><i class="bi bi-person"></i></span>
-            </div>
-
-            <div class="input-group mb-3">
-                <input type="email" name="email" class="form-control" placeholder="example@email.com" required>
-                <span class="input-icon"><i class="bi bi-envelope"></i></span>
+            <div id="qrCodeSection" class="mb-4 text-center d-none">
+                <p>Scansiona il codice QR con Google Authenticator:</p>
+                <img src="/images/fake-qr-code.png" alt="QR Code" width="200" height="200">
             </div>
 
             <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
@@ -215,58 +221,11 @@
         changeImage(currentIndex);
     }
 
-    function prevImage() {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        changeImage(currentIndex);
-    }
 
-    function nextImage() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        changeImage(currentIndex);
-    }
-
-    // Password strength checker
-    function checkPasswordStrength() {
-        const password = document.getElementById('password').value;
-        const strengthBar = document.getElementById('password-strength-bar');
-        const strengthText = document.getElementById('password-strength-text');
-
-        let strength = 0;
-        let text = '';
-        let barColor = '';
-
-        // Check password length
-        if (password.length > 0) strength += 10;
-        if (password.length >= 8) strength += 20;
-        if (password.length >= 12) strength += 20;
-
-        // Check for mixed case
-        if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 15;
-
-        // Check for numbers
-        if (password.match(/[0-9]/)) strength += 15;
-
-        // Check for special chars
-        if (password.match(/[!,@,#,$,%,^,&,*,?,_,~]/)) strength += 20;
-
-        // Update the strength bar
-        strengthBar.style.width = strength + '%';
-
-        // Update text and color based on strength
-        if (strength < 30) {
-            text = 'Weak';
-            barColor = '#dc3545';
-        } else if (strength < 70) {
-            text = 'Moderate';
-            barColor = '#fd7e14';
-        } else {
-            text = 'Strong';
-            barColor = '#28a745';
-        }
-
-        strengthBar.style.backgroundColor = barColor;
-        strengthText.textContent = text;
-        strengthText.style.color = barColor;
+    function toggleOtpMethod() {
+        const method = document.querySelector('input[name="otpMethod"]:checked').value;
+        const qrCode = document.getElementById("qrCodeSection");
+        qrCode.classList.toggle("d-none", method !== "authenticator");
     }
 
     // Initialize

@@ -145,23 +145,28 @@
         <h2 class="mb-3 title">Eryxis Bank</h2>
     </div>
     <div class="form-container text-center">
-        <form action="/registerInfo" method="post">
+        <form action="/register" method="post">
             <h4 class="mb-1" style="align-items: flex-start; text-align: left; font-weight: 300; color: #6c757d;">create an account</h4>
             <h1 class="mb-5" style="align-items: flex-start;text-align: left;">Join Eryxis</h1>
 
             <div class="input-group mb-3">
-                <input type="text" name="firstName" class="form-control" placeholder="First Name" required>
-                <span class="input-icon"><i class="bi bi-person"></i></span>
+                <input type="date" name="birthDate" class="form-control" placeholder="Data di nascita" required>
             </div>
 
             <div class="input-group mb-3">
-                <input type="text" name="lastName" class="form-control" placeholder="Last Name" required>
-                <span class="input-icon"><i class="bi bi-person"></i></span>
+                <input type="text" name="fiscalCode" class="form-control" placeholder="Codice Fiscale" required pattern="[A-Z0-9]{16}" title="Inserisci un codice fiscale valido di 16 caratteri">
+                <span class="input-icon"><i class="bi bi-card-text"></i></span>
             </div>
 
             <div class="input-group mb-3">
-                <input type="email" name="email" class="form-control" placeholder="example@email.com" required>
-                <span class="input-icon"><i class="bi bi-envelope"></i></span>
+                <input type="text" name="address" class="form-control" placeholder="Indirizzo" required>
+                <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" name="phonePrefix" class="form-control" style="max-width: 100px;" placeholder="+39" required pattern="^\+\d{1,4}$" title="Inserisci un prefisso valido (es. +39)">
+                <input type="tel" name="phoneNumber" class="form-control" placeholder="Numero di telefono" required pattern="^[0-9\s\-]{6,15}$" title="Inserisci il numero di telefono">
+                <span class="input-icon"><i class="bi bi-telephone"></i></span>
             </div>
 
             <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
@@ -225,49 +230,6 @@
         changeImage(currentIndex);
     }
 
-    // Password strength checker
-    function checkPasswordStrength() {
-        const password = document.getElementById('password').value;
-        const strengthBar = document.getElementById('password-strength-bar');
-        const strengthText = document.getElementById('password-strength-text');
-
-        let strength = 0;
-        let text = '';
-        let barColor = '';
-
-        // Check password length
-        if (password.length > 0) strength += 10;
-        if (password.length >= 8) strength += 20;
-        if (password.length >= 12) strength += 20;
-
-        // Check for mixed case
-        if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 15;
-
-        // Check for numbers
-        if (password.match(/[0-9]/)) strength += 15;
-
-        // Check for special chars
-        if (password.match(/[!,@,#,$,%,^,&,*,?,_,~]/)) strength += 20;
-
-        // Update the strength bar
-        strengthBar.style.width = strength + '%';
-
-        // Update text and color based on strength
-        if (strength < 30) {
-            text = 'Weak';
-            barColor = '#dc3545';
-        } else if (strength < 70) {
-            text = 'Moderate';
-            barColor = '#fd7e14';
-        } else {
-            text = 'Strong';
-            barColor = '#28a745';
-        }
-
-        strengthBar.style.backgroundColor = barColor;
-        strengthText.textContent = text;
-        strengthText.style.color = barColor;
-    }
 
     // Initialize
     createIndicators();

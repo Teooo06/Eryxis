@@ -27,11 +27,6 @@ public class AuthenticationController {
         return "login";
     }
 
-    @GetMapping("/register")
-    public String registerPage(Model model, @RequestParam(required = false) String msg) {
-        model.addAttribute("msg", msg);
-        return "register";
-    }
 
     // Metodi HTTP POST
 
@@ -48,29 +43,4 @@ public class AuthenticationController {
         // Reindirizza alla pagina OTP
         return "redirect:/auth/otp?email=" + email;
     }
-
-    @PostMapping("/register")
-    public void register(@RequestParam String nome,
-                         @RequestParam String cognome,
-                         @RequestParam String mail,
-                         @RequestParam Date dataNascita,
-                         @RequestParam String indirizzo,
-                         @RequestParam String codiceFiscale,
-                         @RequestParam String prefisso,
-                         @RequestParam String telefono,
-                         @RequestParam String password,
-                         @RequestParam boolean OTP) {
-
-        if (utentiService.esisteByMail(mail)) {
-            // esiste già una mail registrata
-        }
-
-        // capire se va convertita in qualche modo la data di nascita
-        Utenti utente = new Utenti(nome, cognome, (java.sql.Date) dataNascita, indirizzo, codiceFiscale, mail, prefisso, telefono, password, OTP);
-        utentiService.save(utente);
-
-
-    }
-
-
 }
