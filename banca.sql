@@ -135,6 +135,8 @@ CREATE TABLE `finanziamenti`(
     CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
 
+/*
+
 -- Checks to verify compliance with integrity constraints
 -- Check if the date of birth is between the current date and the 01/01/1900, if is not in this range it will generate an error
 DELIMITER //
@@ -204,3 +206,5 @@ END;
 //
 
 DELIMITER ;
+
+*/
