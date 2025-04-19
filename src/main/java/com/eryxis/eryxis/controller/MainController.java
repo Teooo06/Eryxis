@@ -23,7 +23,7 @@ public class MainController {
 
     // Homepage dopo la verifica dell'OTP
     @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
+    public String home(Model model) {
 
 
         return "index"; // Ritorna la vista home.html o home.jsp

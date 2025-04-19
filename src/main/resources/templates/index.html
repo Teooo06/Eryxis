@@ -47,7 +47,7 @@
             <div class="user-image">
                 <i class="fa fa-user fa-2x" aria-hidden="true"></i>
             </div>
-            <h3 class="name">Testo esempio</h3>
+            <h3 class="name" th:text="${nome} ${cognome}"></h3>
         </div>
     </div>
 </header>
@@ -56,26 +56,75 @@
     <section class="hero">
         <div class="saldo-sec">
             <div class="card-section">
-                <div class="card-part">
-                    <h3 class="card-title">My Card</h3>
-                    <div class="card">
-                        <div class="ex-date">
-                            <h4 class="expire">27/30</h4>
-                        </div>
-                        <div class="number-sec">
-                            <h2 class="number">**** 4900</h2>
-                        </div>
-                        <div class="balance-sec">
-                            <div class="balance-text">
-                                <h6 class="caption-bal">Balance</h6>
-                                <h3 class="balance" th:text="${}">$ 1384,16</h3>
-                            </div>
-                            <div class="circuit">
+                <div class="left-side">
+                    <div class="card-list">
+                        <!-- First Card -->
+                        <div class="card-part">
+                            <h3 class="card-title">My Card</h3>
+                            <div class="card">
+                                <div class="ex-date">
+                                    <h4 class="expire">27/30</h4>
+                                </div>
+                                <div class="number-sec">
+                                    <h2 class="number">**** 4900</h2>
+                                </div>
+                                <div class="balance-sec">
+                                    <div class="balance-text">
+                                        <h6 class="caption-bal">Balance</h6>
+                                        <h3 class="balance" th:text="${}">$ 1384,16</h3>
+                                    </div>
+                                    <div class="circuit">
 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Second Card -->
+                        <div class="card-part" th:if="${cardCount > 1}">
+                            <h3 class="card-title">My Card</h3>
+                            <div class="card">
+                                <div class="ex-date">
+                                    <h4 class="expire">27/30</h4>
+                                </div>
+                                <div class="number-sec">
+                                    <h2 class="number">**** 4800</h2>
+                                </div>
+                                <div class="balance-sec">
+                                    <div class="balance-text">
+                                        <h6 class="caption-bal">Balance</h6>
+                                        <h3 class="balance" th:text="${}">$ 1384,16</h3>
+                                    </div>
+                                    <div class="circuit">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Third Card -->
+                        <div class="card-part" th:if="${cardCount > 2}">
+                            <h3 class="card-title">My Card</h3>
+                            <div class="card">
+                                <div class="ex-date">
+                                    <h4 class="expire">27/30</h4>
+                                </div>
+                                <div class="number-sec">
+                                    <h2 class="number">**** 4700</h2>
+                                </div>
+                                <div class="balance-sec">
+                                    <div class="balance-text">
+                                        <h6 class="caption-bal">Balance</h6>
+                                        <h3 class="balance" th:text="${}">$ 1384,16</h3>
+                                    </div>
+                                    <div class="circuit">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="indicators" th:if="${cardCount > 1}"></div>
                 </div>
+                <!-- Right Section -->
                 <div class="">
 
                 </div>
@@ -87,10 +136,65 @@
     </section>
 </main>
 
+<script>
+    const slides = document.querySelectorAll(".card-list .card-part");
+    const indicatorsContainer = document.querySelector(".indicators");
+    const slider = document.querySelector(".card-list");
+    let currentIndex = 0;
+
+    function createIndicators() {
+        slides.forEach((_, index) => {
+            const indicator = document.createElement("div");
+            indicator.classList.add("indicator");
+            if (index === 0) indicator.classList.add("active");
+            indicator.addEventListener("click", () => changeSlide(index));
+            indicatorsContainer.appendChild(indicator);
+        });
+    }
+
+    function updateIndicators() {
+        document.querySelectorAll(".indicator").forEach((dot, index) => {
+            dot.classList.toggle("active", index === currentIndex);
+        });
+    }
+
+    function changeSlide(index) {
+        currentIndex = index;
+
+        const card = slides[0];
+        const cardWidth = card.offsetWidth;
+        const offset = (cardWidth + 200) * index;
+
+        slider.scrollTo({
+            left: offset,
+            behavior: 'smooth'
+        });
+
+        updateIndicators();
+    }
+
+    function autoChangeSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        changeSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        changeSlide(currentIndex);
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        changeSlide(currentIndex);
+    }
+
+    const cardCount = /*[[${cardCount}]]*/ 1; // fallback per sicurezza
+
+    if (cardCount > 1) {
+        createIndicators();
+        changeSlide(0);
+        setInterval(autoChangeSlide, 10000);
+    }
+</script>
 </body>
 </html>
-
-
-<!--
-
--->

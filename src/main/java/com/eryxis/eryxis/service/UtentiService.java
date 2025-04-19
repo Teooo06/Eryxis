@@ -14,6 +14,10 @@ public class UtentiService {
         return utentiRepository.findByIdUtente(idUtente);
     }
 
+    public Utenti findByMail(String mail) {
+        return utentiRepository.findByMail(mail);
+    }
+
     public boolean esisteByMail(String mail) {
         return utentiRepository.existsByMail(mail);
     }

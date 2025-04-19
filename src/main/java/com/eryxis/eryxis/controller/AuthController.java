@@ -1,4 +1,5 @@
 package com.eryxis.eryxis.controller;
+import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.service.Security.OTPService;
 import com.eryxis.eryxis.service.UtentiService;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +33,15 @@ public class AuthController {
     }
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp) {
+    public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp, Model model) {
 
         if (utentiService.useOTP(email)) {
 
             if (otpService.validateOTP(email, otp)) {
+                Utenti utente = utentiService.findByMail(email);
+                model.addAttribute("id", utente.getIdUtente());
+                model.addAttribute("nome", utente.getNome());
+                model.addAttribute("cognome", utente.getCognome());
                 return ResponseEntity.status(HttpStatus.FOUND)
                         .header(HttpHeaders.LOCATION, "/home")
                         .build();
@@ -48,6 +53,10 @@ public class AuthController {
 
         }else {
             if (otpService.validateOTPGoogle(email, otp)) {
+                Utenti utente = utentiService.findByMail(email);
+                model.addAttribute("id", utente.getIdUtente());
+                model.addAttribute("nome", utente.getNome());
+                model.addAttribute("cognome", utente.getCognome());
                 return ResponseEntity.status(HttpStatus.FOUND)
                         .header(HttpHeaders.LOCATION, "/home")
                         .build();
