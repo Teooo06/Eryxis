@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <header>
@@ -14,42 +15,82 @@
     <div class="menu-section">
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Chi Siamo</a></li>
-                <li><a href="#">Servizi</a></li>
-                <li><a href="#">Contatti</a></li>
+                <li class="selected">
+                    <button class="menu-button">
+                        <i class="fa fa-home spacing" aria-hidden="true"></i>
+                        Overview
+                    </button>
+                </li>
+                <li>
+                    <button class="menu-button">
+                        <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+                        Tradings
+                    </button>
+                </li>
+                <li>
+                    <button class="menu-button">
+                        <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+                        Settings
+                    </button>
+                </li>
+                <li>
+                    <button class="menu-button">
+                        <i class="fa fa-comments spacing" aria-hidden="true"></i>
+                        Support
+                    </button>
+                </li>
             </ul>
         </nav>
     </div>
-    <button class="sing-in-button">Sing In</button>
-    <button class="login-button">Login</button>
+    <div class="user-sec">
+        <div class="user-name">
+            <div class="user-image">
+                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+            </div>
+            <h3 class="name">Testo esempio</h3>
+        </div>
+    </div>
 </header>
 
 <main>
     <section class="hero">
         <div class="saldo-sec">
-            <h3 class="text-saldo">Totale saldo contabile</h3>
-            <div class="content-saldo">
-                <h2 class="saldo stint-ultra-condensed-regular">2000 $</h2>
-                <div class="saldo-disp">
-                    <h4 class="text-saldo-disp">Saldo disponibile:</h4>
-                    <h4 class="text-saldo-disp special">2000 $</h4>
+            <div class="card-section">
+                <div class="card-part">
+                    <h3 class="card-title">My Card</h3>
+                    <div class="card">
+                        <div class="ex-date">
+                            <h4 class="expire">27/30</h4>
+                        </div>
+                        <div class="number-sec">
+                            <h2 class="number">**** 4900</h2>
+                        </div>
+                        <div class="balance-sec">
+                            <div class="balance-text">
+                                <h6 class="caption-bal">Balance</h6>
+                                <h3 class="balance" th:text="${}">$ 1384,16</h3>
+                            </div>
+                            <div class="circuit">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+
                 </div>
             </div>
         </div>
         <div class="graph-sec">
-            <div class="saldo-graph">
-                <h2>Da mettere il grafo con l'andamento del saldo, ovvero una linea che in base al mese fa vedere di quanto è sceso o salito il saldo</h2>
-            </div>
-            <div class="transaction-list">
-                <h2>Elenco puntato delle transazioni</h2>
-            </div>
+
         </div>
     </section>
 </main>
 
-<footer>
-    <p>&copy; 2025 Tutti i diritti riservati</p>
-</footer>
 </body>
 </html>
+
+
+<!--
+
+-->

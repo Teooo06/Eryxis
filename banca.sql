@@ -44,7 +44,6 @@ CREATE TABLE `utenti`(
 -- Create conti table next since other tables reference it
 CREATE TABLE `conti` (
     `IBAN` CHAR(27) PRIMARY KEY,
-    `SWIFT` VARCHAR(8) DEFAULT 'ERXSITMM',
     `saldo` DECIMAL(20, 2) DEFAULT 0,
     `stato` BOOLEAN DEFAULT TRUE,
     `valuta` VARCHAR(3) NOT NULL,
@@ -85,7 +84,7 @@ CREATE TABLE `logs`(
 
 CREATE TABLE `transazioni`(
     `idTransazione` INT PRIMARY KEY AUTO_INCREMENT,
-    `importo` DECIMAL(20, 2) DEFAULT 0 CHECK ( importo > 0 ),
+    `importo` DECIMAL(20, 2) DEFAULT 0,
     `dataTransazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `tipo` VARCHAR(10) NOT NULL,
     `destinatario` VARCHAR(100) NOT NULL,

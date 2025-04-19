@@ -12,29 +12,38 @@
     font-style: normal;
 }
 
+.josefin-sans-1 {
+    font-family: "Josefin Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
 /* Palette https://coolors.co/palette/0b090a-161a1d-660708-a4161a-ba181b-e5383b-b1a7a6-d3d3d3-f5f3f4-ffffff*/
 
 /* Stili */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
+/* Header */
 header {
-    background-color: white;
-    position: sticky;
+    position: fixed;
     top: 0;
-    height: 75px;
-    display: flex;
-    align-items: center;
-    text-align: center;
+    left: 0;
+    height: 100vh;
+    width: 18vw;
+    background-color: #f0f0f0;
+    z-index: 1000; /* assicura che resti sopra altri elementi */
 }
 
+
 .title{
-    width: 15%;
-    height: 100%;
+    width: 100%;
+    height: 15%;
     align-content: center;
+    text-align: center;
 }
 
 .title h1{
@@ -44,39 +53,105 @@ header {
 }
 
 nav ul {
+    display: block;
     list-style: none;
     padding: 0;
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 30px;
+    margin: 20px 30px;
+    border-radius: 15px;
 }
 
-nav ul li a {
+nav ul li button {
     color: black;
-    text-decoration: none;
+    width: 100%;
+    height: 100%;
     font-size: 18px;
     transition: 0.3s ease, transform 0.3s ease;
 }
 
-nav ul li a:hover {
-    color: #A4161A;
+nav ul li.selected {
+    background-color: #660708;
+}
+
+nav ul li.selected button {
+    background-color: #660708;
+    color: white;
+}
+
+nav ul li.selected button:hover {
+    color: white;
+}
+
+.menu-button{
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 15px 30px;
+    text-align: left;
+    border: none;
+    border-radius: 20px;
+}
+
+.menu-button:hover{
+    background-color: transparent;
+    border: none;
+    color: black;
 }
 
 .menu-section{
-    width: 70%;
+    width: 100%;
+    height: 50%;
 }
 
+.spacing{
+    margin-right: 10px;
+}
+
+.user-sec{
+    width: 100%;
+    height: 35%;
+    align-content: flex-end;
+}
+
+.user-name{
+    background-color: #660708;
+    width: auto;
+    height: 25%;
+    margin: 75px 30px;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-image{
+    background-color: black;
+    width: 20%;
+    height: 70%;
+    margin: 0 7%;
+    border-radius: 50px;
+    align-content: center;
+    color: white;
+    text-align: center;
+}
+
+.name{
+    color: white;
+}
+
+/* Home page sec */
 .hero {
-    margin: 100px;
-    height: 650px;
+    margin: 100px 100px 100px 20vw;
+    height: 1000px;
     display: flex;
     flex-direction: row;
 }
 
 button {
-    background-color: #007bff;
+    background-color: #dc3545;
     color: white;
     padding: 10px 20px;
     margin: 0 20px;
@@ -93,62 +168,101 @@ button:hover{
     border: solid 2px white;
 }
 
-.sing-in-button{
-    background-color: transparent;
-    color: black;
-}
-
-.login-button {
-    background-color: transparent;
-    color: black;
-    border: solid 2px #660708;
-}
-
+/* right side */
 .saldo-sec{
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 5px 5px 10px 6px #e3e3e3;
+    background-color: transparent;
     height: 100%;
-    width: 40%;
+    width: 50%;
+    justify-items: center;
 }
 
-.saldo{
-    margin: 0;
-    display: inline-block;
-    transform: scaleY(2);
-    font-size: 120px;
-    letter-spacing: -0.5px;
+.card-section{
+    width: 95%;
+    height: 40%;
+    border-radius: 25px;
+    background-color: #161A1D;
 }
 
-.text-saldo{
-    margin: 50px;
-    font-size: 25px;
-    padding-top: 50px;
+.card-part{
+    width: 70%;
+    height: 100%;
+    background-color: transparent;
+    align-content: center;
+    color: white;
 }
 
-.content-saldo{
-    text-align: right;
-    margin-right: 20px;
+.card{
+    width: 80%;
+    height: 60%;
+    margin: auto;
+    border-radius: 15px;
+    background-image: url("../images/blob-card.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.saldo-disp{
+.ex-date{
+    width: 100%;
+    height: 25%;
+    text-align: end;
+    align-content: center;
+}
+
+.expire{
+    font-size: 18px;
+    margin: 30px 25px;
+}
+
+.number-sec{
+    width: 100%;
+    height: 35%;
+    text-align: end;
+    align-content: flex-end;
+}
+
+.number{
+    font-size: 32px;
+    margin: 0 25px;
+}
+
+.balance-sec{
+    width: 100%;
+    height: 40%;
     display: flex;
     flex-direction: row;
-    text-align: center;
-    margin: 100px 50px;
 }
 
-.text-saldo-disp{
-    font-size: 20px;
+.balance-text{
+    width: 50%;
+    height: 100%;
 }
 
-.special{
-    margin-left: 20%;
+.caption-bal{
+    color: #D3D3D3;
+    font-size: 12px;
+    margin: 10px 15px 0;
 }
 
+.balance{
+    font-size: 30px;
+    margin: 10px 15px 0;
+}
+
+.circuit{
+    width: 50%;
+    height: 100%;
+    text-align: end;
+}
+
+.card-title{
+    margin-left: 10%;
+    font-size: 25px;
+}
+
+/* left side*/
 .graph-sec{
-    margin-left: 2.5%;
-    width: 57.5%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -169,4 +283,31 @@ button:hover{
     background-color: white;
     border-radius: 20px;
     box-shadow: 5px 5px 10px 6px #e3e3e3;
+}
+
+.tran-text{
+    margin: 20px 30px;
+}
+
+.tran-sec{
+    width: 100%;
+    height: 65%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.transaction-li{
+    height: 100%;
+    width: 22.5%;
+    border-radius: 20px;
+    margin: 0 1.75%;
+}
+
+.neg-trans{
+    box-shadow: 5px 5px 10px 6px #BA181B;
+}
+
+.pos-trans{
+    box-shadow: 5px 5px 10px 6px #3ec300;
 }

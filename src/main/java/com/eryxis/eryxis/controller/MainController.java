@@ -1,5 +1,6 @@
 package com.eryxis.eryxis.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,9 @@ public class MainController {
 
     // Homepage dopo la verifica dell'OTP
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model, HttpSession session) {
+
+
         return "index"; // Ritorna la vista home.html o home.jsp
     }
-
-
-
 }
