@@ -102,7 +102,6 @@ CREATE TABLE `carte`(
     `tipo` VARCHAR(9) NOT NULL,
     `saldoDisponibile` DECIMAL(20, 2) DEFAULT 0 CHECK ( saldoDisponibile >= 0 ),
     `saldoContabile` DECIMAL(20, 2) DEFAULT 0,
-    `circuito` VARCHAR(3),
     `IBAN` CHAR(27) NOT NULL,
     CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

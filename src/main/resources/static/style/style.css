@@ -237,7 +237,7 @@ button:hover{
     height: 60%;
     margin: auto;
     border-radius: 15px;
-    background-image: url("../images/blob-card.svg");
+    background-image: url("../images/credit.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -294,6 +294,12 @@ button:hover{
     width: 50%;
     height: 100%;
     text-align: end;
+}
+
+.circuit-logo-visa{
+    width: 115px;
+    height: 80px;
+    margin-top: 25px;
 }
 
 .card-title{

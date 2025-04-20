@@ -57,66 +57,23 @@
         <div class="saldo-sec">
             <div class="card-section">
                 <div class="left-side">
-                    <div class="card-list">
-                        <!-- First Card -->
+                    <div class="card-list" th:each="carta : ${carte}">
                         <div class="card-part">
                             <h3 class="card-title">My Card</h3>
                             <div class="card">
                                 <div class="ex-date">
-                                    <h4 class="expire">27/30</h4>
+                                    <h4 class="expire" th:text="${carta.dataScadenza}"></h4>
                                 </div>
                                 <div class="number-sec">
-                                    <h2 class="number">**** 4900</h2>
+                                    <h2 class="number" th:text="${carta.numeroCarta}"></h2>
                                 </div>
                                 <div class="balance-sec">
                                     <div class="balance-text">
                                         <h6 class="caption-bal">Balance</h6>
-                                        <h3 class="balance" th:text="${}">$ 1384,16</h3>
+                                        <h3 class="balance" th:text="${valuta} ${carta.saldoDisponibile}"></h3>
                                     </div>
                                     <div class="circuit">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Second Card -->
-                        <div class="card-part" th:if="${cardCount > 1}">
-                            <h3 class="card-title">My Card</h3>
-                            <div class="card">
-                                <div class="ex-date">
-                                    <h4 class="expire">27/30</h4>
-                                </div>
-                                <div class="number-sec">
-                                    <h2 class="number">**** 4800</h2>
-                                </div>
-                                <div class="balance-sec">
-                                    <div class="balance-text">
-                                        <h6 class="caption-bal">Balance</h6>
-                                        <h3 class="balance" th:text="${}">$ 1384,16</h3>
-                                    </div>
-                                    <div class="circuit">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Third Card -->
-                        <div class="card-part" th:if="${cardCount > 2}">
-                            <h3 class="card-title">My Card</h3>
-                            <div class="card">
-                                <div class="ex-date">
-                                    <h4 class="expire">27/30</h4>
-                                </div>
-                                <div class="number-sec">
-                                    <h2 class="number">**** 4700</h2>
-                                </div>
-                                <div class="balance-sec">
-                                    <div class="balance-text">
-                                        <h6 class="caption-bal">Balance</h6>
-                                        <h3 class="balance" th:text="${}">$ 1384,16</h3>
-                                    </div>
-                                    <div class="circuit">
-
+                                        <img class="circuit-logo-visa" src="../static/images/visa.svg" alt="visa logo">
                                     </div>
                                 </div>
                             </div>
