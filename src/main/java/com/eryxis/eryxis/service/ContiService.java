@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContiService {
@@ -24,7 +25,6 @@ public class ContiService {
     public List<Conti> findByConsulente(Utenti consulente) {
         return contiRepository.findByConsulente(consulente);
     }
-
 
     // funzioni di base per aggiungere o rimuovere
     public void save(Conti conto) {

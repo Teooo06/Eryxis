@@ -56,6 +56,7 @@
     <section class="hero">
         <div class="saldo-sec">
             <div class="card-section">
+                <!-- Right Section -->
                 <div class="left-side">
                     <div class="card-list" th:each="carta : ${carte}">
                         <div class="card-part">
@@ -82,13 +83,69 @@
                     <div class="indicators" th:if="${cardCount > 1}"></div>
                 </div>
                 <!-- Right Section -->
-                <div class="">
+                <div class="right-side">
+                    <div class="add-card">
+                        <button class="card-plus-b" th:if="${cardCount < 3}">
+                            <i class="fa fa-plus-square" aria-hidden="true"></i> Add Card
+                        </button>
+                    </div>
+                    <div>
 
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="transaction-sec">
+                <div class="transaction-header">
+                    <h2 class="transaction-text">Recent Transaction</h2>
+                </div>
+                <div class="transaction-list" th:each="transazione : ${transazioni}">
+                    <div class="transaction-item">
+                        <div class="transaction-icon">
+                            <i class="fa fa-exchange fa-2x" style="padding-left: 27%; padding-top: 2%;" aria-hidden="true" th:if="${transazione.tipo == 'bonifico'}"></i>
+                            <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento'}"></i>
+                            <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo'}"></i>
+                        </div>
+                        <div class="transaction-detail">
+                            <h2 class="transaction-detail-text" th:text="${transazione.descrizione}"></h2>
+                            <h3 class="transaction-date" th:text="${transazione.dataTransazione}"></h3>
+                        </div>
+                        <div class="transaction-value">
+                            <h2 th:text="${transazione.importo} ${valuta}"></h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="graph-sec">
+            <div class="graph-title">
+                <h2 class="title-gr">Monthly Movements</h2>
+            </div>
+            <div id="chart" class="graph">
 
+            </div>
+            <div class="legenda">
+                <div class="legenda-side">
+                    <div class="legenda-icon">
+                        <i class="fa fa-arrow-up fa-3x" style="color: #161A1D" aria-hidden="true"></i>
+                    </div>
+                    <div class="legenda-text">
+                        <h4 class="balance-leg">Balance</h4>
+                        <h2 class="type-legenda" style="color: #161A1D">Income</h2>
+                    </div>
+                </div>
+                <div class="legenda-side">
+                    <div class="legenda-icon">
+                        <i class="fa fa-arrow-down fa-3x" style="color: #660708" aria-hidden="true"></i>
+                    </div>
+                    <div class="legenda-text">
+                        <h4 class="balance-leg">Balance</h4>
+                        <h2 class="type-legenda" style="color: #660708">Outcome</h2>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </main>
@@ -152,6 +209,84 @@
         changeSlide(0);
         setInterval(autoChangeSlide, 10000);
     }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
+<script th:inline="javascript">
+    const transazioni = /*[[${transazioni}]]*/ [];
+
+    function formatDate(dataString) {
+        const data = new Date(dataString);
+        if (isNaN(data)) return 'Invalid Date';
+
+        const giorno = String(data.getDate()).padStart(2, '0');
+        const mesi = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const mese = mesi[data.getMonth()];
+        return `${giorno} ${mese}`;
+    }
+
+    const incomeMap = {};
+    const outcomeMap = {};
+
+    transazioni.forEach(t => {
+        const date = formatDate(t.dataTransazione);
+        if (!incomeMap[date]) incomeMap[date] = 0;
+        if (!outcomeMap[date]) outcomeMap[date] = 0;
+
+        if (t.importo > 0) {
+            incomeMap[date] += t.importo;
+        } else {
+            outcomeMap[date] += Math.abs(t.importo);
+        }
+    });
+
+    const sortedDates = Object.keys({ ...incomeMap, ...outcomeMap }).sort((a, b) =>
+        new Date('2025 ' + a) - new Date('2025 ' + b)
+    );
+
+    const incomeData = sortedDates.map(d => incomeMap[d] || 0);
+    const outcomeData = sortedDates.map(d => outcomeMap[d] || 0);
+
+    const chart = echarts.init(document.getElementById('chart'));
+
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            formatter: params =>
+                params.map(p => `${p.seriesName}: $${p.value.toFixed(2)}`).join('<br/>')
+        },
+        xAxis: {
+            type: 'category',
+            data: sortedDates
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '${value}'
+            }
+        },
+        series: [
+            {
+                name: 'Entrate',
+                type: 'line',
+                smooth: true,
+                data: incomeData,
+                lineStyle: { color: '#161A1D' },
+                itemStyle: { color: '#161A1D' },
+                areaStyle: { color: 'rgba(22, 26, 29, 0.1)' }
+            },
+            {
+                name: 'Uscite',
+                type: 'line',
+                smooth: true,
+                data: outcomeData,
+                lineStyle: { color: '#660708' },
+                itemStyle: { color: '#660708' },
+                areaStyle: { color: 'rgba(102, 7, 8, 0.1)' }
+            }
+        ]
+    };
+
+    chart.setOption(option);
 </script>
 </body>
 </html>

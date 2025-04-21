@@ -27,7 +27,6 @@ public class AuthController {
         if (utentiService.useOTP(email)) {
             otpService.generateOTP(email);
         }
-
         model.addAttribute("email", email);
         return "verifyCodePage";
     }

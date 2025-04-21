@@ -25,6 +25,7 @@ public class CarteService {
         return carteRepository.findByConto(conto);
     }
 
+    public List<Carte> findByIBAN(String IBAN) {return carteRepository.findAllByIban(IBAN);}
 
     // funzioni di base per aggiungere o rimuovere
     public void save(Carte carta) {

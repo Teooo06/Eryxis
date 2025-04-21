@@ -19,6 +19,30 @@
     font-style: normal;
 }
 
+h1 {
+    font-family: "Josefin Sans", sans-serif;
+}
+
+h2{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+h3{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+h4{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+h5{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+h6{
+    font-family: "Josefin Sans", sans-serif;
+}
+
 /* Palette https://coolors.co/palette/0b090a-161a1d-660708-a4161a-ba181b-e5383b-b1a7a6-d3d3d3-f5f3f4-ffffff*/
 
 /* Stili */
@@ -144,8 +168,8 @@ nav ul li.selected button:hover {
 
 /* Home page sec */
 .hero {
-    margin: 100px 100px 100px 20vw;
-    height: 1000px;
+    margin: 50px 100px 50px 20vw;
+    height: 750px;
     display: flex;
     flex-direction: row;
 }
@@ -178,9 +202,11 @@ button:hover{
 
 .card-section{
     width: 95%;
-    height: 40%;
+    height: 53.3%;
     border-radius: 25px;
     background-color: #161A1D;
+    display: flex;
+    flex-direction: row;
 }
 
 .left-side{
@@ -307,6 +333,98 @@ button:hover{
     font-size: 25px;
 }
 
+.right-side{
+    height: 100%;
+    width: 30%;
+}
+
+.add-card{
+    height: 30%;
+    width: 100%;
+    align-content: flex-end;
+}
+
+.card-plus-b{
+    width: 70%;
+    margin: 21px 0;
+    background-color: #660708;
+}
+
+.card-plus-b:hover{
+    background-color: #7d362e;
+}
+
+/*Transaction section */
+.transaction-sec{
+    width: 100%;
+    height: 46.7%;
+}
+
+.transaction-header{
+    width: 100%;
+    height: 10%;
+}
+
+.transaction-text{
+    font-weight: bold;
+    font-size: 25px;
+    margin: 30px 40px;
+}
+
+.transaction-list{
+    width: 100%;
+    height: 90%;
+    justify-items: center;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.transaction-item{
+    background-color: transparent;
+    width: 95%;
+    height: 20.5%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 1.5% 0;
+    flex-shrink: 0;
+}
+
+.transaction-icon{
+    width: 10%;
+    height: 100%;
+    align-content: center;
+    color: #7d362e;
+    border: 2px solid #161A1D;
+    border-radius: 20px;
+}
+
+.transaction-detail{
+    width: 65%;
+    height: 100%;
+    text-align: start;
+}
+
+.transaction-detail-text{
+    font-size: 20px;
+    margin: 0;
+    padding: 10px 0 0 20px;
+}
+
+.transaction-date{
+    font-size: 13px;
+    margin: 0;
+    padding: 5px 0 0 20px;
+    color: #161A1D;
+}
+
+.transaction-value{
+    width: 25%;
+    height: 100%;
+    text-align: end;
+    align-content: center;
+}
+
 /* left side*/
 .graph-sec{
     width: 50%;
@@ -315,46 +433,55 @@ button:hover{
     flex-direction: column;
 }
 
-.saldo-graph{
+.graph-title{
     width: 100%;
-    height: 57.5%;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 5px 5px 10px 6px #e3e3e3;
-    margin-bottom: 2.5%;
+    height: 5%;
 }
 
-.transaction-list{
-    width: 100%;
-    height: 40%;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 5px 5px 10px 6px #e3e3e3;
+.title-gr{
+    margin: 0 30px;
+    font-size: 30px;
 }
 
-.tran-text{
-    margin: 20px 30px;
+.graph{
+    width: 100%;
+    height: 53.3%;
 }
 
-.tran-sec{
+.legenda{
     width: 100%;
-    height: 65%;
+    height: 13%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 
-.transaction-li{
+.legenda-side{
+    width: 50%;
+    text-align: start;
     height: 100%;
-    width: 22.5%;
-    border-radius: 20px;
-    margin: 0 1.75%;
+    display: flex;
+    flex-direction: row;
 }
 
-.neg-trans{
-    box-shadow: 5px 5px 10px 6px #BA181B;
+.legenda-icon{
+    width: 20%;
+    height: 100%;
+    align-content: center;
 }
 
-.pos-trans{
-    box-shadow: 5px 5px 10px 6px #3ec300;
+.legenda-text{
+    width: 80%;
+    height: 100%;
+    text-align: start;
+}
+
+.balance-leg{
+    margin: 15px 0 0;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+.type-legenda{
+    margin: 10px 0 0;
+    font-size: 30px;
 }
