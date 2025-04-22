@@ -67,7 +67,7 @@ public class MainController {
         if( utente != null ) {
             List<Conti> conto = contiService.findByUtente(utente);
             if (!conto.isEmpty()) {
-                List<Carte> carte = carteService.findByIBAN(conto.get(0).getIBAN());
+                List<Carte> carte = carteService.findByConto(conto.get(0));
                 List<Transazioni> transazioni = transazioniService.findByConto(conto.get(0));
                 model.addAttribute("carte", carte);
                 model.addAttribute("cardCount", carte.size());
