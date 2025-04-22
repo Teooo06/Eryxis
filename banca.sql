@@ -32,7 +32,7 @@ CREATE TABLE `utenti`(
     `toponimo` VARCHAR(10) NOT NULL,
     `indirizzo` VARCHAR(100) NOT NULL,
     `numeroCivico` INT NOT NULL CHECK ( numeroCivico > 0 ),
-    `codiceFiscale` VARCHAR(16) UNIQUE NOT NULL,
+    `codiceFiscale` CHAR(16) UNIQUE NOT NULL,
     `mail` VARCHAR(150) UNIQUE NOT NULL,
     `prefisso` VARCHAR(6) NOT NULL,
     `telefono` VARCHAR(15) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `utenti`(
     `OTP` BOOLEAN not null,
     `id_permesso` INT NOT NULL,
     CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
 
 -- Create conti table next since other tables reference it
 CREATE TABLE `conti` (
@@ -135,76 +135,46 @@ CREATE TABLE `finanziamenti`(
     CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
 
-/*
+-- Utente admin
+INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivico, codiceFiscale, mail, prefisso, telefono, password, passPhrase, OTP, id_permesso)
+VALUES ('Mario', 'Rossi', '1980-01-01', 'Via', 'Garibaldi', 10,
+        'RSSMRA80A01H501Z', 'mltlnz06d29b729v@iisbadoni.edu.it', '+39', '3331234567',
+        'adminPass123', 'adminSecret', FALSE, 1
+       );
 
--- Checks to verify compliance with integrity constraints
--- Check if the date of birth is between the current date and the 01/01/1900, if is not in this range it will generate an error
-DELIMITER //
+-- Utente qualunque
+INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivico, codiceFiscale, mail, prefisso, telefono, password, passPhrase, OTP, id_permesso)
+VALUES ('Giulia', 'Bianchi', '1995-05-15', 'Corso', 'Italia', 21,
+        'BNCGLI95E55F205W', 'giulia@banca.it', '+39', '3339876543',
+        'userPass456', 'userSecret', TRUE, 3
+       );
 
-CREATE TRIGGER check_dataNascita BEFORE INSERT ON utenti
- FOR EACH ROW
-BEGIN
- IF NEW.dataNascita < '1900-01-01' OR NEW.dataNascita > CURDATE() THEN
- SIGNAL SQLSTATE '45000'
- SET MESSAGE_TEXT = 'dataNascita fuori dal range consentito';
-END IF;
-END;
-//
+-- Conto per admin (idUtente = 1)
+INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente)
+VALUES (
+        'IT60X0542811101000000123456', 10000.00, TRUE, 'EUR', 1, 1
+       );
 
-DELIMITER ;
+-- Conto per utente qualunque (idUtente = 2, id_consulente = 1 admin)
+INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente)
+VALUES (
+        'IT60X0542811101000000654321', 2500.00, TRUE, 'EUR', 2, 1
+       );
 
--- Check if the date of the modification is greater than the account opening date, if not it will generate an error
-DELIMITER //
+-- Carta di credito per admin
+INSERT INTO carte (numeroCarta, CVV, dataScadenza, PIN, tipo, saldoDisponibile, saldoContabile, IBAN)
+VALUES (
+        '1234567812345678', '123', '2028-12-31', '11111', 'credito', 10000.00, 10000.00, 'IT60X0542811101000000123456'
+       );
 
-CREATE TRIGGER check_dataModifica BEFORE INSERT ON logs
- FOR EACH ROW
-BEGIN
- DECLARE dataAperturaConto DATE;
+-- Carta di credito per utente qualunque
+INSERT INTO carte (numeroCarta, CVV, dataScadenza, PIN, tipo, saldoDisponibile, saldoContabile, IBAN)
+VALUES (
+        '8765432187654321', '321', '2027-10-30', '22222', 'credito', 2500.00, 2500.00, 'IT60X0542811101000000654321'
+       );
 
- SELECT c.dataApertura
- INTO dataAperturaConto
- FROM conti c
-JOIN utenti u ON u.idUtente = NEW.id_utente
- WHERE u.idUtente = NEW.id_utente
-LIMIT 1;
-
- IF NEW.dataModifica < dataAperturaConto THEN
- SIGNAL SQLSTATE '45000'
- SET MESSAGE_TEXT = 'dataModifica non può essere precedente a dataApertura del conto';
-END IF;
-END;
-//
-
-DELIMITER ;
-
--- Check if the expiry date of the card have passed the current date, if so it will generate an error
-DELIMITER //
-
-CREATE TRIGGER check_dataScadenza BEFORE INSERT ON carte
- FOR EACH ROW
-BEGIN
- IF NEW.dataScadenza <= CURDATE() THEN
- SIGNAL SQLSTATE '45000'
- SET MESSAGE_TEXT = 'dataNascita fuori dal range consentito';
-END IF;
-END;
-//
-
-DELIMITER ;
-
--- Check if the first payment is before the financing of projects, if so it will generate an error
-DELIMITER //
-
-CREATE TRIGGER check_inizioPagamento BEFORE INSERT ON finanziamenti
-    FOR EACH ROW
-BEGIN
-    IF NEW.inizioPagamento < NEW.dataErogazione THEN
- SIGNAL SQLSTATE '45000'
- SET MESSAGE_TEXT = 'Inizio Pagamento non può iniziare prima della erogazione del finanziamento';
-END IF;
-END;
-//
-
-DELIMITER ;
-
-*/
+-- Carta prepagata per utente qualunque
+INSERT INTO carte (numeroCarta, CVV, dataScadenza, PIN, tipo, saldoDisponibile, saldoContabile, IBAN)
+VALUES (
+        '1122334455667788', '999', '2026-06-15', '33333', 'prepagata', 500.00, 500.00, 'IT60X0542811101000000654321'
+       );
