@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -56,12 +57,13 @@ public class MainController {
         return "login";
     }
 
+
     // Homepage dopo la verifica dell'OTP
     @GetMapping("/home")
-    public String home(Model model) {
-        Integer id = (Integer) model.getAttribute("id");
-        if (id == null) {
-            return "home";
+    public String home(Model model, @RequestParam int id, @RequestParam String nome, @RequestParam String cognome, HttpSession session) {
+
+        if (id == 0) {
+            return "home"; // Errore
         }
         Utenti utente = utentiService.findByIdUtente(id);
         if( utente != null ) {
@@ -69,14 +71,16 @@ public class MainController {
             if (!conto.isEmpty()) {
                 List<Carte> carte = carteService.findByConto(conto.get(0));
                 List<Transazioni> transazioni = transazioniService.findByConto(conto.get(0));
+                model.addAttribute("nome", nome);
+                model.addAttribute("cognome", cognome);
                 model.addAttribute("carte", carte);
                 model.addAttribute("cardCount", carte.size());
                 model.addAttribute("transazioni", transazioni);
                 model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
 
                 return "index";
-            }
-            else{
+            } else {
+                // Aggiungi la valuta e ritorna la vista index anche se non ci sono conti
                 model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
                 return "index";
             }

@@ -24,9 +24,18 @@ public class AuthController {
     @GetMapping("/otp")
     public String otpPage(@RequestParam String email, Model model) {
 
-        if (utentiService.useOTP(email)) {
-            otpService.generateOTP(email);
+        /* IN questo caso ci sono 2 possibilità:
+         * 1. L'utente ha l'OTP attivo e quindi deve inserire il codice OTP generato con Google Authenticator
+         * 2. L'utente non ha l'OTP attivo e quindi devo mandare la mail
+
+        OTP 1 => Google Authenticator
+        OTP 2 => Mail
+        */
+        if (!utentiService.useOTP(email)) {
+            // Dovrebbe mandare non la mail ma la passphrase
+            otpService.generateOTPa(email);
         }
+
         model.addAttribute("email", email);
         return "verifyCodePage";
     }
@@ -34,15 +43,16 @@ public class AuthController {
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp, Model model) {
 
-        if (utentiService.useOTP(email)) {
+        // Se l'utente OTP == 1 => Google Authenticator
+        if (!utentiService.useOTP(email)) {
+            // Se l'utente non ha l'OTP attivo significa che l'ho mandato prima per mail la mail
 
             if (otpService.validateOTP(email, otp)) {
                 Utenti utente = utentiService.findByMail(email);
-                model.addAttribute("id", utente.getIdUtente());
-                model.addAttribute("nome", utente.getNome());
-                model.addAttribute("cognome", utente.getCognome());
                 return ResponseEntity.status(HttpStatus.FOUND)
-                        .header(HttpHeaders.LOCATION, "/home")
+                        .header(HttpHeaders.LOCATION, "/home?id=" + utente.getIdUtente() +
+                                        "&nome=" + utente.getNome() +
+                                        "&cognome=" + utente.getCognome())
                         .build();
             }
             // OTP errato: Resta nella pagina OTP con un messaggio di errore
