@@ -76,6 +76,10 @@ public class MainController {
 
                 return "index";
             }
+            else{
+                model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
+                return "index";
+            }
         }
 
         return "home"; // Ritorna la vista home.html o home.jsp
