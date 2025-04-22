@@ -51,7 +51,7 @@ CREATE TABLE `conti` (
     `valuta` VARCHAR(3) NOT NULL,
     `dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `id_utente` INT NOT NULL,
-    `id_consulente` INT NOT NULL,
+    `id_consulente` INT DEFAULT NULL,
     CONSTRAINT `fk_conto_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE,
     CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -76,7 +76,7 @@ CREATE TABLE `rubriche`(
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `logs`(
-    `idLog` INT PRIMARY KEY,
+    `idLog` INT PRIMARY KEY AUTO_INCREMENT,
     `dataModifica` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `tipoModifica` VARCHAR(50) NOT NULL,
     `descrizione` VARCHAR(255) NOT NULL,
@@ -95,8 +95,8 @@ CREATE TABLE `transazioni`(
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `carte`(
-    `numeroCarta` VARCHAR(16) PRIMARY KEY,
-    `CVV` VARCHAR(4) UNIQUE NOT NULL,
+    `numeroCarta` CHAR(16) PRIMARY KEY,
+    `CVV` CHAR(3) UNIQUE NOT NULL,
     `dataScadenza` DATE NOT NULL,
     `PIN` CHAR(5) UNIQUE NOT NULL,
     `tipo` VARCHAR(9) NOT NULL,
