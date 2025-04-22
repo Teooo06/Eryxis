@@ -157,11 +157,18 @@
                 <input type="text" name="fiscalCode" class="form-control" placeholder="Codice Fiscale" required pattern="[A-Z0-9]{16}" title="Inserisci un codice fiscale valido di 16 caratteri">
                 <span class="input-icon"><i class="bi bi-card-text"></i></span>
             </div>
-
             <div class="input-group mb-3">
-                <input type="text" name="address" class="form-control" placeholder="Indirizzo" required>
-                <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" name="toponimo" class="form-control" placeholder="Via/Piazza" style="max-width: 120px;" required>
+                    <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+
+                    <input type="text" name="address" class="form-control" placeholder="Roma" required>
+                    <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+
+                    <input type="number" name="number" class="form-control" placeholder="01" style="max-width: 66px;" required>
+                    <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+
             </div>
+
 
             <div class="input-group mb-3">
                 <input type="text" name="phonePrefix" class="form-control" style="max-width: 100px;" placeholder="+39" required pattern="^\+\d{1,4}$" title="Inserisci un prefisso valido (es. +39)">

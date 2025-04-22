@@ -63,11 +63,11 @@ public class AuthController {
         }else {
             if (otpService.validateOTPGoogle(email, otp)) {
                 Utenti utente = utentiService.findByMail(email);
-                model.addAttribute("id", utente.getIdUtente());
-                model.addAttribute("nome", utente.getNome());
-                model.addAttribute("cognome", utente.getCognome());
+
                 return ResponseEntity.status(HttpStatus.FOUND)
-                        .header(HttpHeaders.LOCATION, "/home")
+                        .header(HttpHeaders.LOCATION, "/home?id=" + utente.getIdUtente() +
+                                "&nome=" + utente.getNome() +
+                                "&cognome=" + utente.getCognome())
                         .build();
             }
             // OTP errato: Resta nella pagina OTP con un messaggio di errore

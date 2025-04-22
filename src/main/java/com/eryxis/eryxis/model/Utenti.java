@@ -42,6 +42,12 @@ public class Utenti {
     @Column(nullable = false, length = 100)
     private String indirizzo;
 
+    @Column(nullable = false, length = 10)
+    private String toponimo;
+
+    @Column(nullable = false, length = 11)
+    private int numeroCivico;
+
     @Column(nullable = false, length = 16, unique = true)
     private String codiceFiscale;
 

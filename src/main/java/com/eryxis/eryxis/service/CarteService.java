@@ -42,4 +42,11 @@ public class CarteService {
         carteRepository.delete(carta);
     }
 
+    public Carte findByCVV(String string) {
+        return carteRepository.findByCVV(string);
+    }
+
+    public Carte findByPIN(String string) {
+        return carteRepository.findByPIN(string);
+    }
 }

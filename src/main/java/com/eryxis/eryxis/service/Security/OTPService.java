@@ -99,6 +99,7 @@ public class OTPService {
         }
     }
 
+    // Valida otp della mail
     public boolean validateOTP(String email, String otp) {
         return otp.equals(otpStorage.get(email));
     }
@@ -133,6 +134,7 @@ public class OTPService {
     }
 
     public boolean validateOTPGoogle(String mail, String codice) {
+        startOtpLoop(utentiService.findPassPhrase(mail));
         return codice.equals(getTOTPCode(utentiService.findPassPhrase(mail)));
     }
 

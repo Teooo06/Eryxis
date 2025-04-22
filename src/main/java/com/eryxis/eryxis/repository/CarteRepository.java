@@ -12,4 +12,8 @@ public interface CarteRepository extends JpaRepository<Carte, String> {
     Carte findByNumeroCarta (String numeroCarta);
     Carte findByNumeroCartaAndCVVAndDataScadenza (String numeroCarta, String CVV, java.sql.Date dataScadenza);
     List<Carte> findByConto (Conti conto);
+
+    Carte findByCVV(String CVV);
+
+    Carte findByPIN(String PIN);
 }
