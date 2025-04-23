@@ -71,7 +71,8 @@
                                 <div class="balance-sec">
                                     <div class="balance-text">
                                         <h6 class="caption-bal">Balance</h6>
-                                        <h3 class="balance" th:text="${valuta + ' ' + carta.saldoDisponibile}"></h3>                                    </div>
+                                        <h3 class="balance" th:text="${valuta + ' ' + carta.saldoDisponibile}"></h3>
+                                    </div>
                                     <div class="circuit">
                                         <img class="circuit-logo-visa" src="../static/images/visa.svg" alt="visa logo">
                                     </div>
@@ -88,11 +89,15 @@
                             <i class="fa fa-plus-square" aria-hidden="true"></i> Add Card
                         </button>
                     </div>
-                    <div>
-
+                    <div class="transfer">
+                        <button class="transfer-b">
+                            <i class="fa fa-exchange fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Transfers
+                        </button>
                     </div>
-                    <div>
-
+                    <div class="transfer">
+                        <button class="rubrica-b">
+                            <i class="fa fa-address-book-o fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Payee
+                        </button>
                     </div>
                 </div>
             </div>
