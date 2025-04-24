@@ -45,10 +45,8 @@ public class MainController {
             Map.entry("CAD", "$"),      // Dollaro canadese
             Map.entry("AUD", "$"),      // Dollaro australiano
             Map.entry("CNY", "¥"),      // Yuan cinese
-            Map.entry("INR", "₹"),      // Rupia indiana
             Map.entry("RUB", "₽"),      // Rublo russo
-            Map.entry("KRW", "₩"),      // Won sudcoreano
-            Map.entry("BRL", "R$")      // Real brasiliano
+            Map.entry("KRW", "₩")      // Won sudcoreano
     );
 
     @GetMapping("/")
@@ -79,8 +77,6 @@ public class MainController {
                 model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
                 model.addAttribute("saldo", conto.get(0).getSaldo());
 
-                return "index";
-            } else {
                 return "index";
             }
         }

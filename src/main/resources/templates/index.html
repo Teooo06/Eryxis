@@ -91,11 +91,9 @@
                 <!-- Right Section -->
                 <div class="right-side">
                     <div class="add-card">
-                        <form action="/addPage">
-                            <button class="card-plus-b" th:if="${cardCount < 3}">
-                                <i class="fa fa-plus-square" aria-hidden="true"></i> Add Card
-                            </button>
-                        </form>
+                        <button class="card-plus-b" th:if="${cardCount < 3}" id="openBtn">
+                            <i class="fa fa-plus-square" aria-hidden="true"></i> Add Card
+                        </button>
                     </div>
                     <div class="transfer">
                         <form action="" class="form-b">
@@ -168,6 +166,13 @@
                         <h2 class="type-legenda" style="color: #660708">Outcome</h2>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="popupOverlay" class="overlay" aria-hidden="true">
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <button class="closeBtn" aria-label="Chiudi popup">&times;</button>
+                <h2 id="modalTitle">Add Card</h2>
+
             </div>
         </div>
     </section>
@@ -342,6 +347,34 @@
     updateDateTime();
     setInterval(updateDateTime, 1000);
 </script>
+<script>
+    const openBtn   = document.getElementById('openBtn');
+    const overlay   = document.getElementById('popupOverlay');
+    const closeBtn  = overlay.querySelector('.closeBtn');
 
+    // apre il popup
+    openBtn.addEventListener('click', () => {
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    closeBtn.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+    });
+
+    function closeModal() {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+    });
+</script>
 </body>
 </html>

@@ -576,3 +576,31 @@ button:hover{
     margin: 10px 0 0;
     font-size: 30px;
 }
+
+/* --- Sfondo semi‑trasparente dietro al popup --- */
+.overlay {
+    position: fixed;
+    inset: 0;                 /* top+right+bottom+left = 0  */
+    background: rgba(0,0,0,.4);
+    display: none;            /* nascosto di default        */
+    place-items: center;      /* centra il contenuto        */
+    z-index: 1000;
+}
+.overlay.active { display: grid; }   /* la classe active lo rende visibile */
+
+/* --- Finestra popup --- */
+.modal {
+    background: #fff;
+    width: 50%;
+    height: 60%;
+    border-radius: .75rem;
+    padding: 1.5rem;
+    position: relative;       /* per poter posizionare la X */
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+}
+
+/* --- Pulsante “X” --- */
+.closeBtn {
+    background-color: #660708;
+    font-size: 15px;
+}
