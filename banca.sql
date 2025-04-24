@@ -38,7 +38,7 @@ CREATE TABLE `utenti`(
     `telefono` VARCHAR(15) NOT NULL,
     `password` VARCHAR(100) UNIQUE NOT NULL,
     `passPhrase` VARCHAR(255) UNIQUE,
-    `OTP` BOOLEAN not null,
+    `OTP` BOOLEAN NOT NULL,
     `id_permesso` INT NOT NULL,
     CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
@@ -102,6 +102,7 @@ CREATE TABLE `carte`(
     `tipo` VARCHAR(9) NOT NULL,
     `saldoDisponibile` DECIMAL(20, 2) DEFAULT 0 CHECK ( saldoDisponibile >= 0 ),
     `saldoContabile` DECIMAL(20, 2) DEFAULT 0,
+    `stato` BOOLEAN DEFAULT TRUE,
     `IBAN` CHAR(27) NOT NULL,
     CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

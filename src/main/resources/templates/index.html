@@ -22,22 +22,28 @@
                     </button>
                 </li>
                 <li>
-                    <button class="menu-button">
-                        <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
-                        Tradings
-                    </button>
+                    <form action="/trading">
+                        <button class="menu-button">
+                            <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+                            Tradings
+                        </button>
+                    </form>
                 </li>
                 <li>
-                    <button class="menu-button">
-                        <i class="fa fa-sliders spacing" aria-hidden="true"></i>
-                        Settings
-                    </button>
+                    <form action="/setting">
+                        <button class="menu-button">
+                            <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+                            Settings
+                        </button>
+                    </form>
                 </li>
                 <li>
-                    <button class="menu-button">
-                        <i class="fa fa-comments spacing" aria-hidden="true"></i>
-                        Support
-                    </button>
+                    <form action="">
+                        <button class="menu-button">
+                            <i class="fa fa-comments spacing" aria-hidden="true"></i>
+                            Support
+                        </button>
+                    </form>
                 </li>
             </ul>
         </nav>
@@ -85,19 +91,25 @@
                 <!-- Right Section -->
                 <div class="right-side">
                     <div class="add-card">
-                        <button class="card-plus-b" th:if="${cardCount < 3}">
-                            <i class="fa fa-plus-square" aria-hidden="true"></i> Add Card
-                        </button>
+                        <form action="/addPage">
+                            <button class="card-plus-b" th:if="${cardCount < 3}">
+                                <i class="fa fa-plus-square" aria-hidden="true"></i> Add Card
+                            </button>
+                        </form>
                     </div>
                     <div class="transfer">
-                        <button class="transfer-b">
-                            <i class="fa fa-exchange fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Transfers
-                        </button>
+                        <form action="" class="form-b">
+                            <button class="transfer-b">
+                                <i class="fa fa-exchange fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Transfers
+                            </button>
+                        </form>
                     </div>
                     <div class="transfer">
-                        <button class="rubrica-b">
-                            <i class="fa fa-address-book-o fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Payee
-                        </button>
+                        <form action="" class="form-b">
+                            <button class="rubrica-b">
+                                <i class="fa fa-address-book-o fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Payee
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -124,6 +136,13 @@
             </div>
         </div>
         <div class="graph-sec">
+            <div class="account-section">
+                <div class="left-account">
+                    <h4 class="account-pre-title">Your Total Balance</h4>
+                    <h2 class="account-title" th:text="${valuta + ' ' + saldo}"></h2>
+                    <div id="currentDateTime" class="date-box"></div>
+                </div>
+            </div>
             <div class="graph-title">
                 <h2 class="title-gr">Monthly Movements</h2>
             </div>
@@ -133,11 +152,11 @@
             <div class="legenda">
                 <div class="legenda-side">
                     <div class="legenda-icon">
-                        <i class="fa fa-arrow-up fa-3x" style="color: #161A1D" aria-hidden="true"></i>
+                        <i class="fa fa-arrow-up fa-3x" style="color: #D3D3D3" aria-hidden="true"></i>
                     </div>
                     <div class="legenda-text">
                         <h4 class="balance-leg">Balance</h4>
-                        <h2 class="type-legenda" style="color: #161A1D">Income</h2>
+                        <h2 class="type-legenda" style="color: #D3D3D3">Income</h2>
                     </div>
                 </div>
                 <div class="legenda-side">
@@ -274,9 +293,9 @@
                 type: 'line',
                 smooth: true,
                 data: incomeData,
-                lineStyle: { color: '#161A1D' },
-                itemStyle: { color: '#161A1D' },
-                areaStyle: { color: 'rgba(22, 26, 29, 0.1)' }
+                lineStyle: { color: '#D3D3D3' },
+                itemStyle: { color: '#D3D3D3' },
+                areaStyle: { color: 'rgba(191,191,191,0.64)' }
             },
             {
                 name: 'Uscite',
@@ -292,5 +311,37 @@
 
     chart.setOption(option);
 </script>
+
+<script>
+    function updateDateTime() {
+        const now = new Date();
+
+        // Data in italiano → "giovedì 24 aprile 2025"
+        const options = { day:'numeric', month:'long', year:'numeric' };
+        let parts = new Intl.DateTimeFormat('it-IT', options).formatToParts(now);
+
+        // Trova la parte 'month' e capitalizza solo la prima lettera
+        parts = parts.map(p =>
+            p.type === 'month'
+                ? { ...p, value: p.value[0].toUpperCase() + p.value.slice(1) }
+                : p
+        );
+
+        // Ricompone la data
+        const dateStr = parts.map(p => p.value).join('');
+
+        // Ora hh:mm:ss
+        const timeStr = now.toLocaleTimeString('it-IT', {
+            hour:'2-digit', minute:'2-digit'
+        });
+
+        document.getElementById('currentDateTime').textContent =
+            `${dateStr} – ${timeStr}`;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+</script>
+
 </body>
 </html>

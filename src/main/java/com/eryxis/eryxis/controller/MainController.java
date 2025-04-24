@@ -77,15 +77,24 @@ public class MainController {
                 model.addAttribute("cardCount", carte.size());
                 model.addAttribute("transazioni", transazioni);
                 model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
+                model.addAttribute("saldo", conto.get(0).getSaldo());
 
                 return "index";
             } else {
-                // Aggiungi la valuta e ritorna la vista index anche se non ci sono conti
-                model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
                 return "index";
             }
         }
 
         return "home"; // Ritorna la vista home.html o home.jsp
+    }
+
+    @GetMapping("/setting")
+    public String setting(Model model) {
+        return "setting";
+    }
+
+    @GetMapping("/trading")
+    public String trading(Model model) {
+        return "trading";
     }
 }

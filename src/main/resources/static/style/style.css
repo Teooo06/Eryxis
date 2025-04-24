@@ -168,7 +168,7 @@ nav ul li.selected button:hover {
 
 /* Home page sec */
 .hero {
-    margin: 50px 100px 50px 20vw;
+    margin: 75px 100px 75px 20vw;
     height: 750px;
     display: flex;
     flex-direction: row;
@@ -393,6 +393,11 @@ button:hover{
     color: #f0f0f0;
 }
 
+.form-b{
+    width: 100%;
+    height: 100%;
+}
+
 /*Transaction section */
 .transaction-sec{
     width: 100%;
@@ -472,32 +477,77 @@ button:hover{
     flex-direction: column;
 }
 
+/* Account Section */
+.account-section{
+    width: 100%;
+    height: 40%;
+}
+
+.left-account{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.account-pre-title{
+    font-size: 20px;
+    margin: 50px;
+    font-weight: bold;
+    color: #161A1D;
+}
+
+.account-title{
+    font-size: 60px;
+    font-weight: bold;
+    color: #161A1D;
+}
+
+.date-box{
+    width: 100%;
+    height: 10%;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Graph Section */
 .graph-title{
     width: 100%;
-    height: 5%;
+    height: 2%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #161A1D;
+    color: white;
+    z-index: 2;
 }
 
 .title-gr{
-    margin: 0 30px;
+    margin: 10px 30px 0;
     font-size: 30px;
 }
 
 .graph{
     width: 100%;
     height: 53.3%;
+    background-color: #161A1D;
 }
 
 .legenda{
     width: 100%;
-    height: 13%;
+    height: 8%;
     display: flex;
     flex-direction: row;
+    background-color: #161A1D;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .legenda-side{
     width: 50%;
     text-align: start;
     height: 100%;
+    position: relative;
+    top: -30px;
     display: flex;
     flex-direction: row;
 }
@@ -505,6 +555,8 @@ button:hover{
 .legenda-icon{
     width: 20%;
     height: 100%;
+    margin-top: 20px;
+    margin-left: 20px;
     align-content: center;
 }
 
