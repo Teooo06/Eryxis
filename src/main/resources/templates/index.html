@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" th:href="@{/style/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -80,7 +80,7 @@
                                         <h3 class="balance" th:text="${valuta + ' ' + carta.saldoDisponibile}"></h3>
                                     </div>
                                     <div class="circuit">
-                                        <img class="circuit-logo-visa" src="../static/images/visa.svg" alt="visa logo">
+                                        <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
                                     </div>
                                 </div>
                             </div>
