@@ -5,8 +5,6 @@ import com.eryxis.eryxis.model.Conti;
 import com.eryxis.eryxis.model.Permessi;
 import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.repository.CarteRepository;
-import com.eryxis.eryxis.repository.ContiRepository;
-import com.eryxis.eryxis.service.CarteService;
 import com.eryxis.eryxis.service.ContiService;
 import com.eryxis.eryxis.service.PermessiService;
 import com.eryxis.eryxis.service.Security.OTPService;
@@ -31,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 @Controller
 @RequiredArgsConstructor
@@ -45,9 +41,9 @@ public class RegisterController {
     @Autowired
     private ContiService contiService;
     @Autowired
-    private CarteService carteService;
-    @Autowired
     private CarteRepository carteRepository;
+    @Autowired
+    private CarteController carteController;
 
     @GetMapping("/register")
     public String registerPage(Model model, @RequestParam(required = false) String msg) {
@@ -183,68 +179,11 @@ public class RegisterController {
         contiService.save(conto);
 
         // Creo una carta di credito
-        Carte carte = cartaNuova(conto);
+        Carte carte = carteController.cartaNuova(conto, "credito");
         carteRepository.save(carte);
 
         session.removeAttribute("utente");
         return "redirect:/login?msg=Registrazione%20completata";
-    }
-
-    private Carte cartaNuova(Conti conto) {
-        Carte carte = new Carte();
-        carte.setConto(conto);
-        carte.setDataScadenza(new java.sql.Date(System.currentTimeMillis() + 365 * 24 * 60 * 60 * 1000L)); // Scadenza tra un anno
-        // Creo un numero di carta casuale lungo 16 cifre
-        StringBuilder numeroCarta = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            int randomDigit = (int) (Math.random() * 10); // Genera un numero casuale tra 0 e 9
-            numeroCarta.append(randomDigit);
-        }
-        //Controllo che il numero di carta non esista già
-        while (carteService.findByNumeroCarta(numeroCarta.toString()) != null) {
-            numeroCarta.setLength(0); // Pulisci il StringBuilder
-            for (int i = 0; i < 16; i++) {
-                int randomDigit = (int) (Math.random() * 10); // Genera un numero casuale tra 0 e 9
-                numeroCarta.append(randomDigit);
-            }
-        }
-        carte.setNumeroCarta(numeroCarta.toString());
-        // Creo un codice CVV casuale lungo 3 cifre
-        StringBuilder cvv = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
-            int randomDigit = (int) (Math.random() * 10); // Genera un numero casuale tra 0 e 9
-            cvv.append(randomDigit);
-        }
-        //Controllo che il CVV non esista già
-        while (carteService.findByCVV(cvv.toString()) != null) {
-            cvv.setLength(0); // Pulisci il StringBuilder
-            for (int i = 0; i < 3; i++) {
-                int randomDigit = (int) (Math.random() * 10); // Genera un numero casuale tra 0 e 9
-                cvv.append(randomDigit);
-            }
-        }
-        carte.setCVV(cvv.toString());
-        // Imposto il pin
-        StringBuilder pin = new StringBuilder();
-        for (int i = 0; i < 5; i++) {
-            int randomDigit = (int) (Math.random() * 10); // Genera un numero casuale tra 0 e 9
-            pin.append(randomDigit);
-        }
-        // Controllo che il pin non esista già
-        while (carteService.findByPIN(pin.toString()) != null) {
-            pin.setLength(0); // Pulisci il StringBuilder
-            for (int i = 0; i < 5; i++) {
-                int randomDigit = (int) (Math.random() * 10); // Genera un numero casuale tra 0 e 9
-                pin.append(randomDigit);
-            }
-        }
-        carte.setPIN(pin.toString());
-
-        carte.setTipo("Credito");
-        carte.setSaldoContabile(0);
-        carte.setSaldoDisponibile(0);
-
-        return carte;
     }
 
     public String creaIBAN(){

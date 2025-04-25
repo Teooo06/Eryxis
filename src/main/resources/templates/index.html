@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" th:href="@{/style/style.css}">
+    <link rel="stylesheet" href="../static/style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -69,15 +70,17 @@
                             <h3 class="card-title">My Card</h3>
                             <div class="card">
                                 <div class="ex-date">
-                                    <h4 class="expire" th:text="${carta.dataScadenza}"></h4>
+                                    <h4 class="expire" th:text="${#strings.substring(carta.dataScadenza, 5, 7) + '/' + #strings.substring(carta.dataScadenza, 2, 4)}"></h4>
                                 </div>
                                 <div class="number-sec">
-                                    <h2 class="number" th:text="${carta.numeroCarta}"></h2>
+                                    <h2 class="number" th:text="${ '**** ' +
+                                                               #strings.substring(carta.numeroCarta, 3 * carta.numeroCarta.length() / 4)}"></h2>
+
                                 </div>
                                 <div class="balance-sec">
                                     <div class="balance-text">
                                         <h6 class="caption-bal">Balance</h6>
-                                        <h3 class="balance" th:text="${valuta + ' ' + carta.saldoDisponibile}"></h3>
+                                        <h3 class="balance" th:text="${valuta + ' ' + carta.saldoDisponibile}" id="saldo-carta"></h3>
                                     </div>
                                     <div class="circuit">
                                         <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
@@ -127,7 +130,7 @@
                             <h3 class="transaction-date" th:text="${transazione.dataTransazione}"></h3>
                         </div>
                         <div class="transaction-value">
-                            <h2 th:text="${transazione.importo} ${valuta}"></h2>
+                            <h2 id="transactionImport" th:text="${transazione.importo + ' ' + valuta}"></h2>
                         </div>
                     </div>
                 </div>
@@ -137,7 +140,7 @@
             <div class="account-section">
                 <div class="left-account">
                     <h4 class="account-pre-title">Your Total Balance</h4>
-                    <h2 class="account-title" th:text="${valuta + ' ' + saldo}"></h2>
+                    <h2 class="account-title" th:text="${valuta + ' ' + saldo}" id="saldo"></h2>
                     <div id="currentDateTime" class="date-box"></div>
                 </div>
             </div>
@@ -172,7 +175,27 @@
             <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
                 <button class="closeBtn" aria-label="Chiudi popup">&times;</button>
                 <h2 id="modalTitle">Add Card</h2>
+                <div class="card-adder">
+                    <div class="first-card" th:if="${cardCount < 3 and not hasDebito}">
+                        <form action="/addDebit" method="POST">
+                            <button class="card-deb-b" type="submit">
+                                <h2><i class="fa fa-credit-card"></i> Debit Card</h2>
+                                <p>Acquista e attiva la tua carta di debito</p>
+                                <span class="price" th:text="${valuta + '14,99'}"></span>
+                            </button>
+                        </form>
+                    </div>
 
+                    <div class="second-card">
+                        <form action="/addPrepaid" method="POST">
+                            <button class="card-ppd-b" th:if="${cardCount < 3 and not hasPrepagata}">
+                                <h2><i class="fa fa-credit-card"></i> Prepaid Card</h2>
+                                <p>Acquista e attiva la tua carta prepagata</p>
+                                <span class="price" th:text="${valuta + '4,99'}"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -375,6 +398,34 @@
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
     });
+</script>
+<script>
+    // Funzione per formattare i numeri
+    function formatNumber(number) {
+        return new Intl.NumberFormat('it-IT', {
+            maximumFractionDigits: 2,  // Puoi cambiare i decimali come preferisci
+            minimumFractionDigits: 0   // Per evitare di mostrare decimali se il numero è intero
+        }).format(number);
+    }
+
+    // Quando la pagina è completamente caricata
+    window.onload = function() {
+        // Formattare l'elemento con id 'saldo'
+        let saldoElement = document.getElementById("saldo");
+        if (saldoElement) {
+            let saldoText = saldoElement.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+            let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+            saldoElement.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+        }
+
+        // Formattare tutti gli elementi con la classe 'saldo-carta'
+        let saldoElements = document.querySelectorAll(".saldo-carta");
+        saldoElements.forEach(function(element) {
+            let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+            let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+            element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+        });
+    }
 </script>
 </body>
 </html>

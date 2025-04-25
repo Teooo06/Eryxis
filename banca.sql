@@ -153,7 +153,7 @@ VALUES ('Giulia', 'Bianchi', '1995-05-15', 'Corso', 'Italia', 21,
 -- Conto per admin (idUtente = 1)
 INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente)
 VALUES (
-        'IT60X0542811101000000123456', 10000.00, TRUE, 'EUR', 1, 1
+        'IT60X0542811101000000123456', 8923748374.00, TRUE, 'EUR', 1, 1
        );
 
 -- Conto per utente qualunque (idUtente = 2, id_consulente = 1 admin)

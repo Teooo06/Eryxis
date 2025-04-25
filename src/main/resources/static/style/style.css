@@ -301,7 +301,7 @@ button:hover{
 }
 
 .balance-text{
-    width: 50%;
+    width: 75%;
     height: 100%;
 }
 
@@ -317,7 +317,7 @@ button:hover{
 }
 
 .circuit{
-    width: 50%;
+    width: 28%;
     height: 100%;
     text-align: end;
 }
@@ -497,7 +497,7 @@ button:hover{
 }
 
 .account-title{
-    font-size: 60px;
+    font-size: 50px;
     font-weight: bold;
     color: #161A1D;
 }
@@ -603,4 +603,108 @@ button:hover{
 .closeBtn {
     background-color: #660708;
     font-size: 15px;
+    margin-left: 95%;
+}
+
+.card-adder{
+    height: 75%;
+    width: 100%;
+    align-content: center;
+}
+
+.first-card{
+    height: 50%;
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 20px;
+}
+
+.second-card{
+    height: 50%;
+    width: 100%;
+    border-radius: 20px;
+}
+
+.card-deb-b {
+    width: 100%;
+    height: 100%;
+    background-color: #660708;
+    border-radius: 20px;
+    margin: 0;
+    text-align: start;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-deb-b h2 {
+    margin: 40px 0 0;
+    color: white;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.card-deb-b p {
+    color: white;
+    font-size: 20px;
+    margin: 0 0 40px;
+}
+
+.card-deb-b .price {
+    font-size: 30px;
+    color: #FFD700;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.card-deb-b:hover{
+    background-color: #7d362e;
+    border: 2px solid #660708;
+}
+
+.card-ppd-b {
+    width: 100%;
+    height: 100%;
+    background-color: #161A1D;
+    border-radius: 20px;
+    margin: 0;
+    text-align: start;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-ppd-b h2 {
+    margin: 40px 0 0;
+    color: white;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.card-ppd-b p {
+    color: white;
+    font-size: 20px;
+    margin: 0 0 40px;
+}
+
+.card-ppd-b .price {
+    font-size: 30px;
+    color: #FFD700;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.card-ppd-b:hover{
+    background-color: #252a2c;
+    border: 2px solid #161A1D;
 }
