@@ -65,22 +65,66 @@
             <div class="card-section">
                 <!-- Right Section -->
                 <div class="left-side">
-                    <div class="card-list" th:each="carta : ${carte}">
+                    <div class="card-list">
                         <div class="card-part">
-                            <h3 class="card-title">My Card</h3>
+                            <h3 class="card-title">My Credit Card</h3>
+                            <!-- First Card -->
                             <div class="card">
                                 <div class="ex-date">
-                                    <h4 class="expire" th:text="${#strings.substring(carta.dataScadenza, 5, 7) + '/' + #strings.substring(carta.dataScadenza, 2, 4)}"></h4>
+                                    <h4 class="expire" th:text="${#strings.substring(carte[0].dataScadenza, 5, 7) + '/' + #strings.substring(carte[0].dataScadenza, 2, 4)}"></h4>
                                 </div>
                                 <div class="number-sec">
                                     <h2 class="number" th:text="${ '**** ' +
-                                                               #strings.substring(carta.numeroCarta, 3 * carta.numeroCarta.length() / 4)}"></h2>
-
+                                                               #strings.substring(carte[0].numeroCarta, 3 * carte[0].numeroCarta.length() / 4)}"></h2>
                                 </div>
                                 <div class="balance-sec">
                                     <div class="balance-text">
                                         <h6 class="caption-bal">Balance</h6>
-                                        <h3 class="balance" th:text="${valuta + ' ' + carta.saldoDisponibile}" id="saldo-carta"></h3>
+                                        <h3 class="balance" th:text="${valuta + ' ' + carte[0].saldoDisponibile}" id="saldo-carta-1"></h3>
+                                    </div>
+                                    <div class="circuit">
+                                        <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-part" th:if="${cardCount >= 2 }">
+                            <h3 class="card-title">My Debit Card</h3>
+                            <!-- Second Card -->
+                            <div class="card">
+                                <div class="ex-date">
+                                    <h4 class="expire" th:text="${#strings.substring(carte[1].dataScadenza, 5, 7) + '/' + #strings.substring(carte[1].dataScadenza, 2, 4)}"></h4>
+                                </div>
+                                <div class="number-sec">
+                                    <h2 class="number" th:text="${ '**** ' +
+                                                               #strings.substring(carte[1].numeroCarta, 3 * carte[1].numeroCarta.length() / 4)}"></h2>
+                                </div>
+                                <div class="balance-sec">
+                                    <div class="balance-text">
+                                        <h6 class="caption-bal">Balance</h6>
+                                        <h3 class="balance" th:text="${valuta + ' ' + carte[1].saldoDisponibile}" id="saldo-carta-2"></h3>
+                                    </div>
+                                    <div class="circuit">
+                                        <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-part" th:if="${cardCount == 3 }">
+                            <h3 class="card-title">My PrePaid Card</h3>
+                            <!-- Third Card -->
+                            <div class="card">
+                                <div class="ex-date">
+                                    <h4 class="expire" th:text="${#strings.substring(carte[2].dataScadenza, 5, 7) + '/' + #strings.substring(carte[2].dataScadenza, 2, 4)}"></h4>
+                                </div>
+                                <div class="number-sec">
+                                    <h2 class="number" th:text="${ '**** ' +
+                                                               #strings.substring(carte[2].numeroCarta, 3 * carte[2].numeroCarta.length() / 4)}"></h2>
+                                </div>
+                                <div class="balance-sec">
+                                    <div class="balance-text">
+                                        <h6 class="caption-bal">Balance</h6>
+                                        <h3 class="balance" th:text="${valuta + ' ' + carte[2].saldoDisponibile}" id="saldo-carta-3"></h3>
                                     </div>
                                     <div class="circuit">
                                         <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
@@ -118,16 +162,20 @@
                 <div class="transaction-header">
                     <h2 class="transaction-text">Recent Transaction</h2>
                 </div>
-                <div class="transaction-list" th:each="transazione : ${transazioni}">
-                    <div class="transaction-item">
+                <div class="transaction-list">
+                    <h3 th:if="${transazioni.size() == 0}">Non sono ancora state effettuate transazioni</h3>
+                    <div class="transaction-item" th:each="transazione : ${transazioni}">
                         <div class="transaction-icon">
                             <i class="fa fa-exchange fa-2x" style="padding-left: 27%; padding-top: 2%;" aria-hidden="true" th:if="${transazione.tipo == 'bonifico'}"></i>
                             <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento'}"></i>
                             <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo'}"></i>
                         </div>
                         <div class="transaction-detail">
-                            <h2 class="transaction-detail-text" th:text="${transazione.descrizione}"></h2>
-                            <h3 class="transaction-date" th:text="${transazione.dataTransazione}"></h3>
+                            <h2 class="transaction-detail-text" th:text="${transazione.destinatario}"></h2>
+                            <h3 class="transaction-date" th:text="${#strings.substring(transazione.dataTransazione, 8, 10) + '/' +
+                                                                    #strings.substring(transazione.dataTransazione, 5, 7) + '/' +
+                                                                    #strings.substring(transazione.dataTransazione, 0, 4)
+                                                                    }"></h3>
                         </div>
                         <div class="transaction-value">
                             <h2 id="transactionImport" th:text="${transazione.importo + ' ' + valuta}"></h2>
@@ -253,7 +301,7 @@
         changeSlide(currentIndex);
     }
 
-    const cardCount = /*[[${cardCount}]]*/ 1; // fallback per sicurezza
+    const cardCount = [[${cardCount}]];
 
     if (cardCount > 1) {
         createIndicators();
@@ -263,7 +311,7 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
 <script th:inline="javascript">
-    const transazioni = /*[[${transazioni}]]*/ [];
+    const transazioni = [[${transazioni}]];
 
     function formatDate(dataString) {
         const data = new Date(dataString);
@@ -419,8 +467,24 @@
         }
 
         // Formattare tutti gli elementi con la classe 'saldo-carta'
-        let saldoElements = document.querySelectorAll(".saldo-carta");
-        saldoElements.forEach(function(element) {
+        let saldoElements1 = document.querySelectorAll(".saldo-carta-1");
+        saldoElements1.forEach(function(element) {
+            let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+            let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+            element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+        });
+
+        // Formattare tutti gli elementi con la classe 'saldo-carta'
+        let saldoElements2 = document.querySelectorAll(".saldo-carta-2");
+        saldoElements2.forEach(function(element) {
+            let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+            let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+            element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+        });
+
+        // Formattare tutti gli elementi con la classe 'saldo-carta'
+        let saldoElements3 = document.querySelectorAll(".saldo-carta-3");
+        saldoElements3.forEach(function(element) {
             let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
             let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
             element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero

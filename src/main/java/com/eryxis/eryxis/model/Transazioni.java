@@ -19,8 +19,8 @@ public class Transazioni {
     @Column(columnDefinition = "DECIMAL(20, 2) DEFAULT 0")
     private double importo;
 
-    @Column(columnDefinition = "DATE DEFAULT CURRENT_DATE")
-    private java.sql.Date dataTransazione;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private java.sql.Timestamp dataTransazione;
 
     @Column(nullable = false, length = 10)
     private String tipo;

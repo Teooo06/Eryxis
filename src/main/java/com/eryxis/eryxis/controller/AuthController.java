@@ -1,7 +1,11 @@
 package com.eryxis.eryxis.controller;
 
 import com.eryxis.eryxis.configuration.CustomAuthenticationToken;
+import com.eryxis.eryxis.model.Carte;
+import com.eryxis.eryxis.model.Conti;
 import com.eryxis.eryxis.model.Utenti;
+import com.eryxis.eryxis.service.CarteService;
+import com.eryxis.eryxis.service.ContiService;
 import com.eryxis.eryxis.service.Security.OTPService;
 import com.eryxis.eryxis.service.UtentiService;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +34,10 @@ public class AuthController {
     private OTPService otpService;
     @Autowired
     private UtentiService utentiService;
+    @Autowired
+    private ContiService contiService;
+    @Autowired
+    private CarteService carteService;
 
     // Metodo iniziale che ritorna la pagina per l'inserimento dell'OTP
     @GetMapping("/otp")
@@ -62,9 +70,11 @@ public class AuthController {
         if (isValidOTP) {
             // Recupera i dati dell'utente
             Utenti utente = utentiService.findByMail(email);
+            List<Conti> conto = contiService.findByUtente(utente);
+            List<Carte> carte = carteService.findByConto(conto.get(0));
 
             // Crea un oggetto UserDetails (senza password, perché non serve qui)
-            CustomAuthenticationToken authToken = getCustomAuthenticationToken(email, utente);
+            CustomAuthenticationToken authToken = getCustomAuthenticationToken(email, utente, carte);
 
             // Crea un SecurityContext e imposta il token
             SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -89,7 +99,7 @@ public class AuthController {
                 .build();
     }
 
-    private static CustomAuthenticationToken getCustomAuthenticationToken(String email, @NotNull Utenti utente) {
+    private static CustomAuthenticationToken getCustomAuthenticationToken(String email, @NotNull Utenti utente, @NotNull List<Carte> carte) {
         UserDetails userDetails = new User(email, "", List.of()); // puoi inserire ruoli se li gestisci
 
         // Crea il token di autenticazione personalizzato
@@ -99,7 +109,8 @@ public class AuthController {
                 userDetails.getAuthorities(),
                 utente.getIdUtente(),
                 utente.getNome(),
-                utente.getCognome()
+                utente.getCognome(),
+                carte
         );
         return authToken;
     }

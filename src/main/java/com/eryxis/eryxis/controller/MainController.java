@@ -26,9 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -79,12 +77,16 @@ public class MainController {
             int id = customAuth.getIdUtente();
             String nome = customAuth.getNome();
             String cognome = customAuth.getCognome();
+            List<Carte> carte = customAuth.getCarte();
+
+            List<String> ordineTipo = Arrays.asList("credito", "debito", "prepagata");
+
+            carte.sort(Comparator.comparing(carta -> ordineTipo.indexOf(carta.getTipo())));
 
             Utenti utente = utentiService.findByIdUtente(id);
             if (utente != null) {
                 List<Conti> conto = contiService.findByUtente(utente);
                 if (!conto.isEmpty()) {
-                    List<Carte> carte = carteService.findByConto(conto.get(0));
                     List<Transazioni> transazioni = transazioniService.findByConto(conto.get(0));
                     boolean hasDebito = carte.stream().anyMatch(c -> c.getTipo().equals("debito"));
                     boolean hasPrepagata = carte.stream().anyMatch(c -> c.getTipo().equals("prepagata"));
@@ -122,8 +124,11 @@ public class MainController {
 
     @PostMapping("/addDebit")
     public String addDebit(Model model) {
-        List<Carte> carte = (List<Carte>) model.getAttribute("carte");
-        if (carte != null) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            List<Carte> carte = customAuth.getCarte();
             Conti conto = carte.get(0).getConto();
             if (conto != null){
                 Utenti utente = conto.getUtente();
@@ -137,6 +142,39 @@ public class MainController {
                 Transazioni transazioni = new Transazioni();
                 transazioni.setConto(conto);
                 transazioni.setImporto(14.99);
+                transazioni.setTipo("bonifico");
+                transazioni.setDestinatario("Eryxis Bank");
+
+                transazioniRepository.save(transazioni);
+
+                conto.setSaldo(conto.getSaldo() - transazioni.getImporto());
+
+                return "redirect:/home";
+            }
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/addPrepaid")
+    public String addPrepaid(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            List<Carte> carte = customAuth.getCarte();
+            Conti conto = carte.get(0).getConto();
+            if (conto != null){
+                Utenti utente = conto.getUtente();
+                Carte carta = carteController.cartaNuova(conto, "prepagata");
+
+                if (carta != null) {
+                    carteRepository.save(carta);
+                }
+                carte.add(carta);
+
+                Transazioni transazioni = new Transazioni();
+                transazioni.setConto(conto);
+                transazioni.setImporto(4.99);
                 transazioni.setTipo("bonifico");
                 transazioni.setDestinatario("Eryxis Bank");
 
