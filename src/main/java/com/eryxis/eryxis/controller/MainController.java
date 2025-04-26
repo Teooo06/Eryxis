@@ -141,7 +141,7 @@ public class MainController {
 
                 Transazioni transazioni = new Transazioni();
                 transazioni.setConto(conto);
-                transazioni.setImporto(14.99);
+                transazioni.setImporto(-14.99);
                 transazioni.setTipo("bonifico");
                 transazioni.setDestinatario("Eryxis Bank");
 
@@ -174,7 +174,7 @@ public class MainController {
 
                 Transazioni transazioni = new Transazioni();
                 transazioni.setConto(conto);
-                transazioni.setImporto(4.99);
+                transazioni.setImporto(-4.99);
                 transazioni.setTipo("bonifico");
                 transazioni.setDestinatario("Eryxis Bank");
 
