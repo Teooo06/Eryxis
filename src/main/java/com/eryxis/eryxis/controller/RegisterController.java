@@ -175,7 +175,6 @@ public class RegisterController {
         conto.setIBAN(iban);
         Utenti consulente = utentiService.findByIdUtente(1);
         conto.setConsulente(consulente);
-        conto.setSWIFT("ERXSITMM");
         contiService.save(conto);
 
         // Creo una carta di credito
