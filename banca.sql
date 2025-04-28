@@ -138,9 +138,9 @@ CREATE TABLE `finanziamenti`(
 
 -- Utente admin
 INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivico, codiceFiscale, mail, prefisso, telefono, password, passPhrase, OTP, id_permesso)
-VALUES ('Mario', 'Rossi', '1980-01-01', 'Via', 'Garibaldi', 10,
-        'RSSMRA80A01H501Z', 'mltlnz06d29b729v@iisbadoni.edu.it', '+39', '3331234567',
-        'adminPass123', 'adminSecret', FALSE, 1
+VALUES ('Lorenzo', 'Molteni', '2006-04-29', 'Via', 'Morigiola', 10,
+        'RSSMRA80A01H501Z', 'moltenilorenzo6@gmail.com', '+39', '3331234567',
+        'segreta', 'adminSecret', FALSE, 1
        );
 
 -- Utente qualunque
