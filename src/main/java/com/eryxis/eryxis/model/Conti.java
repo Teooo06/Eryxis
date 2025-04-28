@@ -16,9 +16,6 @@ public class Conti {
     @Column(length = 27)
     private String IBAN;
 
-    @Column(length = 8, columnDefinition = "VARCHAR(8) DEFAULT 'ERXSITMM'")
-    private String SWIFT;
-
     @Column(columnDefinition = "DECIMAL(20, 2) DEFAULT 0")
     private double saldo;
 
