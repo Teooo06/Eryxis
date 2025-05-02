@@ -176,7 +176,7 @@ public class MainController {
                 transazioni.setConto(conto);
                 transazioni.setImporto(-4.99);
                 transazioni.setTipo("bonifico");
-                transazioni.setDestinatario("Eryxis Bank");
+                transazioni.setDestinatario("Eryxis Bank S.P.A.");
 
                 transazioniRepository.save(transazioni);
 

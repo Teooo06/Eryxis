@@ -74,8 +74,7 @@
                                     <h4 class="expire" th:text="${#strings.substring(carte[0].dataScadenza, 5, 7) + '/' + #strings.substring(carte[0].dataScadenza, 2, 4)}"></h4>
                                 </div>
                                 <div class="number-sec">
-                                    <h2 class="number" th:text="${ '**** ' +
-                                                               #strings.substring(carte[0].numeroCarta, 3 * carte[0].numeroCarta.length() / 4)}"></h2>
+                                    <h2 class="number" th:text="${ '**** ' + #strings.substring(carte[0].numeroCarta, 3 * carte[0].numeroCarta.length() / 4)}"></h2>
                                 </div>
                                 <div class="balance-sec">
                                     <div class="balance-text">
@@ -96,8 +95,7 @@
                                     <h4 class="expire" th:text="${#strings.substring(carte[1].dataScadenza, 5, 7) + '/' + #strings.substring(carte[1].dataScadenza, 2, 4)}"></h4>
                                 </div>
                                 <div class="number-sec">
-                                    <h2 class="number" th:text="${ '**** ' +
-                                                               #strings.substring(carte[1].numeroCarta, 3 * carte[1].numeroCarta.length() / 4)}"></h2>
+                                    <h2 class="number" th:text="${ '**** ' + #strings.substring(carte[1].numeroCarta, 3 * carte[1].numeroCarta.length() / 4)}"></h2>
                                 </div>
                                 <div class="balance-sec">
                                     <div class="balance-text">
@@ -118,8 +116,7 @@
                                     <h4 class="expire" th:text="${#strings.substring(carte[2].dataScadenza, 5, 7) + '/' + #strings.substring(carte[2].dataScadenza, 2, 4)}"></h4>
                                 </div>
                                 <div class="number-sec">
-                                    <h2 class="number" th:text="${ '**** ' +
-                                                               #strings.substring(carte[2].numeroCarta, 3 * carte[2].numeroCarta.length() / 4)}"></h2>
+                                    <h2 class="number" th:text="${ '**** ' + #strings.substring(carte[2].numeroCarta, 3 * carte[2].numeroCarta.length() / 4)}"></h2>
                                 </div>
                                 <div class="balance-sec">
                                     <div class="balance-text">
@@ -167,8 +164,8 @@
                     <div class="transaction-item" th:each="transazione : ${transazioni}">
                         <div class="transaction-icon">
                             <i class="fa fa-exchange fa-2x" style="padding-left: 27%; padding-top: 2%;" aria-hidden="true" th:if="${transazione.tipo == 'bonifico'}"></i>
-                            <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento'}"></i>
-                            <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo'}"></i>
+                            <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento' || transazione.tipo == 'accredito'}"></i>
+                            <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo' || transazione.tipo == 'addebito'}"></i>
                         </div>
                         <div class="transaction-detail">
                             <h2 class="transaction-detail-text" th:text="${transazione.destinatario}"></h2>
