@@ -12,128 +12,128 @@ USE `banca`;
 
 -- Create permessi table first since other tables reference it
 CREATE TABLE `permessi`(
-    `idPermesso` INT PRIMARY KEY,
-    `ruolo` VARCHAR(10) NOT NULL,
-    `codicePermesso` CHAR(2) UNIQUE NOT NULL
+ `idPermesso` INT PRIMARY KEY,
+ `ruolo` VARCHAR(10) NOT NULL,
+ `codicePermesso` CHAR(2) UNIQUE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `permessi` (`idPermesso`, `ruolo`, `codicePermesso`) VALUES
-    (1, 'admin', '07'),
-    (2, 'support', '05'),
-    (3, 'client', '70'),
-    (4, 'advisor', '75');
+ (1, 'admin', '07'),
+ (2, 'support', '05'),
+ (3, 'client', '70'),
+ (4, 'advisor', '75');
 
 -- Now create utenti table
 CREATE TABLE `utenti`(
-    `idUtente` INT PRIMARY KEY AUTO_INCREMENT,
-    `nome` VARCHAR(50) NOT NULL,
-    `cognome` VARCHAR(50) NOT NULL,
-    `dataNascita` DATE DEFAULT '2000-01-01',
-    `toponimo` VARCHAR(10) NOT NULL,
-    `indirizzo` VARCHAR(100) NOT NULL,
-    `numeroCivico` INT NOT NULL CHECK ( numeroCivico > 0 ),
-    `codiceFiscale` CHAR(16) UNIQUE NOT NULL,
-    `mail` VARCHAR(150) UNIQUE NOT NULL,
-    `prefisso` VARCHAR(6) NOT NULL,
-    `telefono` VARCHAR(15) NOT NULL,
-    `password` VARCHAR(100) UNIQUE NOT NULL,
-    `passPhrase` VARCHAR(255) UNIQUE,
-    `OTP` BOOLEAN NOT NULL,
-    `id_permesso` INT NOT NULL,
-    CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
+ `idUtente` INT PRIMARY KEY AUTO_INCREMENT,
+ `nome` VARCHAR(50) NOT NULL,
+ `cognome` VARCHAR(50) NOT NULL,
+ `dataNascita` DATE DEFAULT '2000-01-01',
+ `toponimo` VARCHAR(10) NOT NULL,
+ `indirizzo` VARCHAR(100) NOT NULL,
+ `numeroCivico` INT NOT NULL CHECK ( numeroCivico > 0 ),
+ `codiceFiscale` CHAR(16) UNIQUE NOT NULL,
+ `mail` VARCHAR(150) UNIQUE NOT NULL,
+ `prefisso` VARCHAR(6) NOT NULL,
+ `telefono` VARCHAR(15) NOT NULL,
+ `password` VARCHAR(100) UNIQUE NOT NULL,
+ `passPhrase` VARCHAR(255) UNIQUE,
+ `OTP` BOOLEAN NOT NULL,
+ `id_permesso` INT NOT NULL,
+ CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
 
 -- Create conti table next since other tables reference it
 CREATE TABLE `conti` (
-    `IBAN` CHAR(27) PRIMARY KEY,
-    `saldo` DECIMAL(20, 2) DEFAULT 0,
-    `stato` BOOLEAN DEFAULT TRUE,
-    `valuta` VARCHAR(3) NOT NULL,
-    `dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `id_utente` INT NOT NULL,
-    `id_consulente` INT DEFAULT NULL,
-    CONSTRAINT `fk_conto_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE,
-    CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+ `IBAN` CHAR(27) PRIMARY KEY,
+ `saldo` DECIMAL(20, 2) DEFAULT 0,
+ `stato` BOOLEAN DEFAULT TRUE,
+ `valuta` VARCHAR(3) NOT NULL,
+ `dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ `id_utente` INT NOT NULL,
+ `id_consulente` INT DEFAULT NULL,
+ CONSTRAINT `fk_conto_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE,
+ CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Now create the other tables
 CREATE TABLE `tickets`(
-    `idTicket` INT PRIMARY KEY AUTO_INCREMENT,
-    `titolo` VARCHAR(20) NOT NULL,
-    `descrizione` VARCHAR(500) NOT NULL,
-    `stato` CHAR(1) NOT NULL,
-    `id_utente` INT NOT NULL,
-    CONSTRAINT `fk_ticket_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+`idTicket` INT PRIMARY KEY AUTO_INCREMENT,
+`titolo` VARCHAR(20) NOT NULL,
+`descrizione` VARCHAR(500) NOT NULL,
+`stato` CHAR(1) NOT NULL,
+`id_utente` INT NOT NULL,
+CONSTRAINT `fk_ticket_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `rubriche`(
-    `idContatto` INT PRIMARY KEY AUTO_INCREMENT,
-    `nome` VARCHAR(100) NOT NULL,
-    `cognome` VARCHAR(100) NOT NULL,
-    `IBAN` CHAR(27) UNIQUE NOT NULL,
-    `id_utente` INT NOT NULL,
-    CONSTRAINT `fk_rubrica_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+ `idContatto` INT PRIMARY KEY AUTO_INCREMENT,
+ `nome` VARCHAR(100) NOT NULL,
+ `cognome` VARCHAR(100) NOT NULL,
+ `IBAN` CHAR(27) UNIQUE NOT NULL,
+ `id_utente` INT NOT NULL,
+ CONSTRAINT `fk_rubrica_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `logs`(
-    `idLog` INT PRIMARY KEY AUTO_INCREMENT,
-    `dataModifica` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `tipoModifica` VARCHAR(50) NOT NULL,
-    `descrizione` VARCHAR(255) NOT NULL,
-    `id_utente` INT NOT NULL,
-    CONSTRAINT `fk_log_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+ `idLog` INT PRIMARY KEY AUTO_INCREMENT,
+ `dataModifica` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ `tipoModifica` VARCHAR(50) NOT NULL,
+ `descrizione` VARCHAR(255) NOT NULL,
+ `id_utente` INT NOT NULL,
+ CONSTRAINT `fk_log_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `transazioni`(
-    `idTransazione` INT PRIMARY KEY AUTO_INCREMENT,
-    `importo` DECIMAL(20, 2) DEFAULT 0,
-    `dataTransazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `tipo` VARCHAR(10) NOT NULL,
-    `destinatario` VARCHAR(100) NOT NULL,
-    `IBAN` CHAR(27) NOT NULL,
-    CONSTRAINT `fk_transazione_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
+`idTransazione` INT PRIMARY KEY AUTO_INCREMENT,
+`importo` DECIMAL(20, 2) DEFAULT 0,
+`dataTransazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+`tipo` VARCHAR(10) NOT NULL,
+`destinatario` VARCHAR(100) NOT NULL,
+`IBAN` CHAR(27) NOT NULL,
+CONSTRAINT `fk_transazione_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `carte`(
-    `numeroCarta` CHAR(16) PRIMARY KEY,
-    `CVV` CHAR(3) UNIQUE NOT NULL,
-    `dataScadenza` DATE NOT NULL,
-    `PIN` CHAR(5) UNIQUE NOT NULL,
-    `tipo` VARCHAR(9) NOT NULL,
-    `saldoDisponibile` DECIMAL(20, 2) DEFAULT 0 CHECK ( saldoDisponibile >= 0 ),
-    `saldoContabile` DECIMAL(20, 2) DEFAULT 0,
-    `stato` BOOLEAN DEFAULT TRUE,
-    `IBAN` CHAR(27) NOT NULL,
-    CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
+`numeroCarta` CHAR(16) PRIMARY KEY,
+`CVV` CHAR(3) UNIQUE NOT NULL,
+`dataScadenza` DATE NOT NULL,
+`PIN` CHAR(5) UNIQUE NOT NULL,
+`tipo` VARCHAR(9) NOT NULL,
+`saldoDisponibile` DECIMAL(20, 2) DEFAULT 0 CHECK ( saldoDisponibile >= 0 ),
+`saldoContabile` DECIMAL(20, 2) DEFAULT 0,
+`stato` BOOLEAN DEFAULT TRUE,
+`IBAN` CHAR(27) NOT NULL,
+CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `investimenti`(
-    `ISIN` VARCHAR(12) PRIMARY KEY,
-    `settore` VARCHAR(50) NOT NULL,
-    `divisa` VARCHAR(50) NOT NULL,
-    `tipo` VARCHAR(11) NOT NULL,
-    `nomeTitolo` VARCHAR(50) NOT NULL,
-    `descrizione` VARCHAR(255) NOT NULL,
-    `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `quantitaDenaro` DECIMAL(20, 2) DEFAULT 0 CHECK ( quantitaDenaro > 0 ),
-    `quantitaTotale` INT DEFAULT 0 CHECK ( quantitaTotale > 0 ),
-    `id_utente` INT NOT NULL,
-    CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+ `ISIN` VARCHAR(12) PRIMARY KEY,
+ `settore` VARCHAR(50) NOT NULL,
+ `divisa` VARCHAR(50) NOT NULL,
+ `tipo` VARCHAR(11) NOT NULL,
+ `nomeTitolo` VARCHAR(50) NOT NULL,
+ `descrizione` VARCHAR(255) NOT NULL,
+ `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ `quantitaDenaro` DECIMAL(20, 2) DEFAULT 0 CHECK ( quantitaDenaro > 0 ),
+ `quantitaTotale` INT DEFAULT 0 CHECK ( quantitaTotale > 0 ),
+ `id_utente` INT NOT NULL,
+ CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `finanziamenti`(
-    `idFinanziamento` INT PRIMARY KEY AUTO_INCREMENT,
-    `tipo` VARCHAR(8) NOT NULL,
-    `importo` DECIMAL(20, 2) DEFAULT 0 CHECK ( importo > 0 ),
-    `dataErogazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `interessi` DECIMAL(15, 2) DEFAULT 0 CHECK ( interessi >= 0 ),
-    `spesaIncasso` DECIMAL(5, 2) DEFAULT 2.5,
-    `tipoRata` VARCHAR(20) NOT NULL,
-    `valoreRata` DECIMAL(10, 2) DEFAULT 0 CHECK ( valoreRata >= 0 ),
-    `inizioPagamento` DATE NOT NULL,
-    `importoPagato` DECIMAL(15, 2) DEFAULT 0,
-    `id_utente` INT NOT NULL,
-    CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+`idFinanziamento` INT PRIMARY KEY AUTO_INCREMENT,
+`tipo` VARCHAR(8) NOT NULL,
+`importo` DECIMAL(20, 2) DEFAULT 0 CHECK ( importo > 0 ),
+`dataErogazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+`interessi` DECIMAL(15, 2) DEFAULT 0 CHECK ( interessi >= 0 ),
+`spesaIncasso` DECIMAL(5, 2) DEFAULT 2.5,
+`tipoRata` VARCHAR(20) NOT NULL,
+`valoreRata` DECIMAL(10, 2) DEFAULT 0 CHECK ( valoreRata >= 0 ),
+`inizioPagamento` DATE NOT NULL,
+`importoPagato` DECIMAL(15, 2) DEFAULT 0,
+`id_utente` INT NOT NULL,
+CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
 
 -- Inserimento utenti
@@ -166,39 +166,48 @@ INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente) VALUES
 ('IT60X0542811101000000000008', 2900.00, TRUE, 'EUR', 13, 4),
 ('IT60X0542811101000000000009', 2600.00, TRUE, 'EUR', 4, 4);
 
--- Utente qualunque
-INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivico, codiceFiscale, mail, prefisso, telefono, password, passPhrase, OTP, id_permesso)
-VALUES ('Giulia', 'Bianchi', '1995-05-15', 'Corso', 'Italia', 21,
-        'BNCGLI95E55F205W', 'giulia@banca.it', '+39', '3339876543',
-        'userPass456', 'userSecret', TRUE, 3
-       );
+-- Inserimento carte di credito per clienti e advisor
+INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldoDisponibile`, `saldoContabile`, `stato`, `IBAN`) VALUES
+-- Clienti
+('4123456789012346', '481', '2027-12-01', '19473', 'credito', 5000.00, 2600.00, TRUE, 'IT60X0542811101000000000001'),
+('5123456789012345', '317', '2028-11-01', '29183', 'credito', 7500.00, 3200.00, TRUE, 'IT60X0542811101000000000002'),
+('341234567890123', '962', '2026-09-01', '37465', 'credito', 3000.00, 2750.00, TRUE, 'IT60X0542811101000000000003'),
+('378282246310005', '223', '2029-05-01', '44821', 'credito', 10000.00, 4000.00, TRUE, 'IT60X0542811101000000000004'),
+('6011111111111117', '155', '2027-07-01', '55932', 'credito', 2000.00, 1800.00, TRUE, 'IT60X0542811101000000000005'),
+('5555345678901235', '127', '2028-08-01', '67890', 'credito', 8000.00, 2200.00, TRUE, 'IT60X0542811101000000000006'),
+('4123456789012347', '742', '2029-02-01', '78901', 'credito', 6000.00, 3100.00, TRUE, 'IT60X0542811101000000000007'),
+('341234567890124', '835', '2027-11-01', '89012', 'credito', 4000.00, 2900.00, TRUE, 'IT60X0542811101000000000008'),
+('3245453234549005', '121', '2050-01-01', '84013', 'credito', 29645.00, 29645.00, TRUE, 'IT60X0542811101000000123456'),
 
--- Conto per admin (idUtente = 1)
-INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente)
-VALUES (
-        'IT60X0542811101000000123456', 8923748374.00, TRUE, 'EUR', 1, 1
-       );
+-- Advisor (Lucia Conti)
+('5555345678901234', '739', '2029-01-01', '66721', 'credito', 15000.00, 2600.00, TRUE, 'IT60X0542811101000000000009');
 
--- Conto per utente qualunque (idUtente = 2, id_consulente = 1 admin)
-INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente)
-VALUES (
-        'IT60X0542811101000000654321', 2500.00, TRUE, 'EUR', 2, 1
-       );
+-- Carte di debito e prepagate per alcuni clienti
+INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldoDisponibile`, `saldoContabile`, `stato`, `IBAN`) VALUES
+-- Carte di debito
+('4012888888881881', '128', '2026-08-01', '12345', 'debito', 1500.00, 1500.00, TRUE, 'IT60X0542811101000000000001'),
+('5111111111111118', '499', '2027-03-01', '54321', 'debito', 3200.00, 3200.00, TRUE, 'IT60X0542811101000000000002'),
+('4444333322221111', '777', '2026-12-01', '98765', 'debito', 2750.00, 2750.00, TRUE, 'IT60X0542811101000000000003'),
+('2345345234234543', '124', '2050-01-01', '53424', 'debito', 26645.00, 26645.00, TRUE, 'IT60X0542811101000000123456'),
 
--- Carta di credito per admin
-INSERT INTO carte (numeroCarta, CVV, dataScadenza, PIN, tipo, saldoDisponibile, saldoContabile, IBAN)
-VALUES (
-        '1234567812345678', '123', '2028-12-31', '11111', 'credito', 10000.00, 10000.00, 'IT60X0542811101000000123456'
-       );
+-- Carte prepagate
+('4916011111111113', '334', '2028-10-01', '11223', 'prepagata', 500.00, 500.00, TRUE, 'IT60X0542811101000000000001'),
+('5222222222222225', '665', '2026-06-01', '33445', 'prepagata', 1000.00, 1000.00, TRUE, 'IT60X0542811101000000000002'),
+('375987654321001', '889', '2027-04-01', '55667', 'prepagata', 750.00, 750.00, TRUE, 'IT60X0542811101000000000003'),
+('2342354312543542', '122', '2050-01-01', '54893', 'prepagata', 25435.00, 25435.00, TRUE, 'IT60X0542811101000000123456');
 
--- Carta di credito per utente qualunque
-INSERT INTO carte (numeroCarta, CVV, dataScadenza, PIN, tipo, saldoDisponibile, saldoContabile, IBAN)
-VALUES (
-        '8765432187654321', '321', '2027-10-30', '22222', 'credito', 2500.00, 2500.00, 'IT60X0542811101000000654321'
-       );
+-- Transazioni generiche
+INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `IBAN`) VALUES
+(-150.00, '2025-01-03 08:15:23', 'bonifico', 'Amazon Europe', 'IT60X0542811101000000000001'),
+(-89.99, '2025-01-17 14:42:10', 'addebito', 'Netflix', 'IT60X0542811101000000000002'),
+(450.00, '2025-02-01 10:30:45', 'accredito', 'Stipendio', 'IT60X0542811101000000000003'),
+(-29.90, '2025-02-14 18:12:09', 'addebito', 'Spotify', 'IT60X0542811101000000000004'),
+(-1200.00, '2025-02-27 09:05:56', 'bonifico', 'Affitto', 'IT60X0542811101000000000005'),
+(-379452.16, '2025-03-05 11:44:30', 'bonifico', 'Ferrari S.P.A.', 'IT60X0542811101000000123456'),
+(645234.34, '2025-03-18 16:20:00', 'accredito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000123456');
 
 -- Transazioni specifiche per Eryxis Bank S.P.A.
-INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `IBAN`) VALUES
+INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `IBAN`) VALUESA
 -- Carte di debito (14.99)
 (-14.99, '2025-03-29 07:33:18', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000001'),
 (-14.99, '2025-04-03 13:49:55', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000002'),
