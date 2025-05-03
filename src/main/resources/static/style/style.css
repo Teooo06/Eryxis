@@ -599,8 +599,24 @@ button:hover{
     box-shadow: 0 10px 25px rgba(0,0,0,.2);
 }
 
+.modal2{
+    background: #fff;
+    width: 50%;
+    height: 70%;
+    border-radius: .75rem;
+    padding: 1.5rem;
+    position: relative;       /* per poter posizionare la X */
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+}
+
 /* --- Pulsante “X” --- */
 .closeBtn {
+    background-color: #660708;
+    font-size: 15px;
+    margin-left: 95%;
+}
+
+.closeBTn{
     background-color: #660708;
     font-size: 15px;
     margin-left: 95%;
@@ -707,4 +723,32 @@ button:hover{
 .card-ppd-b:hover{
     background-color: #252a2c;
     border: 2px solid #161A1D;
+}
+
+/* Transfer Form */
+.form-transfer{
+    display: flex;
+    flex-direction: column;
+}
+
+input, select{
+    height: 30px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid #6c757d;
+}
+
+select{
+    height: 36px;
+}
+
+label{
+    font-size: 15px;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: bold;
+}
+
+.transfer-button{
+    background-color: #660708;
+    margin-top: 20px;
 }

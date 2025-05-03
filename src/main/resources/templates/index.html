@@ -140,11 +140,9 @@
                         </button>
                     </div>
                     <div class="transfer">
-                        <form action="" class="form-b">
-                            <button class="transfer-b">
-                                <i class="fa fa-exchange fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Transfers
-                            </button>
-                        </form>
+                        <button class="transfer-b" id="transactionBtn">
+                            <i class="fa fa-exchange fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Transfers
+                        </button>
                     </div>
                     <div class="transfer">
                         <form action="" class="form-b">
@@ -166,6 +164,7 @@
                             <i class="fa fa-exchange fa-2x" style="padding-left: 27%; padding-top: 2%;" aria-hidden="true" th:if="${transazione.tipo == 'bonifico'}"></i>
                             <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento' || transazione.tipo == 'accredito'}"></i>
                             <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo' || transazione.tipo == 'addebito'}"></i>
+                            <i class="fa fa-gift fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'donazione'}"></i>
                         </div>
                         <div class="transaction-detail">
                             <h2 class="transaction-detail-text" th:text="${transazione.destinatario}"></h2>
@@ -241,6 +240,44 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="popupOverLay1" class="overlay" aria-hidden="true">
+            <div class="modal2" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <button class="closeBTn" aria-label="Chiudi popup">&times;</button>
+                <h2 id="modalTIT">Transfer Form</h2>
+                <form action="/submit-transaction" method="POST" class="form-transfer">
+                    <label for="importo" class="label-form">Importo (€):</label>
+                    <input type="number" id="importo" name="importo" step="0.01" min="0.01" required>
+
+                    <label for="tipo" class="label-form">Tipo di Transazione:</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value=""></option>
+                        <option value="bonifico">Bonifico</option>
+                        <option value="accredito">Accredito</option>
+                        <option value="addebito">Addebito</option>
+                        <option value="donazione">Donazione</option>
+                    </select>
+
+                    <label for="iban" class="label-form">IBAN:</label>
+                    <input type="text" id="iban" name="iban" required>
+
+                    <label for="destinatario">Destinatario: </label>
+                    <input type="text" id="destinatario" name="destinatario" required>
+
+                    <label for="causale" class="label-form">Causale:</label>
+                    <input type="text" id="causale" name="causale">
+
+                    <label for="carte" th:if="${cardCount>1}">Seleziona la carta: </label>
+                    <select id="carte" name="carte" required th:if="${cardCount>1}">
+                        <option value=""></option>
+                        <option value="credito">Credito</option>
+                        <option value="debito">Bonifico</option>
+                        <option value="prepagata" th:if="${cardCount == 3}">Prepagata</option>
+                    </select>
+                    <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
+                    <button type="submit" class="transfer-button">Invia</button>
+                </form>
             </div>
         </div>
     </section>
@@ -442,6 +479,35 @@
     /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+    });
+</script>
+<script>
+    const openBTn   = document.getElementById('transactionBtn');
+    const overLay   = document.getElementById('popupOverLay1');
+    const closeBTn  = overLay.querySelector('.closeBTn');
+
+    // apre il popup
+    openBTn.addEventListener('click', () => {
+        overLay.classList.add('active');
+        overLay.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    closeBTn.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    overLay.addEventListener('click', (e) => {
+        if (e.target === overLay) closeModal();
+    });
+
+    function closeModal() {
+        overLay.classList.remove('active');
+        overLay.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overLay.classList.contains('active')) closeModal();
     });
 </script>
 <script>

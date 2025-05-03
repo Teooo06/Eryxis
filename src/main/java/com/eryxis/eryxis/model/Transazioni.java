@@ -28,6 +28,9 @@ public class Transazioni {
     @Column(nullable = false, length = 100)
     private String destinatario;
 
+    @Column(nullable = false, length = 100)
+    private String causale;
+
     @ManyToOne
     @JoinColumn(name = "IBAN", nullable = false)
     private Conti conto;

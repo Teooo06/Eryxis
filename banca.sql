@@ -90,6 +90,7 @@ CREATE TABLE `transazioni`(
 `dataTransazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 `tipo` VARCHAR(10) NOT NULL,
 `destinatario` VARCHAR(100) NOT NULL,
+`causale` VARCHAR(100) NOT NULL,
 `IBAN` CHAR(27) NOT NULL,
 CONSTRAINT `fk_transazione_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -197,25 +198,25 @@ INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldo
 ('2342354312543542', '122', '2050-01-01', '54893', 'prepagata', 25435.00, 25435.00, TRUE, 'IT60X0542811101000000123456');
 
 -- Transazioni generiche
-INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `IBAN`) VALUES
-(-150.00, '2025-01-03 08:15:23', 'bonifico', 'Amazon Europe', 'IT60X0542811101000000000001'),
-(-89.99, '2025-01-17 14:42:10', 'addebito', 'Netflix', 'IT60X0542811101000000000002'),
-(450.00, '2025-02-01 10:30:45', 'accredito', 'Stipendio', 'IT60X0542811101000000000003'),
-(-29.90, '2025-02-14 18:12:09', 'addebito', 'Spotify', 'IT60X0542811101000000000004'),
-(-1200.00, '2025-02-27 09:05:56', 'bonifico', 'Affitto', 'IT60X0542811101000000000005'),
-(-379452.16, '2025-03-05 11:44:30', 'bonifico', 'Ferrari S.P.A.', 'IT60X0542811101000000123456'),
-(645234.34, '2025-03-18 16:20:00', 'accredito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000123456');
+INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `causale`,`IBAN`) VALUES
+(-150.00, '2025-01-03 08:15:23', 'bonifico', 'Amazon Europe', 'Acquisto', 'IT60X0542811101000000000001'),
+(-89.99, '2025-01-17 14:42:10', 'addebito', 'Netflix', 'Acquisto', 'IT60X0542811101000000000002'),
+(450.00, '2025-02-01 10:30:45', 'accredito', 'Stipendio', '', 'IT60X0542811101000000000003'),
+(-29.90, '2025-02-14 18:12:09', 'addebito', 'Spotify', 'Acquisto', 'IT60X0542811101000000000004'),
+(-1200.00, '2025-02-27 09:05:56', 'bonifico', 'Affitto', 'Paga fattura', 'IT60X0542811101000000000005'),
+(-379452.16, '2025-03-05 11:44:30', 'bonifico', 'Ferrari S.P.A.', 'Acquisto', 'IT60X0542811101000000123456'),
+(645234.34, '2025-03-18 16:20:00', 'accredito', 'Eryxis Bank S.P.A.', '', 'IT60X0542811101000000123456');
 
--- Transazioni specifiche per Eryxis Bank S.P.A.
-INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `IBAN`) VALUESA
+
+INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `causale`,`IBAN`) VALUESA
 -- Carte di debito (14.99)
-(-14.99, '2025-03-29 07:33:18', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000001'),
-(-14.99, '2025-04-03 13:49:55', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000002'),
-(-14.99, '2025-04-10 21:17:40', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000003'),
-(-14.99, '2025-04-15 06:02:11', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000123456'),
+(-14.99, '2025-03-29 07:33:18', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000001'),
+(-14.99, '2025-04-03 13:49:55', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000002'),
+(-14.99, '2025-04-10 21:17:40', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000003'),
+(-14.99, '2025-04-15 06:02:11', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000123456'),
 
 -- Carte prepagate (4.99)
-(-4.99, '2025-04-22 12:58:33', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000001'),
-(-4.99, '2025-04-27 15:40:08', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000002'),
-(-4.99, '2025-05-01 19:25:50', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000000003'),
-(-4.99, '2025-05-02 08:01:12', 'addebito', 'Eryxis Bank S.P.A.', 'IT60X0542811101000000123456');
+(-4.99, '2025-04-22 12:58:33', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000001'),
+(-4.99, '2025-04-27 15:40:08', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000002'),
+(-4.99, '2025-05-01 19:25:50', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000003'),
+(-4.99, '2025-05-02 08:01:12', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000123456');

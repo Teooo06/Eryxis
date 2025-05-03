@@ -91,6 +91,8 @@ public class MainController {
                     boolean hasDebito = carte.stream().anyMatch(c -> c.getTipo().equals("debito"));
                     boolean hasPrepagata = carte.stream().anyMatch(c -> c.getTipo().equals("prepagata"));
 
+                    transazioni.sort(Comparator.comparing(Transazioni::getDataTransazione).reversed());
+
                     model.addAttribute("id", id);
                     model.addAttribute("nome", nome);
                     model.addAttribute("cognome", cognome);
@@ -143,7 +145,8 @@ public class MainController {
                 transazioni.setConto(conto);
                 transazioni.setImporto(-14.99);
                 transazioni.setTipo("bonifico");
-                transazioni.setDestinatario("Eryxis Bank");
+                transazioni.setDestinatario("Eryxis Bank S.P.A.");
+                transazioni.setCausale("acquisto");
 
                 transazioniRepository.save(transazioni);
 
@@ -151,6 +154,9 @@ public class MainController {
 
                 return "redirect:/home";
             }
+        }
+        else{
+            return "redirect:/login";
         }
         return "redirect:/home";
     }
@@ -177,6 +183,7 @@ public class MainController {
                 transazioni.setImporto(-4.99);
                 transazioni.setTipo("bonifico");
                 transazioni.setDestinatario("Eryxis Bank S.P.A.");
+                transazioni.setCausale("acquisto");
 
                 transazioniRepository.save(transazioni);
 
@@ -185,6 +192,57 @@ public class MainController {
                 return "redirect:/home";
             }
         }
+        else{
+            return "redirect:/login";
+        }
         return "redirect:/home";
+    }
+
+    @PostMapping("/submit-transaction")
+    public String submitTransaction(Model model, @RequestParam("importo") float importo, @RequestParam("tipo") String tipo,
+                                    @RequestParam("iban") String iban, @RequestParam("destinatario") String destinatario,
+                                    @RequestParam("causale") String causale, @RequestParam("carte") String carta) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            List<Carte> carte = customAuth.getCarte();
+
+            if (carte != null) {
+                if (carte.stream().anyMatch(c -> c.getTipo().equals(carta))) {
+                    Carte card = carte.stream().filter(c -> c.getTipo().equals(carta)).findFirst().get();
+
+                    card.setSaldoDisponibile(card.getSaldoDisponibile() - importo);
+                    carteRepository.save(card);
+
+                    Transazioni transazioni = new Transazioni();
+                    transazioni.setConto(card.getConto());
+                    transazioni.setImporto(-importo);
+                    transazioni.setTipo(tipo);
+                    transazioni.setDestinatario(destinatario);
+                    transazioni.setCausale(causale);
+                    transazioniRepository.save(transazioni);
+
+                    Conti conto = contiService.findByIBAN(iban);
+                    if (conto != null) {
+                        conto.setSaldo(conto.getSaldo() + importo);
+                        contiService.save(conto);
+                    }
+                } else {
+                    alert("X-ALERT-MESSAGE", "Carta non trovata! Riprova più tardi.");
+                }
+            } else {
+                alert("X-ALERT-MESSAGE", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+            }
+        }
+        else{
+            return "redirect:/login";
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/alert")
+    public ResponseEntity<String> alert(String header, String message) {
+        return ResponseEntity.ok()
+                .header(header, message)
+                .body("OK");
     }
 }
