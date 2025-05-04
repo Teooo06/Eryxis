@@ -263,7 +263,24 @@ button:hover{
     height: 60%;
     margin: auto;
     border-radius: 15px;
+}
+
+.credit{
     background-image: url("../images/credit.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.debit{
+    background-image: url("../images/debit.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.prepaid{
+    background-image: url("../images/prepaid.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

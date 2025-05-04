@@ -69,7 +69,7 @@
                         <div class="card-part">
                             <h3 class="card-title">My Credit Card</h3>
                             <!-- First Card -->
-                            <div class="card">
+                            <div class="card credit">
                                 <div class="ex-date">
                                     <h4 class="expire" th:text="${#strings.substring(carte[0].dataScadenza, 5, 7) + '/' + #strings.substring(carte[0].dataScadenza, 2, 4)}"></h4>
                                 </div>
@@ -90,7 +90,7 @@
                         <div class="card-part" th:if="${cardCount >= 2 }">
                             <h3 class="card-title">My Debit Card</h3>
                             <!-- Second Card -->
-                            <div class="card">
+                            <div class="card debit">
                                 <div class="ex-date">
                                     <h4 class="expire" th:text="${#strings.substring(carte[1].dataScadenza, 5, 7) + '/' + #strings.substring(carte[1].dataScadenza, 2, 4)}"></h4>
                                 </div>
@@ -111,7 +111,7 @@
                         <div class="card-part" th:if="${cardCount == 3 }">
                             <h3 class="card-title">My PrePaid Card</h3>
                             <!-- Third Card -->
-                            <div class="card">
+                            <div class="card prepaid">
                                 <div class="ex-date">
                                     <h4 class="expire" th:text="${#strings.substring(carte[2].dataScadenza, 5, 7) + '/' + #strings.substring(carte[2].dataScadenza, 2, 4)}"></h4>
                                 </div>
@@ -162,8 +162,8 @@
                     <div class="transaction-item" th:each="transazione : ${transazioni}">
                         <div class="transaction-icon">
                             <i class="fa fa-exchange fa-2x" style="padding-left: 27%; padding-top: 2%;" aria-hidden="true" th:if="${transazione.tipo == 'bonifico'}"></i>
-                            <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento' || transazione.tipo == 'accredito'}"></i>
-                            <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo' || transazione.tipo == 'addebito'}"></i>
+                            <i class="fa fa-arrow-down fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'prelievo' || transazione.tipo == 'addebito'}"></i>
+                            <i class="fa fa-arrow-up fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'versamento' || transazione.tipo == 'accredito'}"></i>
                             <i class="fa fa-gift fa-2x" style="padding-left: 30%; padding-top: 3%;" aria-hidden="true" th:if="${transazione.tipo == 'donazione'}"></i>
                         </div>
                         <div class="transaction-detail">
@@ -272,7 +272,7 @@
                     <input type="number" id="importo1" name="importo" step="0.01" min="0.01" required>
 
                     <label for="carte1">Seleziona da dove ricaricare la carta: </label>
-                    <select id="carte1" name="carte" required>
+                    <select id="carte1" name="carte1" required>
                         <option value=""></option>
                         <option value="conto">Conto</option>
                         <option value="credito">Credito</option>
@@ -281,7 +281,7 @@
                     </select>
 
                     <label for="carte2">Seleziona la carta da ricaricare: </label>
-                    <select id="carte2" name="carte" required>
+                    <select id="carte2" name="carte2" required>
                         <option value=""></option>
                         <option value="conto">Conto</option>
                         <option value="credito">Credito</option>
@@ -413,6 +413,8 @@
     const outcomeMap = {};
 
     transazioni.forEach(t => {
+        if (t.causale && t.causale.toLowerCase() === 'ricarica') return; // Salta le "ricarica"
+
         const date = formatDate(t.dataTransazione);
         if (!incomeMap[date]) incomeMap[date] = 0;
         if (!outcomeMap[date]) outcomeMap[date] = 0;

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -227,10 +228,12 @@ public class MainController {
                         contiService.save(conto);
                     }
                 } else {
-                    alert("X-ALERT-MESSAGE", "Carta non trovata! Riprova più tardi.");
+                    alert("Carta non trovata!", "Carta non trovata! Riprova più tardi.");
+                    return "redirect:/home";
                 }
             } else {
-                alert("X-ALERT-MESSAGE", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                alert("Sessione scaduta!", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                return "redirect:/home";
             }
         }
         else{
@@ -246,7 +249,8 @@ public class MainController {
             List<Carte> carte = customAuth.getCarte();
 
             if(carte1.equals(carte2)) {
-                alert("X-ALERT-MESSAGE", "Le carte selezionate corrispondono!");
+                alert("Carte corrispondenti", "Carte corrispondenti! Le carte selezionate corrispondono! Selezionare due carte diverse per eseguire l'operazione");
+                return "redirect:/home";
             }
             else if (carte != null) {
                 if (carte1.equals("conto") || carte2.equals("conto")) {
@@ -254,63 +258,84 @@ public class MainController {
                         Conti conto = carte.get(0).getConto();
 
                         if (carte.stream().anyMatch(c -> c.getTipo().equals(carte2))) {
-                            Carte cartaD = carte.stream().filter(c -> c.getTipo().equals(carte2)).findFirst().get();
+                            if (conto.getSaldo() >= importo) {
+                                Carte cartaD = carte.stream().filter(c -> c.getTipo().equals(carte2)).findFirst().get();
 
-                            conto.setSaldo(conto.getSaldo() - importo);
-                            contiService.save(conto);
-                            cartaD.setSaldoDisponibile(cartaD.getSaldoDisponibile() + importo);
-                            carteRepository.save(cartaD);
+                                conto.setSaldo(conto.getSaldo() - importo);
+                                contiService.save(conto);
+                                cartaD.setSaldoDisponibile(cartaD.getSaldoDisponibile() + importo);
+                                carteRepository.save(cartaD);
+                            }
+                            else{
+                                alert("Saldo Disponibile Insufficiente!", "Saldo Disponibile Insufficiente! L'importo inserito è maggiore del saldo disponibile sul conto da cui scaricare!");
+                                return "redirect:/home";
+                            }
                         }
                         else if (carte.stream().anyMatch(c -> c.getTipo().equals(carte1))) {
                             Carte carteS = carte.stream().filter(c -> c.getTipo().equals(carte1)).findFirst().get();
+                            if (carteS.getSaldoDisponibile() >= importo) {
 
-                            conto.setSaldo(conto.getSaldo() + importo);
-                            contiService.save(conto);
-                            carteS.setSaldoDisponibile(carteS.getSaldoDisponibile() - importo);
-                            carteRepository.save(carteS);
+                                conto.setSaldo(conto.getSaldo() + importo);
+                                contiService.save(conto);
+                                carteS.setSaldoDisponibile(carteS.getSaldoDisponibile() - importo);
+                                carteRepository.save(carteS);
+                            }
+                            else{
+                                alert("Saldo Disponibile Insufficiente!", "Saldo Disponibile Insufficiente! L'importo inserito è maggiore del saldo disponibile sulla carta da cui scaricare!");
+                                return "redirect:/home";
+                            }
                         }
                     }
                 }
                 else if (carte.stream().anyMatch(c -> c.getTipo().equals(carte1))) {
                     Carte cartaS = carte.stream().filter(c -> c.getTipo().equals(carte1)).findFirst().get();
+                    if (cartaS.getSaldoDisponibile() >= importo) {
 
-                    if (carte.stream().anyMatch(c -> c.getTipo().equals(carte2))) {
-                        Carte cartaD = carte.stream().filter(c -> c.getTipo().equals(carte2)).findFirst().get();
+                        if (carte.stream().anyMatch(c -> c.getTipo().equals(carte2))) {
+                            Carte cartaD = carte.stream().filter(c -> c.getTipo().equals(carte2)).findFirst().get();
 
-                        cartaS.setSaldoDisponibile(cartaS.getSaldoDisponibile() - importo);
-                        carteRepository.save(cartaS);
-                        cartaD.setSaldoDisponibile(cartaD.getSaldoDisponibile() + importo);
-                        carteRepository.save(cartaD);
+                            cartaS.setSaldoDisponibile(cartaS.getSaldoDisponibile() - importo);
+                            carteRepository.save(cartaS);
+                            cartaD.setSaldoDisponibile(cartaD.getSaldoDisponibile() + importo);
+                            carteRepository.save(cartaD);
+                        }
+                    }
+                    else{
+                        alert("Saldo Disponibile Insufficiente!", "Saldo Disponibile Insufficiente! L'importo inserito è maggiore del saldo disponibile sulla carta da cui scaricare!");
+                        return "redirect:/home";
                     }
                 }
                 else {
-                    alert("X-ALERT-MESSAGE", "Carta non trovata! Riprova più tardi.");
+                    alert("Carta non trovata!", "Carta non trovata! Riprova più tardi.");
+                    return "redirect:/home";
                 }
 
                 if (carte.get(0).getConto() != null) {
                     Transazioni transazioni = new Transazioni();
-                    transazioni.setImporto(-importo);
+                    transazioni.setImporto(importo);
                     transazioni.setDestinatario("Recharged Card");
                     transazioni.setCausale("ricarica");
                     transazioni.setConto(carte.get(0).getConto());
+                    transazioni.setTipo("versamento");
                     transazioniRepository.save(transazioni);
                 }
                 else{
-                    alert("X-ALERT-MESSAGE", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                    alert("Sessione scaduta!", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                    return "redirect:/login";
                 }
             }
             else{
-                alert("X-ALERT-MESSAGE", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                alert("Sessione scaduta!", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                return "redirect:/login";
             }
         }
 
         return "redirect:/home";
     }
 
+
     @PostMapping("/alert")
-    public ResponseEntity<String> alert(String header, String message) {
-        return ResponseEntity.ok()
-                .header(header, message)
-                .body("OK");
+    public void alert(@RequestParam String header, @RequestParam String message) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
     }
 }
