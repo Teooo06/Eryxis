@@ -215,6 +215,7 @@
                 </div>
             </div>
         </div>
+        <!-- Card Shop Pop Up -->
         <div id="popupOverlay" class="overlay" aria-hidden="true">
             <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
                 <button class="closeBtn" aria-label="Chiudi popup">&times;</button>
@@ -223,7 +224,7 @@
                     <div class="first-card" th:if="${cardCount < 3 and not hasDebito}">
                         <form action="/addDebit" method="POST">
                             <button class="card-deb-b" type="submit">
-                                <h2><i class="fa fa-credit-card"></i> Debit Card</h2>
+                                <h2><i class="fa fa-credit-card" style="padding-right: 10px"></i> Debit Card</h2>
                                 <p>Acquista e attiva la tua carta di debito</p>
                                 <span class="price" th:text="${valuta + '14,99'}"></span>
                             </button>
@@ -233,7 +234,7 @@
                     <div class="second-card">
                         <form action="/addPrepaid" method="POST">
                             <button class="card-ppd-b" th:if="${cardCount < 3 and not hasPrepagata}">
-                                <h2><i class="fa fa-credit-card"></i> Prepaid Card</h2>
+                                <h2><i class="fa fa-credit-card" style="padding-right: 10px"></i> Prepaid Card</h2>
                                 <p>Acquista e attiva la tua carta prepagata</p>
                                 <span class="price" th:text="${valuta + '4,99'}"></span>
                             </button>
@@ -242,6 +243,57 @@
                 </div>
             </div>
         </div>
+        <!-- Transaction Choice Pop Up -->
+        <div id="popupOverLay2" class="overlay" aria-hidden="true">
+            <div class="modal3" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <button class="closeBTN1" aria-label="Chiudi popup">&times;</button>
+                <h2 id="modalCH">Transfer Form</h2>
+                    <div class="selection-box">
+                        <div class="choice-1">
+                            <button class="choice stl1" id="chargeCard">
+                                <i class="fa fa-exchange fa-2x" style="margin: 20% 20% 10%" aria-hidden="true"></i> Recharge Card
+                            </button>
+                        </div>
+                        <div class="choice-2">
+                            <button class="choice stl2" id="transfer-b">
+                                <i class="fa fa-exchange fa-2x" style="margin: 20% 20% 10%" aria-hidden="true"></i> Transfer Money
+                            </button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!-- Recharge Card Pop Up -->
+        <div id="popupOverLay3" class="overlay" aria-hidden="true">
+            <div class="modal4" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <button class="closeBT1" aria-label="Chiudi popup">&times;</button>
+                <h2 id="modalTI">Recharge Form</h2>
+                <form action="/submit-recharge" method="POST" class="form-transfer">
+                    <label for="importo1" class="label-form">Importo (€):</label>
+                    <input type="number" id="importo1" name="importo" step="0.01" min="0.01" required>
+
+                    <label for="carte1">Seleziona da dove ricaricare la carta: </label>
+                    <select id="carte1" name="carte" required>
+                        <option value=""></option>
+                        <option value="conto">Conto</option>
+                        <option value="credito">Credito</option>
+                        <option value="debito" th:if="${cardCount >= 2}">Debito</option>
+                        <option value="prepagata" th:if="${cardCount == 3}">Prepagata</option>
+                    </select>
+
+                    <label for="carte2">Seleziona la carta da ricaricare: </label>
+                    <select id="carte2" name="carte" required>
+                        <option value=""></option>
+                        <option value="conto">Conto</option>
+                        <option value="credito">Credito</option>
+                        <option value="debito" th:if="${cardCount >= 2}">Debito</option>
+                        <option value="prepagata" th:if="${cardCount == 3}">Prepagata</option>
+                    </select>
+                    <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
+                    <button type="submit" class="transfer-button">Invia</button>
+                </form>
+            </div>
+        </div>
+        <!-- Transaction to Another Account Pop Up -->
         <div id="popupOverLay1" class="overlay" aria-hidden="true">
             <div class="modal2" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
                 <button class="closeBTn" aria-label="Chiudi popup">&times;</button>
@@ -482,7 +534,65 @@
     });
 </script>
 <script>
-    const openBTn   = document.getElementById('transactionBtn');
+    const openB   = document.getElementById('transactionBtn');
+    const overlay2   = document.getElementById('popupOverLay2');
+    const closeB  = overlay2.querySelector('.closeBTN1');
+
+    // apre il popup
+    openB.addEventListener('click', () => {
+        overlay2.classList.add('active');
+        overlay2.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    closeB.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    overlay2.addEventListener('click', (e) => {
+        if (e.target === overlay2) closeModal();
+    });
+
+    function closeModal() {
+        overlay2.classList.remove('active');
+        overlay2.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay2.classList.contains('active')) closeModal();
+    });
+</script>
+<script>
+    const openB1   = document.getElementById('chargeCard');
+    const overlay3   = document.getElementById('popupOverLay3');
+    const closeB1  = overlay3.querySelector('.closeBT1');
+
+    // apre il popup
+    openB1.addEventListener('click', () => {
+        overlay3.classList.add('active');
+        overlay3.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    closeB1.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    overlay3.addEventListener('click', (e) => {
+        if (e.target === overlay3) closeModal();
+    });
+
+    function closeModal() {
+        overlay3.classList.remove('active');
+        overlay3.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay3.classList.contains('active')) closeModal();
+    });
+</script>
+<script>
+    const openBTn   = document.getElementById('transfer-b');
     const overLay   = document.getElementById('popupOverLay1');
     const closeBTn  = overLay.querySelector('.closeBTn');
 

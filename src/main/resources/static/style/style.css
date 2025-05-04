@@ -589,7 +589,7 @@ button:hover{
 .overlay.active { display: grid; }   /* la classe active lo rende visibile */
 
 /* --- Finestra popup --- */
-.modal {
+.modal, .modal2, .modal3, .modal4 {
     background: #fff;
     width: 50%;
     height: 60%;
@@ -600,26 +600,25 @@ button:hover{
 }
 
 .modal2{
-    background: #fff;
     width: 50%;
     height: 70%;
-    border-radius: .75rem;
-    padding: 1.5rem;
-    position: relative;       /* per poter posizionare la X */
-    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+}
+
+.modal3{
+    width: 30%;
+    height: 40%;
+}
+
+.modal4{
+    width: 30%;
+    height: 45%;
 }
 
 /* --- Pulsante “X” --- */
-.closeBtn {
+.closeBtn, .closeBTn, .closeBTN1, .closeBT1{
     background-color: #660708;
     font-size: 15px;
-    margin-left: 95%;
-}
-
-.closeBTn{
-    background-color: #660708;
-    font-size: 15px;
-    margin-left: 95%;
+    margin-left: 92.5%;
 }
 
 .card-adder{
@@ -723,6 +722,56 @@ button:hover{
 .card-ppd-b:hover{
     background-color: #252a2c;
     border: 2px solid #161A1D;
+}
+
+/* Transfer Choice */
+.selection-box{
+    width: 100%;
+    height: 75%;
+    display: flex;
+    flex-direction: row;
+}
+
+.choice-1, .choice-2{
+    width: 47.5%;
+    height: 95%;
+    border-radius: 20px;
+}
+
+.choice-1{
+    margin: 0 5% 0 0;
+    background-color: #660708;
+}
+
+.choice-2{
+    background-color: #161A1D;
+}
+
+.choice{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 20px;
+    font-size: 35px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.stl1{
+    background-color: #660708;
+}
+
+.stl2{
+    background-color: #161A1D;
+}
+
+.stl1:hover{
+    background-color: #7d362e;
+}
+
+.stl2:hover{
+    background-color: #252a2c;
 }
 
 /* Transfer Form */

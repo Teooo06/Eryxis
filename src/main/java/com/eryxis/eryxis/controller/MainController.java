@@ -239,6 +239,74 @@ public class MainController {
         return "redirect:/home";
     }
 
+    @PostMapping("/submit-recharge")
+    public String recharge(Model model, @RequestParam("importo") float importo, @RequestParam("carte1") String carte1, @RequestParam("carte2") String carte2) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            List<Carte> carte = customAuth.getCarte();
+
+            if(carte1.equals(carte2)) {
+                alert("X-ALERT-MESSAGE", "Le carte selezionate corrispondono!");
+            }
+            else if (carte != null) {
+                if (carte1.equals("conto") || carte2.equals("conto")) {
+                    if (carte.get(0).getConto() != null) {
+                        Conti conto = carte.get(0).getConto();
+
+                        if (carte.stream().anyMatch(c -> c.getTipo().equals(carte2))) {
+                            Carte cartaD = carte.stream().filter(c -> c.getTipo().equals(carte2)).findFirst().get();
+
+                            conto.setSaldo(conto.getSaldo() - importo);
+                            contiService.save(conto);
+                            cartaD.setSaldoDisponibile(cartaD.getSaldoDisponibile() + importo);
+                            carteRepository.save(cartaD);
+                        }
+                        else if (carte.stream().anyMatch(c -> c.getTipo().equals(carte1))) {
+                            Carte carteS = carte.stream().filter(c -> c.getTipo().equals(carte1)).findFirst().get();
+
+                            conto.setSaldo(conto.getSaldo() + importo);
+                            contiService.save(conto);
+                            carteS.setSaldoDisponibile(carteS.getSaldoDisponibile() - importo);
+                            carteRepository.save(carteS);
+                        }
+                    }
+                }
+                else if (carte.stream().anyMatch(c -> c.getTipo().equals(carte1))) {
+                    Carte cartaS = carte.stream().filter(c -> c.getTipo().equals(carte1)).findFirst().get();
+
+                    if (carte.stream().anyMatch(c -> c.getTipo().equals(carte2))) {
+                        Carte cartaD = carte.stream().filter(c -> c.getTipo().equals(carte2)).findFirst().get();
+
+                        cartaS.setSaldoDisponibile(cartaS.getSaldoDisponibile() - importo);
+                        carteRepository.save(cartaS);
+                        cartaD.setSaldoDisponibile(cartaD.getSaldoDisponibile() + importo);
+                        carteRepository.save(cartaD);
+                    }
+                }
+                else {
+                    alert("X-ALERT-MESSAGE", "Carta non trovata! Riprova più tardi.");
+                }
+
+                if (carte.get(0).getConto() != null) {
+                    Transazioni transazioni = new Transazioni();
+                    transazioni.setImporto(-importo);
+                    transazioni.setDestinatario("Recharged Card");
+                    transazioni.setCausale("ricarica");
+                    transazioni.setConto(carte.get(0).getConto());
+                    transazioniRepository.save(transazioni);
+                }
+                else{
+                    alert("X-ALERT-MESSAGE", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+                }
+            }
+            else{
+                alert("X-ALERT-MESSAGE", "Sessione scaduta! Eseguire nuovamente l'accesso.");
+            }
+        }
+
+        return "redirect:/home";
+    }
+
     @PostMapping("/alert")
     public ResponseEntity<String> alert(String header, String message) {
         return ResponseEntity.ok()
