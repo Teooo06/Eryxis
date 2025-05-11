@@ -43,6 +43,9 @@ public class Finanziamenti {
     @Column(columnDefinition = "DECIMAL(15, 2) DEFAULT 0")
     private double importoPagato;
 
+    @Column(nullable = false, length = 250)
+    private String descrizione;
+
     @ManyToOne
     @JoinColumn(name = "id_utente", nullable = false)
     private Utenti utente;
