@@ -14,6 +14,8 @@ public class ContiService {
     @Autowired
     public ContiRepository contiRepository;
 
+    public List<Conti> findAll() {return contiRepository.findAll();}
+
     public Conti findByIBAN(String iban) {
         return contiRepository.findByIBAN(iban);
     }

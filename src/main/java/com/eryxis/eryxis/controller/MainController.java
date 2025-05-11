@@ -80,12 +80,22 @@ public class MainController {
             String cognome = customAuth.getCognome();
             List<Carte> carte = customAuth.getCarte();
 
+            Utenti utente = utentiService.findByIdUtente(id);
+
             List<String> ordineTipo = Arrays.asList("credito", "debito", "prepagata");
 
-            carte.sort(Comparator.comparing(carta -> ordineTipo.indexOf(carta.getTipo())));
+            if (carte != null && carte.size() > 0) {
+                carte.sort(Comparator.comparing(carta -> ordineTipo.indexOf(carta.getTipo())));
+            }
 
-            Utenti utente = utentiService.findByIdUtente(id);
             if (utente != null) {
+                if (utente.getPermesso().getIdPermesso() == 1){
+                    List<Conti> conti = contiService.findAll();
+
+                    model.addAttribute("conti", conti);
+
+                    return  "adPage";
+                }
                 List<Conti> conto = contiService.findByUtente(utente);
                 if (!conto.isEmpty()) {
                     List<Transazioni> transazioni = transazioniService.findByConto(conto.get(0));
