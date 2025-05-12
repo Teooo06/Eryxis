@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <link rel="stylesheet" th:href="@{/style/style.css}">
+  <link rel="stylesheet" href="../static/style/style.css">
+  <link rel="stylesheet" th:href="@{/style/adStyle.css}">
+  <link rel="stylesheet" href="../static/style/adStyle.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header>
+  <div class="title">
+    <h1 class="nunito-1">eryxis</h1>
+  </div>
+  <div class="menu-section">
+    <nav>
+      <ul>
+        <li class="selected">
+          <button class="menu-button">
+            <i class="fa fa-home spacing" aria-hidden="true"></i>
+            Overview
+          </button>
+        </li>
+        <li>
+          <form action="/creditManagement">
+            <button class="menu-button">
+              <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+              Credit Management
+            </button>
+          </form>
+        </li>
+        <li>
+          <form action="/adSetting">
+            <button class="menu-button">
+              <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+              Settings
+            </button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="user-sec">
+    <div class="user-name">
+      <div class="user-image">
+        <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+      </div>
+      <h3 class="name" th:text="${nome + ' ' + cognome}"></h3>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section-ad">
+    <div class="left-sec">
+      <div class="title-user">
+
+      </div>
+      <div class="table-user">
+        <table>
+          <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>IBAN</th>
+            <th>Indirizzo</th>
+            <th>Email</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="conto : ${conti}" th:if="${conto.utente.permesso.idPermesso == 3}">
+            <td th:text="${conto.utente.nome}"></td>
+            <td th:text="${conto.utente.cognome}"></td>
+            <td th:text="${conto.IBAN}"></td>
+            <td th:text="${conto.utente.toponimo} + ' ' + ${conto.utente.indirizzo} + ' ' + ${conto.utente.numeroCivico}"></td>
+            <td th:text="${conto.utente.mail}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div>
+
+      </div>
+      <div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
