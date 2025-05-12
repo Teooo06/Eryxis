@@ -1,16 +1,10 @@
 package com.eryxis.eryxis.controller;
 
 import com.eryxis.eryxis.configuration.CustomAuthenticationToken;
-import com.eryxis.eryxis.model.Carte;
-import com.eryxis.eryxis.model.Conti;
-import com.eryxis.eryxis.model.Transazioni;
-import com.eryxis.eryxis.model.Utenti;
+import com.eryxis.eryxis.model.*;
 import com.eryxis.eryxis.repository.CarteRepository;
 import com.eryxis.eryxis.repository.TransazioniRepository;
-import com.eryxis.eryxis.service.CarteService;
-import com.eryxis.eryxis.service.ContiService;
-import com.eryxis.eryxis.service.TransazioniService;
-import com.eryxis.eryxis.service.UtentiService;
+import com.eryxis.eryxis.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +54,8 @@ public class MainController {
     private CarteRepository carteRepository;
     @Autowired
     private TransazioniRepository transazioniRepository;
+    @Autowired
+    private FinanziamentiService finanziamentiService;
 
     @GetMapping("/")
     public String index(Model model, @RequestParam(required = false)  String msg) {
@@ -69,7 +65,7 @@ public class MainController {
 
 
     // Homepage dopo la verifica dell'OTP
-    @GetMapping("/home")
+    @PostMapping("/home")
     public String home(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -91,7 +87,10 @@ public class MainController {
             if (utente != null) {
                 if (utente.getPermesso().getIdPermesso() == 1){
                     List<Conti> conti = contiService.findAll();
+                    List<Utenti> utenti = utentiService.findByIdPermesso(2);
 
+                    model.addAttribute("nome", nome);
+                    model.addAttribute("cognome", cognome);
                     model.addAttribute("conti", conti);
 
                     return  "adPage";
@@ -347,5 +346,12 @@ public class MainController {
     @PostMapping("/alert")
     public void alert(@RequestParam String header, @RequestParam String message) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @PostMapping("/creditManagement")
+    public String creditManagement(Model model) {
+        List<Finanziamenti> finanziamenti = finanziamentiService.findAll();
+
+        return "creditManagement";
     }
 }
