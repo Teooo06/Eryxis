@@ -145,11 +145,9 @@
                         </button>
                     </div>
                     <div class="transfer">
-                        <form action="" class="form-b">
-                            <button class="rubrica-b">
-                                <i class="fa fa-address-book-o fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Payee
-                            </button>
-                        </form>
+                        <button class="rubrica-b" id="rubricaBtn">
+                            <i class="fa fa-address-book-o fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Payee
+                        </button>
                     </div>
                 </div>
             </div>
@@ -330,6 +328,20 @@
                     <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
                     <button type="submit" class="transfer-button">Invia</button>
                 </form>
+            </div>
+        </div>
+        <!-- Payee Pop Up -->
+        <div id="popUp" class="overlay" aria-hidden="true">
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <button class="close" aria-label="Chiudi popup">&times;</button>
+                <h2 id="modalPayee">Payee</h2>
+                <div class="rubrica-list">
+                    <ul class="lista">
+                        <li class="lista-elemento">
+
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -562,6 +574,35 @@
     /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay2.classList.contains('active')) closeModal();
+    });
+</script>
+<script>
+    const open   = document.getElementById('rubricaBtn');
+    const over   = document.getElementById('popUp');
+    const close  = over.querySelector('.close');
+
+    // apre il popup
+    open.addEventListener('click', () => {
+        over.classList.add('active');
+        over.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    close.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    over.addEventListener('click', (e) => {
+        if (e.target === over) closeModal();
+    });
+
+    function closeModal() {
+        over.classList.remove('active');
+        over.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && over.classList.contains('active')) closeModal();
     });
 </script>
 <script>

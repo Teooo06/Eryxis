@@ -632,7 +632,7 @@ button:hover{
 }
 
 /* --- Pulsante “X” --- */
-.closeBtn, .closeBTn, .closeBTN1, .closeBT1{
+.closeBtn, .closeBTn, .closeBTN1, .closeBT1, .close{
     background-color: #660708;
     font-size: 15px;
     margin-left: 92.5%;
@@ -817,4 +817,26 @@ label{
 .transfer-button{
     background-color: #660708;
     margin-top: 20px;
+}
+
+/* Payee Style */
+.rubrica-list{
+    width: 100%;
+    height: 80%;
+}
+
+.lista{
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lista-elemento{
+    width: 100%;
+    height: 20%;
+    background-color: #161A1D;
 }

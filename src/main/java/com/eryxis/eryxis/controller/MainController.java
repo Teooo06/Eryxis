@@ -56,6 +56,8 @@ public class MainController {
     private TransazioniRepository transazioniRepository;
     @Autowired
     private FinanziamentiService finanziamentiService;
+    @Autowired
+    private RubricheService rubricheService;
 
     @GetMapping("/")
     public String index(Model model, @RequestParam(required = false)  String msg) {
@@ -65,7 +67,7 @@ public class MainController {
 
 
     // Homepage dopo la verifica dell'OTP
-    @PostMapping("/home")
+    @GetMapping("/home")
     public String home(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -79,6 +81,8 @@ public class MainController {
             Utenti utente = utentiService.findByIdUtente(id);
 
             List<String> ordineTipo = Arrays.asList("credito", "debito", "prepagata");
+
+            List<Rubriche> rubriche = rubricheService.findByUtente(utente);
 
             if (carte != null && carte.size() > 0) {
                 carte.sort(Comparator.comparing(carta -> ordineTipo.indexOf(carta.getTipo())));
@@ -113,6 +117,7 @@ public class MainController {
                     model.addAttribute("saldo", conto.get(0).getSaldo());
                     model.addAttribute("hasDebito", hasDebito);
                     model.addAttribute("hasPrepagata", hasPrepagata);
+                    model.addAttribute("rubriche", rubriche);
 
                     return "index"; // questa deve essere la tua index.html in templates/
                 }
@@ -126,11 +131,35 @@ public class MainController {
 
     @GetMapping("/setting")
     public String setting(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+        }
+
         return "setting";
     }
 
     @GetMapping("/trading")
     public String trading(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+        }
+
         return "trading";
     }
 
@@ -348,9 +377,20 @@ public class MainController {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
     }
 
-    @PostMapping("/creditManagement")
+    @GetMapping("/creditManagement")
     public String creditManagement(Model model) {
         List<Finanziamenti> finanziamenti = finanziamentiService.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+        }
 
         return "creditManagement";
     }
