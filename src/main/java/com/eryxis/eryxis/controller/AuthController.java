@@ -42,14 +42,6 @@ public class AuthController {
     // Metodo iniziale che ritorna la pagina per l'inserimento dell'OTP
     @GetMapping("/otp")
     public String otpPage(@RequestParam String email, Model model) {
-
-        /* IN questo caso ci sono 2 possibilità:
-         * 1. L'utente ha l'OTP attivo e quindi deve inserire il codice OTP generato con Google Authenticator
-         * 2. L'utente non ha l'OTP attivo e quindi devo mandare la mail
-
-        OTP 1 => Google Authenticator
-        OTP 2 => Mail
-        */
         if (!utentiService.useOTP(email)) {
             // Dovrebbe mandare non la mail ma la passphrase
             otpService.generateOTPa(email);

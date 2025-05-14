@@ -23,7 +23,11 @@ public class AzioniService {
     private final String api_key = "ciao";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // funzione che richiama l'API e salva tutte le azioni in un Json locale
+    /**
+     * Chiama l'API di Financial Modeling Prep per ottenere la lista di tutte le azioni
+     * disponibili e salva la risposta JSON in un file locale chiamato "stocks.json".
+     * Questa funzione viene eseguita automaticamente ogni 30 minuti grazie all'annotazione @Scheduled.
+     */
     @Scheduled(fixedRate = 1800000)
     public void salvaJsonDaApi() {
         String url = "https://financialmodelingprep.com/api/v3/stock/list?apikey=" + api_key;
@@ -45,7 +49,15 @@ public class AzioniService {
         System.out.println("salvaJsonDaApi eseguito alle: " + now.format(formatter));
     }
 
-    // funzione che legge il file json locale e ritorna una lista prendendo i file da n1 a n2 presi dall'utente
+    /**
+     * Legge il file JSON locale "stocks.json" che contiene una lista di azioni,
+     * e restituisce una sottolista compresa tra le posizioni specificate.
+     *
+     * @param posInizio la posizione iniziale (inclusiva) nella lista
+     * @param posFine   la posizione finale (esclusiva) nella lista
+     * @return una lista di oggetti {@link Azioni} tra le posizioni indicate
+     * @throws IllegalArgumentException se l'intervallo è invalido
+     */
     public List<Azioni> getListAzioni(int posInizio, int posFine) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -60,9 +72,15 @@ public class AzioniService {
         }
     }
 
-    // funzione che ritorna i valori della azienda specifica per una data lunghezza di tempo
-    public Histories getDatiAzione(String symbol, int giorni) {
-        String url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?serietype=line&timeseries=" + giorni + "&apikey=" + api_key;
+    /**
+     * Recupera i dati storici di una singola azione dal server FMP, limitati a un certo numero di giorni.
+     * I dati includono la data e il prezzo di chiusura.
+     *
+     * @param symbol il simbolo dell'azione (es. "AAPL")
+     * @return un oggetto {@link Histories} contenente il simbolo e la lista di valori storici
+     */
+    public Histories getDatiAzione(String symbol) {
+        String url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?serietype=line&" + "&apikey=" + api_key;
         String jsonResponse = restTemplate.getForObject(url, String.class);
 
         if (jsonResponse == null) {

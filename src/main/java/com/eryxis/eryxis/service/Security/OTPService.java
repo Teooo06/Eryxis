@@ -31,14 +31,19 @@ public class OTPService {
     @Autowired
     private UtentiService utentiService;
 
-    // istanza per l'OTP service
-    //private GoogleAuthenticator googleAuthenticator;
 
     public OTPService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
         //this.googleAuthenticator = new GoogleAuthenticator();
     }
 
+    /**
+     * Genera un codice OTP (One-Time Password) basato sul segreto specificato usando l'algoritmo TOTP.
+     *
+     * @param secret Il segreto in formato Base32.
+     * @return Il codice OTP generato.
+     * @throws IllegalArgumentException Se il segreto non è valido in Base32.
+     */
     public static String generateOTP(String secret) {
         if (!isValidBase32(secret)) {
             throw new IllegalArgumentException("Segreto OTP non valido: " + secret);
@@ -48,12 +53,25 @@ public class OTPService {
         return otpCode;
     }
 
+    /**
+     * Verifica se una stringa è un Base32 valido (composto solo da caratteri A-Z e numeri 2-7).
+     *
+     * @param secret Il segreto da validare.
+     * @return true se il segreto è valido, false altrimenti.
+     */
     private static boolean isValidBase32(String secret) {
         // Una funzione di validazione base32 semplice
         return secret.matches("[A-Z2-7]*");
     }
 
 
+    /**
+     * Genera un codice OTP casuale a 6 cifre e lo associa all'email specificata.
+     * Invia il codice OTP all'indirizzo email fornito.
+     *
+     * @param email L'indirizzo email del destinatario.
+     * @return Il codice OTP generato.
+     */
     public String generateOTPa(String email) {
         String otp = String.valueOf(new Random().nextInt(900000) + 100000); // 6 cifre
         otpStorage.put(email, otp);
@@ -61,6 +79,12 @@ public class OTPService {
         return otp;
     }
 
+    /**
+     * Invia un'email contenente il codice OTP generato all'utente.
+     *
+     * @param email L'indirizzo email del destinatario.
+     * @param otp Il codice OTP da inviare.
+     */
     private void sendOTPEmail(String email, String otp) {
         String htmlContent = "<html><body>"
                 + "<h2 style=\"margin: 0; padding-bottom: 10px; color: #FFD709; text-align: center;\">Eryxsis Bank</h2>"
@@ -99,13 +123,23 @@ public class OTPService {
         }
     }
 
-    // Valida otp della mail
+    /**
+     * Verifica se il codice OTP fornito corrisponde a quello associato all'email specificata.
+     *
+     * @param email L'indirizzo email dell'utente.
+     * @param otp Il codice OTP da validare.
+     * @return true se il codice è valido, false altrimenti.
+     */
     public boolean validateOTP(String email, String otp) {
         return otp.equals(otpStorage.get(email));
     }
 
 
-    //Metodi per l'utilizzo dell'OTP con Google Authenticator
+    /**
+     * Genera una chiave segreta in formato Base32 per Google Authenticator.
+     *
+     * @return La chiave segreta generata.
+     */
     public static String generateSecretKey() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
@@ -114,18 +148,40 @@ public class OTPService {
         return base32.encodeToString(bytes);
     }
 
+    /**
+     * Genera un'immagine QR code a partire dal testo specificato e la salva nel percorso indicato.
+     *
+     * @param text Il testo da codificare nel QR.
+     * @param width Larghezza dell'immagine.
+     * @param height Altezza dell'immagine.
+     * @param filePath Percorso in cui salvare il file PNG del QR code.
+     * @throws Exception Se avviene un errore nella generazione o nel salvataggio dell'immagine.
+     */
     public static void generateQRCodeImage(String text, int width, int height, String filePath) throws Exception {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
         MatrixToImageWriter.writeToFile(bitMatrix, "PNG", new File(filePath));
     }
 
+    /**
+     * Restituisce l'URL per generare il QR code compatibile con Google Authenticator.
+     *
+     * @param user Il nome utente.
+     * @param secret Il segreto OTP.
+     * @return L'URL otpauth da usare per il QR code.
+     */
     public static String getQRCodeURL(String user, String secret) {
         // Costruisci l'URL del codice QR
         return "otpauth://totp/MyApp:" + user + "?secret=" + secret + "&issuer=MyApp";
     }
 
 
+    /**
+     * Calcola un codice OTP TOTP (Time-based One-Time Password) a partire da una chiave segreta.
+     *
+     * @param secretKey La chiave segreta in Base32.
+     * @return Il codice OTP generato.
+     */
     public static String getTOTPCode(String secretKey) {
         Base32 base32 = new Base32();
         byte[] bytes = base32.decode(secretKey);
@@ -133,13 +189,25 @@ public class OTPService {
         return TOTP.getOTP(hexKey);
     }
 
+    /**
+     * Valida un codice OTP generato da Google Authenticator confrontandolo con quello atteso per l'utente.
+     *
+     * @param mail L'indirizzo email dell'utente.
+     * @param codice Il codice OTP da validare.
+     * @return true se il codice è valido, false altrimenti.
+     */
     public boolean validateOTPGoogle(String mail, String codice) {
         startOtpLoop(utentiService.findPassPhrase(mail));
         return codice.equals(getTOTPCode(utentiService.findPassPhrase(mail)));
     }
 
 
-    // Funzione per debuggare
+    /**
+     * Avvia un thread che stampa continuamente il codice OTP aggiornato ogni secondo.
+     * Utile per il debugging.
+     *
+     * @param secret Il segreto OTP da usare per generare i codici.
+     */
     public static void startOtpLoop(String secret) {
         Runnable otpLoop = new Runnable() {
             @Override

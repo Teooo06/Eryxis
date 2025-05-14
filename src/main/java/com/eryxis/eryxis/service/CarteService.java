@@ -13,39 +13,92 @@ public class CarteService {
     @Autowired
     private CarteRepository carteRepository;
 
+    /**
+     * Cerca una carta a partire dal numero della carta.
+     *
+     * @param numeroCarta Il numero della carta da cercare.
+     * @return La carta corrispondente, se trovata.
+     */
     public Carte findByNumeroCarta(String numeroCarta) {
         return carteRepository.findByNumeroCarta(numeroCarta);
     }
 
+    /**
+     * Cerca una carta a partire da numero, CVV e data di scadenza.
+     *
+     * @param numeroCarta Il numero della carta.
+     * @param CVV Il codice CVV.
+     * @param dataScadenza La data di scadenza.
+     * @return La carta corrispondente, se trovata.
+     */
     public Carte findByNumeroCartaAndCVVAndDataScadenza(String numeroCarta, String CVV, java.sql.Date dataScadenza) {
         return carteRepository.findByNumeroCartaAndCVVAndDataScadenza(numeroCarta, CVV, dataScadenza);
     }
 
+    /**
+     * Restituisce tutte le carte associate a un determinato conto.
+     *
+     * @param conto Il conto associato.
+     * @return Lista di carte collegate al conto.
+     */
     public List<Carte> findByConto(Conti conto) {
         return carteRepository.findByConto(conto);
     }
 
     // funzioni di base per aggiungere o rimuovere
+    /**
+     * Salva una carta nel repository.
+     *
+     * @param carta La carta da salvare.
+     */
     public void save(Carte carta) {
         carteRepository.save(carta);
     }
 
+    /**
+     * Salva una carta e la restituisce.
+     *
+     * @param carta La carta da salvare.
+     * @return La carta salvata.
+     */
     public Carte getSave(Carte carta) {
         return carteRepository.save(carta);
     }
 
+    /**
+     * Elimina una carta in base al numero della carta.
+     *
+     * @param numeroCarta Il numero della carta da eliminare.
+     */
     public void deleteById(String numeroCarta) {
         carteRepository.deleteById(numeroCarta);
     }
 
+    /**
+     * Elimina una carta specifica.
+     *
+     * @param carta La carta da eliminare.
+     */
     public void deleteByCarta(Carte carta) {
         carteRepository.delete(carta);
     }
 
+    /**
+     * Cerca una carta in base al CVV.
+     *
+     * @param string Il codice CVV.
+     * @return La carta corrispondente, se trovata.
+     */
     public Carte findByCVV(String string) {
         return carteRepository.findByCVV(string);
     }
 
+    /**
+     * Cerca una carta in base al PIN.
+     *
+     * @param string Il codice PIN.
+     * @return La carta corrispondente, se trovata.
+     */
     public Carte findByPIN(String string) {
         return carteRepository.findByPIN(string);
     }
