@@ -3,6 +3,7 @@ package com.eryxis.eryxis.service.externalAPI;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +21,8 @@ import java.util.List;
 @Service
 public class AzioniService {
 
-    private final String api_key = "ciao";
+    @Value("${api.key}")
+    private String apiKey;
     private final RestTemplate restTemplate = new RestTemplate();
 
     /**
@@ -30,7 +32,7 @@ public class AzioniService {
      */
     @Scheduled(fixedRate = 1800000)
     public void salvaJsonDaApi() {
-        String url = "https://financialmodelingprep.com/api/v3/stock/list?apikey=" + api_key;
+        String url = "https://financialmodelingprep.com/api/v3/stock/list?apikey=" + apiKey;
         String jsonResponse = restTemplate.getForObject(url, String.class);
 
         if (jsonResponse == null) {
@@ -73,6 +75,28 @@ public class AzioniService {
     }
 
     /**
+     * Legge il file JSON locale "stocks.json" che contiene una lista di azioni,
+     * e restituisce l'oggetto {@link Azioni} corrispondente al simbolo specificato.
+     *
+     * @param symbol il simbolo dell'azione da cercare
+     * @return l'oggetto {@link Azioni} corrispondente, oppure {@code null} se non trovato
+     */
+    public Azioni getAzione(String symbol) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Azioni> tutteAzioni = objectMapper.readValue(new File("stocks.json"), new TypeReference<List<Azioni>>() {});
+            for (Azioni azione : tutteAzioni) {
+                if (azione.getSymbol().equalsIgnoreCase(symbol)) {
+                    return azione;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Errore durante la lettura del file JSON: " + e.getMessage());
+        }
+        return null; // ritorna null se non trovata
+    }
+
+    /**
      * Recupera i dati storici di una singola azione dal server FMP, limitati a un certo numero di giorni.
      * I dati includono la data e il prezzo di chiusura.
      *
@@ -80,7 +104,7 @@ public class AzioniService {
      * @return un oggetto {@link Histories} contenente il simbolo e la lista di valori storici
      */
     public Histories getDatiAzione(String symbol) {
-        String url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?serietype=line&" + "&apikey=" + api_key;
+        String url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?serietype=line&" + "&apikey=" + apiKey;
         String jsonResponse = restTemplate.getForObject(url, String.class);
 
         if (jsonResponse == null) {
