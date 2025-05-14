@@ -1,16 +1,10 @@
 package com.eryxis.eryxis.controller;
 
 import com.eryxis.eryxis.configuration.CustomAuthenticationToken;
-import com.eryxis.eryxis.model.Carte;
-import com.eryxis.eryxis.model.Conti;
-import com.eryxis.eryxis.model.Transazioni;
-import com.eryxis.eryxis.model.Utenti;
+import com.eryxis.eryxis.model.*;
 import com.eryxis.eryxis.repository.CarteRepository;
 import com.eryxis.eryxis.repository.TransazioniRepository;
-import com.eryxis.eryxis.service.CarteService;
-import com.eryxis.eryxis.service.ContiService;
-import com.eryxis.eryxis.service.TransazioniService;
-import com.eryxis.eryxis.service.UtentiService;
+import com.eryxis.eryxis.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +54,10 @@ public class MainController {
     private CarteRepository carteRepository;
     @Autowired
     private TransazioniRepository transazioniRepository;
+    @Autowired
+    private FinanziamentiService finanziamentiService;
+    @Autowired
+    private RubricheService rubricheService;
 
     @GetMapping("/")
     public String index(Model model, @RequestParam(required = false)  String msg) {
@@ -84,6 +82,8 @@ public class MainController {
 
             List<String> ordineTipo = Arrays.asList("credito", "debito", "prepagata");
 
+            List<Rubriche> rubriche = rubricheService.findByUtente(utente);
+
             if (carte != null && carte.size() > 0) {
                 carte.sort(Comparator.comparing(carta -> ordineTipo.indexOf(carta.getTipo())));
             }
@@ -91,7 +91,10 @@ public class MainController {
             if (utente != null) {
                 if (utente.getPermesso().getIdPermesso() == 1){
                     List<Conti> conti = contiService.findAll();
+                    List<Utenti> utenti = utentiService.findByIdPermesso(2);
 
+                    model.addAttribute("nome", nome);
+                    model.addAttribute("cognome", cognome);
                     model.addAttribute("conti", conti);
 
                     return  "adPage";
@@ -114,6 +117,7 @@ public class MainController {
                     model.addAttribute("saldo", conto.get(0).getSaldo());
                     model.addAttribute("hasDebito", hasDebito);
                     model.addAttribute("hasPrepagata", hasPrepagata);
+                    model.addAttribute("rubriche", rubriche);
 
                     return "index"; // questa deve essere la tua index.html in templates/
                 }
@@ -127,11 +131,35 @@ public class MainController {
 
     @GetMapping("/setting")
     public String setting(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+        }
+
         return "setting";
     }
 
     @GetMapping("/trading")
     public String trading(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+        }
+
         return "trading";
     }
 
@@ -347,5 +375,23 @@ public class MainController {
     @PostMapping("/alert")
     public void alert(@RequestParam String header, @RequestParam String message) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @GetMapping("/creditManagement")
+    public String creditManagement(Model model) {
+        List<Finanziamenti> finanziamenti = finanziamentiService.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+        }
+
+        return "creditManagement";
     }
 }

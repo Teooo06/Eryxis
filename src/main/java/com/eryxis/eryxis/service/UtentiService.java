@@ -1,14 +1,19 @@
 package com.eryxis.eryxis.service;
 
+import com.eryxis.eryxis.model.Permessi;
 import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.repository.UtentiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UtentiService {
     @Autowired
     private UtentiRepository utentiRepository;
+    @Autowired
+    private PermessiService permessiService;
 
     /**
      * Recupera un utente a partire dall'ID specificato.
@@ -91,6 +96,11 @@ public class UtentiService {
         return true;
     }
 
+    public List<Utenti> findByIdPermesso (int idPermesso) {
+        Permessi permesso = permessiService.findByPermesso(idPermesso);
+
+        return utentiRepository.findByPermesso(permesso);
+    }
 
     // funzioni di base per aggiungere o rimuovere
 

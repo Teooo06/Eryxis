@@ -27,6 +27,7 @@ public class FinanziamentiService {
         return finanziamentiRepository.findByUtente(idUtente);
     }
 
+    public List<Finanziamenti> findAll(){return finanziamentiRepository.findAll();}
 
     // funzioni di base per aggiungere o rimuovere
     /**

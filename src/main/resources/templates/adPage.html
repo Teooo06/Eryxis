@@ -57,7 +57,7 @@
   <section class="section-ad">
     <div class="left-sec">
       <div class="title-user">
-
+        <h2 class="table-user-title">User Table</h2>
       </div>
       <div class="table-user">
         <table>
@@ -82,12 +82,58 @@
         </table>
       </div>
     </div>
-    <div>
-      <div>
-
+    <div class="right-sec">
+      <div class="top-table">
+        <div class="title-user">
+          <h2>Advisor Table</h2>
+        </div>
+        <div class="table-user">
+          <table>
+            <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cognome</th>
+              <th>IBAN</th>
+              <th>Indirizzo</th>
+              <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="conto : ${conti}" th:if="${conto.utente.permesso.idPermesso == 4}">
+              <td th:text="${conto.utente.nome}"></td>
+              <td th:text="${conto.utente.cognome}"></td>
+              <td th:text="${conto.IBAN}" th:if="${conto.IBAN != null}"></td>
+              <td th:text="${conto.utente.toponimo} + ' ' + ${conto.utente.indirizzo} + ' ' + ${conto.utente.numeroCivico}"></td>
+              <td th:text="${conto.utente.mail}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div>
-
+      <div class="bottom-table">
+        <div class="title-user">
+          <h2>Support Table</h2>
+        </div>
+        <div class="table-user">
+          <table>
+            <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cognome</th>
+              <th>Indirizzo</th>
+              <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="utente : ${utenti}">
+              <td th:text="${utente.nome}"></td>
+              <td th:text="${utente.cognome}"></td>
+              <td th:text="${utente.toponimo} + ' ' + ${utente.indirizzo} + ' ' + ${utente.numeroCivico}"></td>
+              <td th:text="${utente.mail}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>

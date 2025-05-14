@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Management</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}">
+    <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" th:href="@{/style/adStyle.css}">
+    <link rel="stylesheet" href="../static/style/adStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header>
+    <div class="title">
+        <h1 class="nunito-1">eryxis</h1>
+    </div>
+    <div class="menu-section">
+        <nav>
+            <ul>
+                <li>
+                    <form action="/home">
+                        <button class="menu-button">
+                            <i class="fa fa-home spacing" aria-hidden="true"></i>
+                            Overview
+                        </button>
+                    </form>
+                </li>
+                <li class="selected">
+                    <button class="menu-button">
+                        <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+                        Credit Management
+                    </button>
+                </li>
+                <li>
+                    <form action="/adSetting">
+                        <button class="menu-button">
+                            <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+                            Settings
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="user-sec">
+        <div class="user-name">
+            <div class="user-image">
+                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+            </div>
+            <h3 class="name" th:text="${nome + ' ' + cognome}"></h3>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="credit-sec">
+        <div class="top-sec">
+            <div class="title-user">
+                <h2>Finanziamenti all'attivo</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descrizione</th>
+                        <th>Importo</th>
+                        <th>Data Erogazione</th>
+                        <th>Interessi</th>
+                        <th>Valore Rata</th>
+                        <th>Inizio Pagamento</th>
+                        <th>Importo Pagamento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="finanziamento : ${finanziamenti}" th:if="${finanziamento.tipo != 'verifica'}">
+                        <td th:text="${finanziamento.tipo}"></td>
+                        <td th:text="${finanziamento.descrizione}"></td>
+                        <td th:text="${finanziamento.importo}"></td>
+                        <td th:text="${finanziamento.dataErogazione}"></td>
+                        <td th:text="${finanziamento.interessi}"></td>
+                        <td th:each="${finanziamento.valoreRata}"></td>
+                        <td th:each="${finanziamento.inizioPagamento}"></td>
+                        <td th:text="${finanziamento.importoPagato}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bottom-sec">
+            <div class="title-user">
+                <h2>Finanziamenti in stato di verifica</h2>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Stato</th>
+                    <th>Descrizione</th>
+                    <th>Importo</th>
+                    <th>Data Erogazione</th>
+                    <th>Interessi</th>
+                    <th>Valore Rata</th>
+                    <th>Inizio Pagamento</th>
+                    <th>Importo Pagamento</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="finanziamento : ${finanziamenti}" th:if="${finanziamento.tipo == 'verifica'}">
+                    <td th:text="${finanziamento.tipo}"></td>
+                    <td th:text="${finanziamento.descrizione}"></td>
+                    <td th:text="${finanziamento.importo}"></td>
+                    <td th:text="${finanziamento.dataErogazione}"></td>
+                    <td th:text="${finanziamento.interessi}"></td>
+                    <td th:each="${finanziamento.valoreRata}"></td>
+                    <td th:each="${finanziamento.inizioPagamento}"></td>
+                    <td th:text="${finanziamento.importoPagato}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
