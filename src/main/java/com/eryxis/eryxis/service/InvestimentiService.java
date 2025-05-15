@@ -16,11 +16,11 @@ public class InvestimentiService {
     /**
      * Recupera un investimento a partire dal codice ISIN specificato.
      *
-     * @param isin Il codice ISIN dell'investimento.
+     * @param idInvestimento Il codice ISIN dell'investimento.
      * @return L'investimento corrispondente, se trovato.
      */
-    public Investimenti findByISIN(String isin) {
-        return investimentiRepository.findByISIN(isin);
+    public Investimenti findByIdInvestimento(String idInvestimento) {
+        return investimentiRepository.findByIdInvestimento(idInvestimento);
     }
 
     /**
@@ -57,10 +57,10 @@ public class InvestimentiService {
     /**
      * Elimina un investimento in base al codice ISIN.
      *
-     * @param isin Il codice ISIN dell'investimento da eliminare.
+     * @param idInvestimento Il codice ISIN dell'investimento da eliminare.
      */
-    public void deleteById(String isin) {
-        investimentiRepository.deleteById(isin);
+    public void deleteById(String idInvestimento) {
+        investimentiRepository.deleteById(idInvestimento);
     }
 
     /**

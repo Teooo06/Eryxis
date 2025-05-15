@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface InvestimentiRepository extends JpaRepository<Investimenti, String> {
-    Investimenti findByISIN (String isin);
+    Investimenti findByIdInvestimento(String isin);
     List<Investimenti> findByUtente (Utenti utente);
 }

@@ -14,6 +14,8 @@ import com.eryxis.eryxis.model.Azioni;
 import com.eryxis.eryxis.model.Histories;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -138,6 +140,18 @@ public class AzioniService {
             System.out.println("Errore durante il parsing della risposta JSON per " + symbol + ": " + e.getMessage());
             return null;
         }
+    }
+
+    public BigDecimal getStockValueForDate(String symbol, LocalDate date) {
+        Histories histories = getDatiAzione(symbol, 1); // Fetch historical data for the symbol
+        if (histories != null && histories.getHistorical() != null) {
+            return histories.getHistorical().stream()
+                    .filter(h -> h.getDate().equals(date.toString()))
+                    .map(h -> BigDecimal.valueOf(h.getClose()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
     }
 
 }
