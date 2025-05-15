@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -63,6 +64,11 @@ public class AuthController {
             // Recupera i dati dell'utente
             Utenti utente = utentiService.findByMail(email);
             List<Conti> conto = contiService.findByUtente(utente);
+
+            if (conto.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nessun conto associato all'utente.");
+            }
+
             List<Carte> carte = carteService.findByConto(conto.get(0));
 
             // Crea un oggetto UserDetails (senza password, perché non serve qui)

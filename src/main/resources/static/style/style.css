@@ -167,11 +167,18 @@ nav ul li.selected button:hover {
 }
 
 /* Home page sec */
-.hero {
+.hero, .hero-1 {
     margin: 75px 100px 75px 20vw;
     height: 750px;
     display: flex;
+}
+
+.hero{
     flex-direction: row;
+}
+
+.hero-1{
+    flex-direction: column;
 }
 
 button {

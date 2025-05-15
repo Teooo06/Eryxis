@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" th:href="@{/style/style.css}">
-    <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" href="/style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -337,8 +337,11 @@
                 <h2 id="modalPayee">Payee</h2>
                 <div class="rubrica-list">
                     <ul class="lista">
-                        <li class="lista-elemento">
-
+                        <li class="lista-elemento" th:each="contatto : ${rubrica}">
+                            <span th:text="${contatto.nome}">Nome</span>
+                            <span th:text="${contatto.cognome}">Cognome</span>
+                            <span th:text="${contatto.IBAN}">IBAN</span>
+                            <button type="button" th:attr="data-iban=${contatto.IBAN}">Seleziona</button>
                         </li>
                     </ul>
                 </div>

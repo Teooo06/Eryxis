@@ -36,7 +36,7 @@ CREATE TABLE `utenti`(
  `mail` VARCHAR(150) UNIQUE NOT NULL,
  `prefisso` VARCHAR(6) NOT NULL,
  `telefono` VARCHAR(15) NOT NULL,
- `password` VARCHAR(100) UNIQUE NOT NULL,
+ `password` VARCHAR(100)  NOT NULL,
  `passPhrase` VARCHAR(255) UNIQUE,
  `OTP` BOOLEAN NOT NULL,
  `id_permesso` INT NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE `rubriche`(
  `idContatto` INT PRIMARY KEY AUTO_INCREMENT,
  `nome` VARCHAR(100) NOT NULL,
  `cognome` VARCHAR(100) NOT NULL,
- `IBAN` CHAR(27) UNIQUE NOT NULL,
+ `IBAN` CHAR(27) NOT NULL,
  `id_utente` INT NOT NULL,
  CONSTRAINT `fk_rubrica_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -157,12 +157,14 @@ INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivic
 ('Ippazio', 'Cuda', '1971-05-04', 'Viale', 'Vicolo Trupiano', 24, 'iqhgVJ08A41H501Z', 'ippazio.cuda@banca.it', '+39', '1640052427', 'passIppazio', 'phraseIppazio', TRUE, 3),
 ('Gianfrancesco', 'Filippelli', '1980-06-08', 'Viale', 'Contrada Gentilini', 130, 'vreXrw30A36H501Z', 'gianfrancesco.filippelli@banca.it', '+39', '0196556981', 'passGianfrancesco', 'phraseGianfrancesco', TRUE, 3),
 ('Salvatore', 'Donarelli', '1995-03-06', 'Canale', 'Contrada Uberto', 51, 'RtoZmj95A13H501Z', 'salvatore.donarelli@banca.it', '+39', '6320163287', 'passSalvatore', 'phraseSalvatore', FALSE, 3),
-('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', 'passBeatrice', 'phraseBeatrice', FALSE, 3);
+('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', 'passBeatrice', 'phraseBeatrice', FALSE, 3),
+('Matteo', 'Bertoldini', '2000-01-01', 'Via', 'Risorgimento', 1, 'BRTMTT06H07E507V', 'matteobertoldini06@gmail.com', '+39', '3703316356', 'segreta', 'ESAHN3Q42VQUWJT6ARZ5CYWP6JOM4MOL', TRUE, 3);
+
 
 -- Inserimento conti
 INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente) VALUES
 ('IT60X0542811101000000123456', 8923748374.00, TRUE, 'EUR', 1, 1),
-('IT60X0542811101000000654321', 2500.00, TRUE, 'EUR', 5, 1),
+('IT60X0542811101000000692321', 2500.00, TRUE, 'EUR', 5, 1),
 ('IT60X0542811101000000000001', 1500.00, TRUE, 'EUR', 6, 4),
 ('IT60X0542811101000000000002', 3200.00, TRUE, 'EUR', 7, 4),
 ('IT60X0542811101000000000003', 2750.00, TRUE, 'EUR', 8, 4),
@@ -171,7 +173,9 @@ INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente) VALUES
 ('IT60X0542811101000000000006', 2200.00, TRUE, 'EUR', 11, 4),
 ('IT60X0542811101000000000007', 3100.00, TRUE, 'EUR', 12, 4),
 ('IT60X0542811101000000000008', 2900.00, TRUE, 'EUR', 13, 4),
-('IT60X0542811101000000000009', 2600.00, TRUE, 'EUR', 4, 4);
+('IT60X0542811101000000000009', 2600.00, TRUE, 'EUR', 4, 4),
+('IT60X0542811101000000652321', 2500.00, true, 'EUR', 14, 1);
+
 
 -- Inserimento carte di credito per clienti e advisor
 INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldoDisponibile`, `saldoContabile`, `stato`, `IBAN`) VALUES
@@ -185,6 +189,7 @@ INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldo
 ('4123456789012347', '742', '2029-02-01', '78901', 'credito', 6000.00, 3100.00, TRUE, 'IT60X0542811101000000000007'),
 ('341234567890124', '835', '2027-11-01', '89012', 'credito', 4000.00, 2900.00, TRUE, 'IT60X0542811101000000000008'),
 ('3245453234549005', '121', '2050-01-01', '84013', 'credito', 29645.00, 29645.00, TRUE, 'IT60X0542811101000000123456'),
+('2342354312943542', '129', '2050-01-01', '54896', 'credito', 250435.00, 250435.00, true, 'IT60X0542811101000000652321'),
 
 -- Advisor (Lucia Conti)
 ('5555345678901234', '739', '2029-01-01', '66721', 'credito', 15000.00, 2600.00, TRUE, 'IT60X0542811101000000000009');
@@ -226,3 +231,16 @@ INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`,
 (-4.99, '2025-04-27 15:40:08', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000002'),
 (-4.99, '2025-05-01 19:25:50', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000003'),
 (-4.99, '2025-05-02 08:01:12', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000123456');
+
+-- Contatti in rubrica per Lorenzo Molteni (idUtente 1)
+INSERT INTO `rubriche` (`nome`, `cognome`, `IBAN`, `id_utente`) VALUES
+('Mario', 'Rossi', 'IT60X0542811101000000692321', 1), -- Conto di Giulia Bianchi
+('Lucia', 'Conti', 'IT60X0542811101000000000009', 1),  -- Conto dell'advisor Lucia Conti
+('Amazon', 'Europe', 'IT12M1234567890123456789012', 1),
+('Netflix', 'International', 'IT34X9876543210987654321098', 1),
+('Spotify', 'AB', 'IT56P4567890123456789012345', 1),
+('Lorenzo', 'Molteni', 'IT60X0542811101000000123456', 14), -- Conto di Lorenzo Molteni
+('Giulia', 'Bianchi', 'IT60X0542811101000000692321', 14),   -- Conto di Giulia Bianchi
+('Eugenia', 'Caracciolo', 'IT60X0542811101000000000001', 14),
+('Università', 'Milano', 'IT78B5432109876543210987654', 14),
+('Affitto', 'Casa', 'IT90X6789012345678901234567', 14);
