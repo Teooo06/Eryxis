@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Setting</title>
   <link rel="stylesheet" th:href="@{/style/style.css}">
+  <link rel="stylesheet" href="../static/style/style.css">
+  <link rel="stylesheet" th:href="@{/style/settingsStyle.css}">
+  <link rel="stylesheet" href="../static/style/settingsStyle.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -57,6 +60,27 @@
     </div>
   </div>
 </header>
+
+<main>
+  <section class="hero-1">
+    <h1 class="title-1" style="text-align: center;">Settings Page</h1>
+
+    <br>
+    <h3 class="sottotitolo-1" style="text-align: center;">Modifica Anagrafica</h3>
+
+    <div class="card-section" style="padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 400px;">
+      <form>
+        <label class="card-part">Email: <input class="card-input" type="email" name="email" required></label><br>
+        <label class="card-part">Telefono: <input type="tel" name="telefono" required></label><br>
+        <label class="card-part">Toponimo: <input type="text" name="toponimo" required></label><br>
+        <label class="card-part">Indirizzo: <input type="text" name="indirizzo" required></label><br>
+        <label class="card-part">Civico: <input type="text" name="civico" required></label><br>
+        <button type="submit">Salva</button>
+      </form>
+    </div>
+
+  </section>
+</main>
 
 </body>
 </html>

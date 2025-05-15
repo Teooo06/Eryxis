@@ -1,0 +1,30 @@
+.title-1 {
+    color: #660708;
+    font-weight: bold;
+    font-size: 40px;
+    margin: 30px 40px;
+}
+
+.sottotitolo-1 {
+    color: #7d362e;
+}
+
+.card-input{
+    width: 100%;
+
+}
+
+.pezzo-grosso{
+    margin: 0 0 0 20vh;
+}
+
+.card-part-2{
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    background-color: transparent;
+    align-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
