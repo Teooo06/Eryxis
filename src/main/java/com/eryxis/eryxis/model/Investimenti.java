@@ -1,10 +1,9 @@
 package com.eryxis.eryxis.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -12,33 +11,25 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Investimenti {
+
     @Id
-    @Column(length = 12)
-    private String ISIN;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idInvestimento;
 
-    @Column(nullable = false, length = 50)
-    private String settore;
+    @Column(length = 12, nullable = false)
+    private String symbol;
 
-    @Column(nullable = false, length = 50)
-    private String divisa;
+    @Column(length = 100, nullable = false)
+    private String nomeAzione;
 
-    @Column(nullable = false, length = 11)
-    private String tipo;
+    @Column(nullable = false, columnDefinition = "DECIMAL(10, 2)")
+    private double prezzoAcquisto;
 
-    @Column(nullable = false, length = 50)
-    private String nomeTitolo;
+    @Column(nullable = false)
+    private int quantita;
 
-    @Column(nullable = false, length = 255)
-    private String descrizione;
-
-    @Column(columnDefinition = "DATE DEFAULT CURRENT_DATE")
-    private java.sql.Date dataAcquisto;
-
-    @Column(columnDefinition = "DECIMAL(20, 2) DEFAULT 0")
-    private double quantitaDenaro;
-
-    @Column(columnDefinition = "INT DEFAULT 0")
-    private int quantitaTotale;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp dataAcquisto;
 
     @ManyToOne
     @JoinColumn(name = "id_utente", nullable = false)
