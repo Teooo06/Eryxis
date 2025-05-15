@@ -105,8 +105,9 @@ public class MainController {
                     boolean hasDebito = carte.stream().anyMatch(c -> c.getTipo().equals("debito"));
                     boolean hasPrepagata = carte.stream().anyMatch(c -> c.getTipo().equals("prepagata"));
 
-                    transazioni.sort(Comparator.comparing(Transazioni::getDataTransazione).reversed());
-
+                    transazioni.sort(
+                            Comparator.comparing(Transazioni::getDataTransazione, Comparator.nullsLast(Comparator.naturalOrder())).reversed()
+                    );
                     model.addAttribute("id", id);
                     model.addAttribute("nome", nome);
                     model.addAttribute("cognome", cognome);
@@ -394,4 +395,5 @@ public class MainController {
 
         return "creditManagement";
     }
+
 }
