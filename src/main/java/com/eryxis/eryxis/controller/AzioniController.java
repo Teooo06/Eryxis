@@ -5,14 +5,14 @@ import com.eryxis.eryxis.model.Histories;
 import com.eryxis.eryxis.service.externalAPI.AzioniService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/quote")
 public class AzioniController {
@@ -29,8 +29,7 @@ public class AzioniController {
 
     @GetMapping("/azione")
     public Histories getDatiAzione(
-            @RequestParam String symbol,
-            @RequestParam int giorni) {
-        return azioniService.getDatiAzione(symbol, giorni);
+            @RequestParam String symbol) {
+        return azioniService.getDatiAzione(symbol);
     }
 }

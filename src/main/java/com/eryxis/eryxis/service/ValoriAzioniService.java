@@ -1,0 +1,64 @@
+package com.eryxis.eryxis.service;
+
+import com.eryxis.eryxis.model.Investimenti;
+import com.eryxis.eryxis.model.ValoriAzioni;
+import com.eryxis.eryxis.model.ValoriAzioniId;
+import com.eryxis.eryxis.repository.InvestimentiRepository;
+import com.eryxis.eryxis.repository.ValoriAzioniRepository;
+import com.eryxis.eryxis.service.externalAPI.AzioniService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+@Service
+public class ValoriAzioniService {
+    @Autowired
+    private ValoriAzioniRepository valoriAzioniRepository;
+
+    @Autowired
+    private InvestimentiRepository investimentiRepository;
+
+    @Autowired
+    private AzioniService azioniService;
+
+
+    /**
+     * Scheduled task to calculate and store the daily value of investments.
+     * Runs every day at midnight.
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateDailyInvestmentValues() {
+        // Get all investments
+        List<Investimenti> investimentiList = investimentiRepository.findAll();
+
+        // Current date
+        LocalDate today = LocalDate.now();
+
+        for (Investimenti investimento : investimentiList) {
+            // Check if a record for this investment and date already exists
+            if (!valoriAzioniRepository.existsById(new ValoriAzioniId(investimento.getIdInvestimento(), today))) {
+                // Get the stock value for the current day
+                BigDecimal stockValue = azioniService.getStockValueForDate(investimento.getSymbol(), today);
+
+                if (stockValue != null) {
+                    // Calculate the total value of the investment
+                    BigDecimal totalValue = stockValue.multiply(BigDecimal.valueOf(investimento.getQuantita()));
+
+                    // Create a new ValoriAzioni entry
+                    ValoriAzioni valoriAzioni = new ValoriAzioni();
+                    valoriAzioni.setIdInvestimento(investimento.getIdInvestimento());
+                    valoriAzioni.setDataValore(today);
+                    valoriAzioni.setValore(totalValue.doubleValue());
+
+                    // Save the entry to the database
+                    valoriAzioniRepository.save(valoriAzioni);
+                }
+            }
+        }
+    }
+
+}

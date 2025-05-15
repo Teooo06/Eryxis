@@ -109,17 +109,22 @@ CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON D
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `investimenti`(
- `ISIN` VARCHAR(12) PRIMARY KEY,
- `settore` VARCHAR(50) NOT NULL,
- `divisa` VARCHAR(50) NOT NULL,
- `tipo` VARCHAR(11) NOT NULL,
- `nomeTitolo` VARCHAR(50) NOT NULL,
- `descrizione` VARCHAR(255) NOT NULL,
- `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- `quantitaDenaro` DECIMAL(20, 2) DEFAULT 0 CHECK ( quantitaDenaro > 0 ),
- `quantitaTotale` INT DEFAULT 0 CHECK ( quantitaTotale > 0 ),
- `id_utente` INT NOT NULL,
- CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+    `idInvestimento` INT PRIMARY KEY AUTO_INCREMENT,
+    `symbol` VARCHAR(12) NOT NULL,
+    `nomeAzione` VARCHAR(100) NOT NULL,
+    `prezzoAcquisto` DECIMAL(10, 2) NOT NULL,
+    `quantita` INT NOT NULL CHECK (quantita > 0),
+    `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `id_utente` INT NOT NULL,
+    CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `valoriAzioni` (
+    `idInvestimento` INT AUTO_INCREMENT,
+    `dataValore` DATE,
+    `valore` DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (`idInvestimento`, `dataValore`),
+    CONSTRAINT `fk_investimento_valoriAzioni` FOREIGN KEY (`idInvestimento`) REFERENCES `investimenti`(`idInvestimento`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `finanziamenti`(

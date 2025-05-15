@@ -14,9 +14,12 @@ import com.eryxis.eryxis.model.Azioni;
 import com.eryxis.eryxis.model.Histories;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AzioniService {
@@ -40,15 +43,32 @@ public class AzioniService {
             return;
         }
 
-        try (FileWriter writer = new FileWriter("stocks.json")) {
-            writer.write(jsonResponse);
-        } catch (IOException e) {
-            System.out.println("Errore durante la scrittura del file: " + e.getMessage());
-        }
+        try {
+            // Parsing JSON ricevuto
+            ObjectMapper mapper = new ObjectMapper();
+            List<Map<String, Object>> allStocks = mapper.readValue(jsonResponse, new TypeReference<>() {});
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println("salvaJsonDaApi eseguito alle: " + now.format(formatter));
+            // Filtraggio per exchange gratuito
+            List<Map<String, Object>> filteredStocks = allStocks.stream()
+                    .filter(stock -> {
+                        Object exchange = stock.get("exchangeShortName");
+                        return exchange != null &&
+                                (exchange.equals("NYSE") || exchange.equals("NASDAQ") || exchange.equals("AMEX"));
+                    })
+                    .toList();
+
+            // Scrittura JSON filtrato su file
+            try (FileWriter writer = new FileWriter("stocks.json")) {
+                mapper.writerWithDefaultPrettyPrinter().writeValue(writer, filteredStocks);
+            }
+
+            // Log
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            System.out.println("salvaJsonDaApi (filtrata) eseguito alle: " + now.format(formatter));
+        } catch (IOException e) {
+            System.out.println("Errore durante il parsing o la scrittura del file: " + e.getMessage());
+        }
     }
 
     /**
@@ -120,6 +140,18 @@ public class AzioniService {
             System.out.println("Errore durante il parsing della risposta JSON per " + symbol + ": " + e.getMessage());
             return null;
         }
+    }
+
+    public BigDecimal getStockValueForDate(String symbol, LocalDate date) {
+        Histories histories = getDatiAzione(symbol, 1); // Fetch historical data for the symbol
+        if (histories != null && histories.getHistorical() != null) {
+            return histories.getHistorical().stream()
+                    .filter(h -> h.getDate().equals(date.toString()))
+                    .map(h -> BigDecimal.valueOf(h.getClose()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
     }
 
 }
