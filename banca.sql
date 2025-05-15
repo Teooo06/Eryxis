@@ -152,12 +152,14 @@ INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivic
 ('Ippazio', 'Cuda', '1971-05-04', 'Viale', 'Vicolo Trupiano', 24, 'iqhgVJ08A41H501Z', 'ippazio.cuda@banca.it', '+39', '1640052427', 'passIppazio', 'phraseIppazio', TRUE, 3),
 ('Gianfrancesco', 'Filippelli', '1980-06-08', 'Viale', 'Contrada Gentilini', 130, 'vreXrw30A36H501Z', 'gianfrancesco.filippelli@banca.it', '+39', '0196556981', 'passGianfrancesco', 'phraseGianfrancesco', TRUE, 3),
 ('Salvatore', 'Donarelli', '1995-03-06', 'Canale', 'Contrada Uberto', 51, 'RtoZmj95A13H501Z', 'salvatore.donarelli@banca.it', '+39', '6320163287', 'passSalvatore', 'phraseSalvatore', FALSE, 3),
-('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', 'passBeatrice', 'phraseBeatrice', FALSE, 3);
+('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', 'passBeatrice', 'phraseBeatrice', FALSE, 3),
+('Matteo', 'Bertoldini', '2000-01-01', 'Via', 'Risorgimento', 1, 'BRTMTT06H07E507V', 'matteobertoldini06@gmail.com', '+39', '3703316356', 'segreta', 'ESAHN3Q42VQUWJT6ARZ5CYWP6JOM4MOL', TRUE, 3);
+
 
 -- Inserimento conti
 INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente) VALUES
 ('IT60X0542811101000000123456', 8923748374.00, TRUE, 'EUR', 1, 1),
-('IT60X0542811101000000654321', 2500.00, TRUE, 'EUR', 5, 1),
+('IT60X0542811101000000652321', 2500.00, TRUE, 'EUR', 5, 1),
 ('IT60X0542811101000000000001', 1500.00, TRUE, 'EUR', 6, 4),
 ('IT60X0542811101000000000002', 3200.00, TRUE, 'EUR', 7, 4),
 ('IT60X0542811101000000000003', 2750.00, TRUE, 'EUR', 8, 4),
@@ -166,7 +168,9 @@ INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente) VALUES
 ('IT60X0542811101000000000006', 2200.00, TRUE, 'EUR', 11, 4),
 ('IT60X0542811101000000000007', 3100.00, TRUE, 'EUR', 12, 4),
 ('IT60X0542811101000000000008', 2900.00, TRUE, 'EUR', 13, 4),
-('IT60X0542811101000000000009', 2600.00, TRUE, 'EUR', 4, 4);
+('IT60X0542811101000000000009', 2600.00, TRUE, 'EUR', 4, 4),
+('IT60X0542811101000000654121', 2400.00, true, 'EUR', 3, 1);
+
 
 -- Inserimento carte di credito per clienti e advisor
 INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldoDisponibile`, `saldoContabile`, `stato`, `IBAN`) VALUES
@@ -179,6 +183,7 @@ INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldo
 ('5555345678901235', '127', '2028-08-01', '67890', 'credito', 8000.00, 2200.00, TRUE, 'IT60X0542811101000000000006'),
 ('4123456789012347', '742', '2029-02-01', '78901', 'credito', 6000.00, 3100.00, TRUE, 'IT60X0542811101000000000007'),
 ('341234567890124', '835', '2027-11-01', '89012', 'credito', 4000.00, 2900.00, TRUE, 'IT60X0542811101000000000008'),
+('8765432187654320', '124', '2027-10-30', '12312', 'credito', 2500.00, 2500.00, TRUE,'IT60X0542811101000000654121'),
 ('3245453234549005', '121', '2050-01-01', '84013', 'credito', 29645.00, 29645.00, TRUE, 'IT60X0542811101000000123456'),
 
 -- Advisor (Lucia Conti)
@@ -209,7 +214,7 @@ INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`,
 (645234.34, '2025-03-18 16:20:00', 'accredito', 'Eryxis Bank S.P.A.', '', 'IT60X0542811101000000123456');
 
 
-INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `causale`,`IBAN`) VALUESA
+INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `causale`,`IBAN`) VALUES
 -- Carte di debito (14.99)
 (-14.99, '2025-03-29 07:33:18', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000001'),
 (-14.99, '2025-04-03 13:49:55', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000002'),
