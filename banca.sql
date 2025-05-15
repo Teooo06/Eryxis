@@ -70,7 +70,7 @@ CREATE TABLE `rubriche`(
  `idContatto` INT PRIMARY KEY AUTO_INCREMENT,
  `nome` VARCHAR(100) NOT NULL,
  `cognome` VARCHAR(100) NOT NULL,
- `IBAN` CHAR(27) UNIQUE NOT NULL,
+ `IBAN` CHAR(27) NOT NULL,
  `id_utente` INT NOT NULL,
  CONSTRAINT `fk_rubrica_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -226,3 +226,16 @@ INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`,
 (-4.99, '2025-04-27 15:40:08', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000002'),
 (-4.99, '2025-05-01 19:25:50', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000000003'),
 (-4.99, '2025-05-02 08:01:12', 'addebito', 'Eryxis Bank S.P.A.', 'Acquisto', 'IT60X0542811101000000123456');
+
+-- Contatti in rubrica per Lorenzo Molteni (idUtente 1)
+INSERT INTO `rubriche` (`nome`, `cognome`, `IBAN`, `id_utente`) VALUES
+('Mario', 'Rossi', 'IT60X0542811101000000692321', 1), -- Conto di Giulia Bianchi
+('Lucia', 'Conti', 'IT60X0542811101000000000009', 1),  -- Conto dell'advisor Lucia Conti
+('Amazon', 'Europe', 'IT12M1234567890123456789012', 1),
+('Netflix', 'International', 'IT34X9876543210987654321098', 1),
+('Spotify', 'AB', 'IT56P4567890123456789012345', 1),
+('Lorenzo', 'Molteni', 'IT60X0542811101000000123456', 14), -- Conto di Lorenzo Molteni
+('Giulia', 'Bianchi', 'IT60X0542811101000000692321', 14),   -- Conto di Giulia Bianchi
+('Eugenia', 'Caracciolo', 'IT60X0542811101000000000001', 14),
+('Università', 'Milano', 'IT78B5432109876543210987654', 14),
+('Affitto', 'Casa', 'IT90X6789012345678901234567', 14);
