@@ -1,0 +1,12 @@
+.hero-2{
+    margin: 150px 100px 75px 20vw;
+    height: 600px;
+}
+
+.table-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: row-reverse;
+}

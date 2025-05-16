@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" th:href="@{/style/style.css}">
-    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/static/style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -27,6 +27,14 @@
                         <button class="menu-button">
                             <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
                             Tradings
+                        </button>
+                    </form>
+                </li>
+                <li th:if="${investimenti != null}">
+                    <form action="/dafare">
+                        <button class="menu-button">
+                            <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+                            Investimenti Attivi
                         </button>
                     </form>
                 </li>

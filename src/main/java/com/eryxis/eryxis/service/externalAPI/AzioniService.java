@@ -121,10 +121,9 @@ public class AzioniService {
      * I dati includono la data e il prezzo di chiusura.
      *
      * @param symbol il simbolo dell'azione (es. "AAPL")
-     * @param giorni
      * @return un oggetto {@link Histories} contenente il simbolo e la lista di valori storici
      */
-    public Histories getDatiAzione(String symbol, int giorni) {
+    public Histories getDatiAzione(String symbol) {
         String url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol + "?serietype=line&apikey=" + apiKey;
         String jsonResponse = restTemplate.getForObject(url, String.class);
 
@@ -143,7 +142,7 @@ public class AzioniService {
     }
 
     public BigDecimal getStockValueForDate(String symbol, LocalDate date) {
-        Histories histories = getDatiAzione(symbol, 1); // Fetch historical data for the symbol
+        Histories histories = getDatiAzione(symbol); // Fetch historical data for the symbol
         if (histories != null && histories.getHistorical() != null) {
             return histories.getHistorical().stream()
                     .filter(h -> h.getDate().equals(date.toString()))

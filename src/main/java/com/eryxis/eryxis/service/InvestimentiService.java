@@ -25,7 +25,7 @@ public class InvestimentiService {
      * @param idInvestimento Il codice ISIN dell'investimento.
      * @return L'investimento corrispondente, se trovato.
      */
-    public Investimenti findByIdInvestimento(String idInvestimento) {
+    public Investimenti findByIdInvestimento(int idInvestimento) {
         return investimentiRepository.findByIdInvestimento(idInvestimento);
     }
 
@@ -84,7 +84,7 @@ public class InvestimentiService {
      * @param idInvestimento Il codice ISIN dell'investimento.
      * @return La percentuale di investimento.
      */
-    public int getPercentualeInvestimento(String idInvestimento) {
+    public int getPercentualeInvestimento(int idInvestimento) {
         Investimenti investimenti = investimentiRepository.findByIdInvestimento(idInvestimento);
         if (investimenti != null) {
             double prezzoAcquisto = investimenti.getPrezzoAcquisto();

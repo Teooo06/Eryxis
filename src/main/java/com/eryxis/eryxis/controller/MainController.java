@@ -5,6 +5,7 @@ import com.eryxis.eryxis.model.*;
 import com.eryxis.eryxis.repository.CarteRepository;
 import com.eryxis.eryxis.repository.TransazioniRepository;
 import com.eryxis.eryxis.service.*;
+import com.eryxis.eryxis.service.externalAPI.AzioniService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,10 @@ public class MainController {
     private FinanziamentiService finanziamentiService;
     @Autowired
     private RubricheService rubricheService;
+    @Autowired
+    private AzioniService azioniService;
+    @Autowired
+    private InvestimentiService investimentiService;
 
     @GetMapping("/")
     public String index(Model model, @RequestParam(required = false)  String msg) {
@@ -104,6 +109,7 @@ public class MainController {
                     List<Transazioni> transazioni = transazioniService.findByConto(conto.get(0));
                     boolean hasDebito = carte.stream().anyMatch(c -> c.getTipo().equals("debito"));
                     boolean hasPrepagata = carte.stream().anyMatch(c -> c.getTipo().equals("prepagata"));
+                    List<Investimenti> investimenti = investimentiService.findByUtente(utente);
 
                     transazioni.sort(
                             Comparator.comparing(Transazioni::getDataTransazione, Comparator.nullsLast(Comparator.naturalOrder())).reversed()
@@ -119,6 +125,12 @@ public class MainController {
                     model.addAttribute("hasDebito", hasDebito);
                     model.addAttribute("hasPrepagata", hasPrepagata);
                     model.addAttribute("rubriche", rubriche);
+                    if (investimenti != null){
+                        model.addAttribute("investimenti", investimenti);
+                    }
+                    else{
+                        model.addAttribute("investimenti", null);
+                    }
 
                     return "index"; // questa deve essere la tua index.html in templates/
                 }
@@ -142,9 +154,11 @@ public class MainController {
 
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
+
+            return  "setting";
         }
 
-        return "setting";
+        return "redirect:/login";
     }
 
     @GetMapping("/trading")
@@ -157,11 +171,16 @@ public class MainController {
             String nome = customAuth.getNome();
             String cognome = customAuth.getCognome();
 
+            List<Azioni> azioni = azioniService.getListAzioni(0, 50);
+
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
+            model.addAttribute("listaAzioni", azioni);
+
+            return "trading";
         }
 
-        return "trading";
+        return "redirect:/login";
     }
 
     @PostMapping("/addDebit")
@@ -391,9 +410,11 @@ public class MainController {
 
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
+
+            return "creditManagement";
         }
 
-        return "creditManagement";
+        return "redirect:/login";
     }
 
 }
