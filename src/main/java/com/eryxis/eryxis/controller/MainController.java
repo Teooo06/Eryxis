@@ -129,7 +129,7 @@ public class MainController {
                         model.addAttribute("investimenti", investimenti);
                     }
                     else{
-                        model.addAttribute("investimenti", null);
+                        model.addAttribute("investimenti", 1);
                     }
 
                     return "index"; // questa deve essere la tua index.html in templates/
