@@ -2,6 +2,7 @@ package com.eryxis.eryxis.controller;
 
 import com.eryxis.eryxis.configuration.CustomAuthenticationToken;
 import com.eryxis.eryxis.model.Azioni;
+import com.eryxis.eryxis.model.Histories;
 import com.eryxis.eryxis.model.Investimenti;
 import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.repository.CarteRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -48,13 +50,7 @@ public class TradingController {
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
             model.addAttribute("listaAzioni", azioni);
-
-            if (!investimenti.isEmpty()){
-                model.addAttribute("investimenti", investimenti);
-            }
-            else{
-                model.addAttribute("investimenti", 1);
-            }
+            model.addAttribute("investimenti", investimenti);
 
             return "trading";
         }
@@ -67,7 +63,9 @@ public class TradingController {
                                   @RequestParam("symbol") String symbol,
                                   @RequestParam("exchangeShortName") String exchangeShortName,
                                   @RequestParam("name") String name,
-                                  @RequestParam("price") float price) {
+                                  @RequestParam("price") float price,
+                                  @RequestParam("type") String type,
+                                  @RequestParam("exchange") String exchange) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
@@ -76,15 +74,23 @@ public class TradingController {
             String cognome = customAuth.getCognome();
 
             // Ottieni ulteriori dettagli dell'azione se necessario
-            // Azioni azioneDettaglio = azioniService.getDettaglioAzione(symbol);
+            Histories histories = azioniService.getDatiAzione(symbol);
+
+            // Ordina le storie dalla più vecchia alla più recente
+            if (histories != null && histories.getHistorical() != null) {
+                histories.getHistorical().sort(Comparator.comparing(Histories.HistoricalEntry::getDate));
+            }
 
             // Aggiungi i dati al modello
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
             model.addAttribute("symbol", symbol);
-            model.addAttribute("exchangeShortName", exchangeShortName);
             model.addAttribute("name", name);
+            model.addAttribute("exchange", exchange);
+            model.addAttribute("exchangeShortName", exchangeShortName);
             model.addAttribute("price", price);
+            model.addAttribute("type", type);
+            model.addAttribute("historyData", histories);
 
             return "dettaglio-azione";
         }

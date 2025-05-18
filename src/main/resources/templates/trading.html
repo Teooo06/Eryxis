@@ -26,7 +26,7 @@
                         </button>
                     </form>
                 </li>
-                <li class="selected">
+                <li class="select">
                     <button class="menu-button">
                         <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
                         Tradings
@@ -65,7 +65,7 @@
     <section class="hero-2">
         <div class="trading-top">
             <form action="/my-stock">
-                <button class="my-stock-btn">
+                <button class="my-stock-btn" th:if="${investimenti.size != 0}">
                     Le mie azioni <i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i>
                 </button>
             </form>
@@ -79,6 +79,8 @@
                             <input type="hidden" name="exchangeShortName" th:value="${azione.exchangeShortName}" />
                             <input type="hidden" name="name" th:value="${azione.name}" />
                             <input type="hidden" name="price" th:value="${azione.price}" />
+                            <input type="hidden" name="exchange" th:value="${azione.exchange}" />
+                            <input type="hidden" name="type" th:value="${azione.type}" />
                             <button type="submit" class="content-btn">
                                 <h2 th:text="${azione.symbol}" class="button-content excSN"></h2>
                                 <div class="button-content">
@@ -257,7 +259,7 @@
     const prev = document.getElementById('prev')
     const next = document.getElementById('next')
 
-    const carousel = new Carousel(carouselContainer, true, 5000, true) // container, autoplay, speed, dots
+    const carousel = new Carousel(carouselContainer, true, 30000, true) // container, autoplay, speed, dots
     carousel.init()
 
     prev.addEventListener('click', () => {

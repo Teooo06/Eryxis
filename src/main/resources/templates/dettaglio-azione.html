@@ -20,12 +20,14 @@
         <nav>
             <ul>
                 <li>
-                    <button class="menu-button">
-                        <i class="fa fa-home spacing" aria-hidden="true"></i>
-                        Overview
-                    </button>
+                    <form action="/home">
+                        <button class="menu-button">
+                            <i class="fa fa-home spacing" aria-hidden="true"></i>
+                            Overview
+                        </button>
+                    </form>
                 </li>
-                <li class="selected">
+                <li class="select">
                     <form action="/trading">
                         <button class="menu-button">
                             <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
@@ -70,33 +72,74 @@
             <div class="stock-details">
                 <div class="stock-header">
                     <h2 th:text="${symbol}" class="stock-symbol">Prova</h2>
-                    <h3 th:text="${name}" class="stock-name">Prova</h3>
-                    <p th:text="${exchangeShortName}" class="stock-exchange">Prova</p>
+                    <h3 th:text="${exchange}" class="stock-exchange">prova</h3>
+                    <h5 th:text="${name}" class="stock-name">Prova</h5>
                 </div>
 
                 <div class="stock-price">
+                    <p th:text="${type}" class="stock-type">Prova</p>
                     <h2 th:text="${price} + ' $'" class="current-price">Prova</h2>
                 </div>
             </div>
         </div>
         <div class="right-stock-side">
             <h2 class="title-stock-history">Historical Data</h2>
-
+            <div id="stock-history-chart" style="width: 100%; height: 75%; margin-top: 10px;"></div>
         </div>
     </div>
     <div>
         <div class="action-buttons">
-            <form th:action="@{/acquista-azione}" method="post">
-                <input type="hidden" name="symbol" th:value="${symbol}"/>
-                <input type="hidden" name="price" th:value="${price}"/>
-                <div class="form-group">
-                    <label for="quantita">Quantità:</label>
-                    <input type="number" id="quantita" name="quantita" min="1" value="1" required />
-                </div>
-                <button type="submit" class="btn-buy">Acquista</button>
-            </form>
+
         </div>
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script th:inline="javascript">
+    // Recupera dati storici dal backend (via Thymeleaf)
+    let historicalData = [[${historyData.historical}]];
+
+    // Parsing: ottieni date e valori di chiusura
+    let dates = historicalData.map(entry => entry.date);
+    let closePrices = historicalData.map(entry => entry.close);
+
+    // Configura ECharts
+    let chartDom = document.getElementById('stock-history-chart');
+    let myChart = echarts.init(chartDom);
+
+    let option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: {
+            type: 'category',
+            data: dates,
+            axisLabel: {
+                rotate: 50,
+                fontSize: 10
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: ''
+        },
+        series: [{
+            name: 'Chiusura',
+            type: 'line',
+            data: closePrices,
+            smooth: true,
+            lineStyle: {
+                width: 2,
+                color: '#660708'
+            },
+            itemStyle: {
+                color: '#660708'
+            }
+        }]
+    };
+
+    myChart.setOption(option);
+</script>
+
 </body>
 </html>

@@ -211,7 +211,7 @@
 /* Tradings Details */
 .stock-details-top{
     width: 100%;
-    height: 50%;
+    height: 60%;
     display: flex;
     flex-direction: row;
     background-color: #161A1D;
@@ -249,5 +249,38 @@
 }
 
 .stock-symbol{
+    font-size: 40px;
+    font-weight: bold;
+    color: #660708;
+    font-family: "Josefin Sans", sans-serif;
+}
 
+.stock-exchange{
+    font-size: 20px;
+    margin: 20px 0 0;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.stock-name{
+    font-size: 20px;
+    margin: 20px 0 0;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.stock-type{
+    font-size: 20px;
+    margin: 40px 0 0;
+    font-weight: bold;
+    color: #6c757d;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.current-price{
+    font-size: 50px;
+    margin: 0;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+    color:#FFD700;
 }

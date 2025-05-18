@@ -95,16 +95,16 @@ nav ul li button {
     transition: 0.3s ease, transform 0.3s ease;
 }
 
-nav ul li.selected {
+nav ul li.select {
     background-color: #660708;
 }
 
-nav ul li.selected button {
+nav ul li.select button {
     background-color: #660708;
     color: white;
 }
 
-nav ul li.selected button:hover {
+nav ul li.select button:hover {
     color: white;
 }
 
