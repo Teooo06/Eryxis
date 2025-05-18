@@ -1,10 +1,7 @@
 package com.eryxis.eryxis.controller;
 
 import com.eryxis.eryxis.configuration.CustomAuthenticationToken;
-import com.eryxis.eryxis.model.Azioni;
-import com.eryxis.eryxis.model.Histories;
-import com.eryxis.eryxis.model.Investimenti;
-import com.eryxis.eryxis.model.Utenti;
+import com.eryxis.eryxis.model.*;
 import com.eryxis.eryxis.repository.CarteRepository;
 import com.eryxis.eryxis.repository.TransazioniRepository;
 import com.eryxis.eryxis.service.*;
@@ -31,6 +28,8 @@ public class TradingController {
     private AzioniService azioniService;
     @Autowired
     private InvestimentiService investimentiService;
+    @Autowired
+    private TransazioniService transazioniService;
 
     @GetMapping("/trading")
     public String trading(Model model) {
@@ -72,7 +71,7 @@ public class TradingController {
         if (auth instanceof CustomAuthenticationToken customAuth) {
             String nome = customAuth.getNome();
             String cognome = customAuth.getCognome();
-
+            List<Carte> carte = customAuth.getCarte();
             // Ottieni ulteriori dettagli dell'azione se necessario
             Histories histories = azioniService.getDatiAzione(symbol);
 
@@ -91,6 +90,7 @@ public class TradingController {
             model.addAttribute("price", price);
             model.addAttribute("type", type);
             model.addAttribute("historyData", histories);
+            model.addAttribute("cardCount", carte.size());
 
             return "dettaglio-azione";
         }
@@ -116,6 +116,60 @@ public class TradingController {
             model.addAttribute("investimenti", investimenti);
         }
 
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/buyStock")
+    public String buyStock(@RequestParam("symbol") String symbol,
+                           @RequestParam("importo") float importo,
+                           @RequestParam("carte") String carta,
+                           Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+
+            List<Carte> carte = customAuth.getCarte();
+            Utenti utente = utentiService.findByIdUtente(id);
+
+            Azioni azione = azioniService.getAzione(symbol);
+            Investimenti investimento = new Investimenti();
+            investimento.setSymbol(symbol);
+            investimento.setNomeAzione(azione.getName());
+            investimento.setPrezzoAcquisto(azione.getPrice());
+            investimento.setQuantita((int) (importo / azione.getPrice()));
+            investimento.setUtente(utente);
+            investimentiService.save(investimento);
+
+            Transazioni transazione = new Transazioni();
+            transazione.setImporto(- importo);
+            transazione.setTipo("addebito");
+            transazione.setDestinatario(symbol);
+            transazione.setCausale("Acquisto di azioni");
+            Conti conto = carte.get(0).getConto();
+            transazione.setConto(conto);
+            transazioniService.save(transazione);
+
+            if(carta.equals("conto")){
+
+                if(conto.getSaldo() >= importo){
+                    conto.setSaldo(conto.getSaldo() - importo);
+                }
+            }
+            else{
+                for(Carte cart : carte){
+                    if(cart.getTipo().equals(carta)){
+                        if(cart.getSaldoDisponibile() >= importo){
+                            cart.setSaldoDisponibile(cart.getSaldoDisponibile() - importo);
+                        }
+                    }
+                }
+            }
+
+            return "redirect:/trading";
+        }
 
         return "redirect:/login";
     }

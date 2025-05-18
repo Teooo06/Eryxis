@@ -111,7 +111,7 @@ CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON D
 CREATE TABLE `investimenti`(
     `idInvestimento` INT PRIMARY KEY AUTO_INCREMENT,
     `symbol` VARCHAR(12) NOT NULL,
-    `nomeAzione` VARCHAR(100) NOT NULL,
+    `nomeAzione` VARCHAR(500) NOT NULL,
     `prezzoAcquisto` DECIMAL(10, 2) NOT NULL,
     `quantita` INT NOT NULL CHECK (quantita > 0),
     `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

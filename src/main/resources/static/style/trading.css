@@ -284,3 +284,23 @@
     font-family: "Josefin Sans", sans-serif;
     color:#FFD700;
 }
+
+.stock-form{
+    width: 100%;
+    height: 40%;
+}
+
+.buy-form{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.buy-btn{
+    width: 100%;
+    margin: 20px 0 0;
+}

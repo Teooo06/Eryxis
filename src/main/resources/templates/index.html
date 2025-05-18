@@ -322,7 +322,7 @@
                     <select id="carte" name="carte" required th:if="${cardCount>1}">
                         <option value=""></option>
                         <option value="credito">Credito</option>
-                        <option value="debito">Bonifico</option>
+                        <option value="debito">Debito</option>
                         <option value="prepagata" th:if="${cardCount == 3}">Prepagata</option>
                     </select>
                     <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
