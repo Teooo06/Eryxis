@@ -255,14 +255,7 @@
     font-family: "Josefin Sans", sans-serif;
 }
 
-.stock-exchange{
-    font-size: 20px;
-    margin: 20px 0 0;
-    font-weight: bold;
-    font-family: "Josefin Sans", sans-serif;
-}
-
-.stock-name{
+.stock-exchange, .stock-name{
     font-size: 20px;
     margin: 20px 0 0;
     font-weight: bold;
