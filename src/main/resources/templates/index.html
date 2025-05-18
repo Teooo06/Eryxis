@@ -337,12 +337,25 @@
                 <h2 id="modalPayee">Payee</h2>
                 <div class="rubrica-list">
                     <ul class="lista">
-                        <li class="lista-elemento" th:each="contatto : ${rubrica}">
+                        <li class="lista-elemento" th:each="contatto : ${rubriche}">
                             <span th:text="${contatto.nome}">Nome</span>
                             <span th:text="${contatto.cognome}">Cognome</span>
                             <span th:text="${contatto.IBAN}">IBAN</span>
                             <button type="button" th:attr="data-iban=${contatto.IBAN}">Seleziona</button>
                         </li>
+                        <div class="riga">Contatto 1</div>
+                        <div class="riga">Contatto 2</div>
+                        <div class="riga">Contatto 3</div>
+                        <!-- Aggiungi tante righe per testare lo scroll -->
+                        <div class="riga">Contatto 4</div>
+                        <div class="riga">Contatto 5</div>
+                        <div class="riga">Contatto 6</div>
+                        <div class="riga">Contatto 7</div>
+                        <div class="riga">Contatto 8</div>
+                        <div class="riga">Contatto 9</div>
+                        <div class="riga">Contatto 10</div>
+                        <div class="riga">Contatto 11</div>
+                        <div class="riga">Contatto 12</div>
                     </ul>
                 </div>
             </div>

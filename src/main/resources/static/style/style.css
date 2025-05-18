@@ -609,6 +609,7 @@ button:hover{
     display: none;            /* nascosto di default        */
     place-items: center;      /* centra il contenuto        */
     z-index: 1000;
+
 }
 .overlay.active { display: grid; }   /* la classe active lo rende visibile */
 
@@ -846,4 +847,93 @@ label{
     width: 100%;
     height: 20%;
     background-color: #161A1D;
+}
+
+.popup {
+    width: 300px;
+    height: 300px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    overflow: hidden; /* importante per evitare che il contenuto fuoriesca */
+    padding: 10px;
+}
+
+.rubrica-list {
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px 0 0;
+    flex: 1;
+}
+.lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lista-elemento {
+    background: white;
+    padding: 15px 20px;
+
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.lista-elemento span {
+    flex: 1;
+    margin-right: 15px;
+    word-break: break-word;
+    font-size: 20px;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: bold;
+
+}
+
+.lista-elemento button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+    font-size: 20px;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: bold;
+}
+
+.lista-elemento button:hover {
+    background-color: #218838;
+}
+
+.lista-elemento button::before {
+    content: "✔️";
+}
+
+.popup-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh; /* imposta altezza massima */
+    overflow: hidden; /* impedisce che il contenuto sbordi */
+    display: flex;
+    flex-direction: column;
+}
+
+body.no-scroll {
+    overflow: hidden;
 }
