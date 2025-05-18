@@ -6,7 +6,7 @@
     <title>Home Page</title>
     <link rel="stylesheet" th:href="@{/style/style.css}">
     <link rel="stylesheet" href="/static/style/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <header>
@@ -27,14 +27,6 @@
                         <button class="menu-button">
                             <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
                             Tradings
-                        </button>
-                    </form>
-                </li>
-                <li th:if="${investimenti != 1}">
-                    <form action="/dafare">
-                        <button class="menu-button">
-                            <i class="fa fa-sliders spacing" aria-hidden="true"></i>
-                            Investimenti Attivi
                         </button>
                     </form>
                 </li>
@@ -154,7 +146,7 @@
                     </div>
                     <div class="transfer">
                         <button class="rubrica-b" id="rubricaBtn">
-                            <i class="fa fa-address-book-o fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Payee
+                            <i class="fas fa-book fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i>Payee
                         </button>
                     </div>
                 </div>

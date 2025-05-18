@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/static/style/style.css">
     <link rel="stylesheet" th:href="@{/style/trading.css}">
     <link rel="stylesheet" href="/static/style/trading.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <header>
@@ -63,29 +63,44 @@
 
 <main>
     <section class="hero-2">
+        <div class="trading-top">
+            <form action="/my-stock">
+                <button class="my-stock-btn">
+                    Le mie azioni <i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
         <div class="main">
             <div id="carousel-container">
                 <div id="carousel-content">
                     <div class="card hidden" th:each="azione : ${listaAzioni}">
-                        <button class="content-btn">
-                            <h2 th:text="${azione.symbol}" class="button-content excSN"></h2>
-                            <div class="button-content">
-                                <div class="left-part">
-                                    <h2 th:text="${azione.exchangeShortName}" class="exc-sym"></h2>
-                                    <h3 th:text="${azione.name}" class="name-stock">Prova</h3>
+                        <form th:action="@{/dettaglio-azione}" method="post" class="forming-form">
+                            <input type="hidden" name="symbol" th:value="${azione.symbol}" />
+                            <input type="hidden" name="exchangeShortName" th:value="${azione.exchangeShortName}" />
+                            <input type="hidden" name="name" th:value="${azione.name}" />
+                            <input type="hidden" name="price" th:value="${azione.price}" />
+                            <button type="submit" class="content-btn">
+                                <h2 th:text="${azione.symbol}" class="button-content excSN"></h2>
+                                <div class="button-content">
+                                    <div class="left-part">
+                                        <h2 th:text="${azione.exchangeShortName}" class="exc-sym"></h2>
+                                        <h3 th:text="${azione.name}" class="name-stock"></h3>
+                                    </div>
+                                    <div class="right-part">
+                                        <h2 th:text="${azione.price} + ' $'" class="price-stock"></h2>
+                                    </div>
                                 </div>
-                                <div class="right-part">
-                                    <h2 th:text="${azione.price} + '$'" class="price-stock"></h2>
-                                </div>
-                            </div>
-                        </button>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <div id="carousel-dots">
 
                 </div>
-                <p id="prev">Prev</p>
-                <p id="next">Next</p>
+                <div class="button-movement">
+                    <button id="prev"><i class="fa fa-angle-left arrow" aria-hidden="true"></i></button>
+                    <button id="next"><i class="fa fa-angle-right arrow" aria-hidden="true"></i></button>
+                </div>
             </div>
         </div>
     </section>
@@ -210,10 +225,6 @@
                 dot.classList.add('dot')
                 dots.insertAdjacentElement('beforeend', dot)
 
-                dot.addEventListener('click', () => {
-                    this.clearInterval()
-                    this.update('', true, parseInt(dot.id.split('-')[1]))
-                })
             })
         }
 
