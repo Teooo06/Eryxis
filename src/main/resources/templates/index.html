@@ -172,7 +172,7 @@
                                                                     }"></h3>
                         </div>
                         <div class="transaction-value">
-                            <h2 id="transactionImport" th:text="${transazione.importo + ' ' + valuta}"></h2>
+                            <h2 id="transactionImport" th:text="${#numbers.formatDecimal(transazione.importo, 1, 2) + ' ' + valuta}"></h2>
                         </div>
                     </div>
                 </div>
