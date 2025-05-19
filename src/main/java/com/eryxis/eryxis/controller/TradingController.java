@@ -135,6 +135,7 @@ public class TradingController {
             Utenti utente = utentiService.findByIdUtente(id);
 
             Azioni azione = azioniService.getAzione(symbol);
+
             Investimenti investimento = new Investimenti();
             investimento.setSymbol(symbol);
             investimento.setNomeAzione(azione.getName());
