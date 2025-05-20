@@ -4,6 +4,7 @@ import com.eryxis.eryxis.model.Carte;
 import com.eryxis.eryxis.model.Conti;
 import com.eryxis.eryxis.repository.CarteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -101,5 +102,19 @@ public class CarteService {
      */
     public Carte findByPIN(String string) {
         return carteRepository.findByPIN(string);
+    }
+
+    /**
+     * Aggiorna il saldo contabile di tutte le carte il primo giorno del mese.
+     * Questa funzione viene eseguita automaticamente ogni mese.
+     */
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void updateSaldoContabile() {
+        List<Carte> allCards = carteRepository.findAll();
+        for (Carte card : allCards) {
+            card.setSaldoContabile(card.getSaldoDisponibile());
+        }
+        carteRepository.saveAll(allCards);
+        System.out.println("Saldo contabile updated for all cards.");
     }
 }

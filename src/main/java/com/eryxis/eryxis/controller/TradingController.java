@@ -30,6 +30,10 @@ public class TradingController {
     private InvestimentiService investimentiService;
     @Autowired
     private TransazioniService transazioniService;
+    @Autowired
+    private ContiService contiService;
+    @Autowired
+    private CarteService carteService;
 
     @GetMapping("/trading")
     public String trading(Model model) {
@@ -127,15 +131,36 @@ public class TradingController {
                            Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
         if (auth instanceof CustomAuthenticationToken customAuth) {
             int id = customAuth.getIdUtente();
-
             List<Carte> carte = customAuth.getCarte();
             Utenti utente = utentiService.findByIdUtente(id);
 
             Azioni azione = azioniService.getAzione(symbol);
 
+            Conti conto = carte.get(0).getConto();
+
+            // Controllo se il saldo è sufficiente
+            if (carta.equals("conto")) {
+                if (conto.getSaldo() < importo) {
+                    //model.addAttribute("error", "Saldo insufficiente nel conto.");
+                    return "redirect:/trading";
+                }
+            } else {
+                boolean saldoSufficiente = false;
+                for (Carte cart : carte) {
+                    if (cart.getTipo().equals(carta) && cart.getSaldoDisponibile() >= importo) {
+                        saldoSufficiente = true;
+                        break;
+                    }
+                }
+                if (!saldoSufficiente) {
+                    //model.addAttribute("error", "Saldo insufficiente nella carta selezionata.");
+                    return "redirect:/trading";
+                }
+            }
+
+            // Creazione e salvataggio dell'investimento
             Investimenti investimento = new Investimenti();
             investimento.setSymbol(symbol);
             investimento.setNomeAzione(azione.getName());
@@ -144,27 +169,25 @@ public class TradingController {
             investimento.setUtente(utente);
             investimentiService.save(investimento);
 
+            // Creazione e salvataggio della transazione
             Transazioni transazione = new Transazioni();
-            transazione.setImporto(- importo);
+            transazione.setImporto(-importo);
             transazione.setTipo("addebito");
             transazione.setDestinatario(symbol);
             transazione.setCausale("Acquisto di azioni");
-            Conti conto = carte.get(0).getConto();
             transazione.setConto(conto);
             transazioniService.save(transazione);
 
-            if(carta.equals("conto")){
-
-                if(conto.getSaldo() >= importo){
-                    conto.setSaldo(conto.getSaldo() - importo);
-                }
-            }
-            else{
-                for(Carte cart : carte){
-                    if(cart.getTipo().equals(carta)){
-                        if(cart.getSaldoDisponibile() >= importo){
-                            cart.setSaldoDisponibile(cart.getSaldoDisponibile() - importo);
-                        }
+            // Aggiornamento del saldo
+            if (carta.equals("conto")) {
+                conto.setSaldo(conto.getSaldo() - importo);
+                contiService.save(conto);
+            } else {
+                for (Carte cart : carte) {
+                    if (cart.getTipo().equals(carta)) {
+                        cart.setSaldoDisponibile(cart.getSaldoDisponibile() - importo);
+                        carteService.save(cart);
+                        break;
                     }
                 }
             }
