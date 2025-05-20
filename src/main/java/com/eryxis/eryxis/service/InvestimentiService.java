@@ -147,4 +147,8 @@ public class InvestimentiService {
     private double getValoreComplessivo (int quantita, double prezzoAcquisto) {
         return quantita * prezzoAcquisto;
     }
+
+    public Investimenti findByUtenteAndSymbol (Utenti utente, String symbol){
+        return investimentiRepository.findByUtenteAndSymbol(utente,symbol);
+    }
 }

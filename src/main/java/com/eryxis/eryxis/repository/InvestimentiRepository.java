@@ -11,4 +11,5 @@ import java.util.List;
 public interface InvestimentiRepository extends JpaRepository<Investimenti, String> {
     Investimenti findByIdInvestimento(int idInvestimento);
     List<Investimenti> findByUtente (Utenti utente);
+    Investimenti findByUtenteAndSymbol (Utenti utente, String symbol);
 }
