@@ -141,6 +141,13 @@ public class AzioniService {
         }
     }
 
+    /**
+     * Recupera il valore di chiusura di un'azione per una data specifica.
+     *
+     * @param symbol il simbolo dell'azione (es. "AAPL")
+     * @param date   la data per cui si desidera ottenere il valore
+     * @return il valore di chiusura come {@link BigDecimal}, oppure {@code null} se non trovato
+     */
     public BigDecimal getStockValueForDate(String symbol, LocalDate date) {
         Histories histories = getDatiAzione(symbol); // Fetch historical data for the symbol
         if (histories != null && histories.getHistorical() != null) {
@@ -151,6 +158,25 @@ public class AzioniService {
                     .orElse(null);
         }
         return null;
+    }
+
+    /**
+     * Cerca le azioni nel file JSON locale "stocks.json" in base al simbolo fornito.
+     *
+     * @param filtro il filtro da applicare al simbolo
+     * @return una lista di oggetti {@link Azioni} che corrispondono al filtro
+     */
+    public List<Azioni> cercaAzioniPerSymbol(String filtro) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Azioni> tutteAzioni = objectMapper.readValue(new File("stocks.json"), new TypeReference<List<Azioni>>() {});
+            return tutteAzioni.stream()
+                    .filter(a -> a.getSymbol() != null && a.getSymbol().toLowerCase().contains(filtro.toLowerCase()))
+                    .toList();
+        } catch (IOException e) {
+            System.out.println("Errore durante la lettura del file JSON: " + e.getMessage());
+            return List.of(); // ritorna lista vuota in caso di errore
+        }
     }
 
 }
