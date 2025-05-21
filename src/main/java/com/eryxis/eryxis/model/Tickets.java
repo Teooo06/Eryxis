@@ -22,8 +22,8 @@ public class Tickets {
     @Column(nullable = false, length = 500)
     private String descrizione;
 
-    @Column(nullable = false, length = 1)
-    private String stato;
+    @Column(nullable = false)
+    private short stato;
 
     @ManyToOne
     @JoinColumn(name = "id_utente", nullable = false)

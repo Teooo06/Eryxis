@@ -71,4 +71,15 @@ public class TicketsService {
     public void deleteByTicket(Tickets tickets) {
         ticketsRepository.delete(tickets);
     }
+
+    /**
+     * Retrieves all tickets for a specific user where the status is "0".
+     *
+     * @param utente The user for whom to retrieve the tickets.
+     * @return A list of tickets with status "0" for the given user.
+     */
+    public List<Tickets> findActiveTicketsByUtente(Utenti utente, short stato) {
+        return ticketsRepository.findByUtenteAndStato(utente, stato);
+    }
+
 }

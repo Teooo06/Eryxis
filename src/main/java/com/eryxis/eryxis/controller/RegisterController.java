@@ -70,8 +70,8 @@ public class RegisterController {
     @PostMapping("/registerPassword")
     public String registerPassword(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date birthDate,
                                    @RequestParam String address,
-                                      @RequestParam String toponimo,
-                                      @RequestParam int number,
+                                   @RequestParam String toponimo,
+                                   @RequestParam int number,
                                    @RequestParam String fiscalCode,
                                    @RequestParam String phonePrefix,
                                    @RequestParam String phoneNumber,

@@ -11,4 +11,12 @@ import java.util.List;
 public interface TicketsRepository extends JpaRepository<Tickets, Integer> {
     Tickets findByIdTicket (int idTicket);
     List<Tickets> findByUtente (Utenti utente);
+
+    /*
+     * Lo stato può essere:
+     * 1 = aperto e in attesa
+     * 2 = in lavorazione
+     * 3 = chiuso
+     */
+    List<Tickets> findByUtenteAndStato(Utenti utente, short stato);
 }

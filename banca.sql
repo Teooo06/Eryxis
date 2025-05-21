@@ -57,11 +57,12 @@ CREATE TABLE `conti` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Now create the other tables
+---lo stato a "0" indica che è ancora aperto il ticket
 CREATE TABLE `tickets`(
 `idTicket` INT PRIMARY KEY AUTO_INCREMENT,
 `titolo` VARCHAR(20) NOT NULL,
 `descrizione` VARCHAR(500) NOT NULL,
-`stato` CHAR(1) NOT NULL,
+`stato` SMALLINT NOT NULL,
 `id_utente` INT NOT NULL,
 CONSTRAINT `fk_ticket_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
