@@ -213,11 +213,9 @@ public class OTPService {
             @Override
             public void run() {
                 String lastCode = null;
-                System.out.println(secret);
                 while (true) {
                     String code = getTOTPCode(secret);
                     if (!code.equals(lastCode)) {
-                        System.out.println(code);
                     }
                     lastCode = code;
                     try {
