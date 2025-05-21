@@ -331,31 +331,19 @@
             </div>
         </div>
         <!-- Payee Pop Up -->
-        <div id="popUp" class="overlay" aria-hidden="true">
-            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-                <button class="close" aria-label="Chiudi popup">&times;</button>
-                <h2 id="modalPayee">Payee</h2>
+        <div id="popUp" class="overlay">
+            <div class="modal">
+                <button class="close">&times;</button>
+                <h2>Payee</h2>
                 <div class="rubrica-list">
-                    <ul class="lista">
-                        <li class="lista-elemento" th:each="contatto : ${rubriche}">
+                    <ul>
+                        <li th:each="contatto : ${rubriche}" class="lista-elemento">
                             <span th:text="${contatto.nome}">Nome</span>
-                            <span th:text="${contatto.cognome}">Cognome</span>
                             <span th:text="${contatto.IBAN}">IBAN</span>
-                            <button type="button" th:attr="data-iban=${contatto.IBAN}">Seleziona</button>
+                            <button class="seleziona-contatto"
+                                    th:data-iban="${contatto.IBAN}"
+                                    th:data-nome="${contatto.nome}">Seleziona</button>
                         </li>
-                        <div class="riga">Contatto 1</div>
-                        <div class="riga">Contatto 2</div>
-                        <div class="riga">Contatto 3</div>
-                        <!-- Aggiungi tante righe per testare lo scroll -->
-                        <div class="riga">Contatto 4</div>
-                        <div class="riga">Contatto 5</div>
-                        <div class="riga">Contatto 6</div>
-                        <div class="riga">Contatto 7</div>
-                        <div class="riga">Contatto 8</div>
-                        <div class="riga">Contatto 9</div>
-                        <div class="riga">Contatto 10</div>
-                        <div class="riga">Contatto 11</div>
-                        <div class="riga">Contatto 12</div>
                     </ul>
                 </div>
             </div>
@@ -722,6 +710,34 @@
             element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
         });
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Delegazione degli eventi per gestire i pulsanti "Seleziona"
+        document.querySelector('.rubrica-list').addEventListener('click', function(e) {
+            if (e.target.classList.contains('seleziona-contatto')) {
+                e.preventDefault();
+
+                // Chiudi il popup della rubrica
+                document.getElementById('popUp').classList.remove('active');
+
+                // Recupera i dati dall'attributo data
+                const iban = e.target.getAttribute('data-iban');
+                const nome = e.target.getAttribute('data-nome');
+
+                // Apri il popup di trasferimento
+                const transferOverlay = document.getElementById('popupOverLay1');
+                transferOverlay.classList.add('active');
+
+                // Precompila i campi
+                document.getElementById('iban').value = iban;
+                document.getElementById('destinatario').value = nome;
+
+                // Focus sul campo importo
+                document.getElementById('importo').focus();
+            }
+        });
+    });
 </script>
 </body>
 </html>
