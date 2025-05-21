@@ -25,10 +25,9 @@ public class ValoriAzioniService {
     @Autowired
     private AzioniService azioniService;
 
-
     /**
-     * Scheduled task to calculate and store the daily value of investments.
-     * Runs every day at midnight.
+     * Metodo schedulato per aggiornare i valori delle azioni ogni giorno a mezzanotte.
+     * Recupera tutti gli investimenti e aggiorna i loro valori in base al valore corrente delle azioni.
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateDailyInvestmentValues() {
