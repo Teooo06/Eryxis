@@ -64,11 +64,24 @@
 <main>
     <section class="hero-2">
         <div class="trading-top">
-            <form action="/my-stock">
+
+            <!-- Campo di ricerca -->
+            <form action="/search" class="search-bar">
+                <label>
+                    <input type="text" name="filtro" placeholder="Cerca azioni..." class="search-input"/>
+                </label>
+                <button type="submit" class="search-button" >
+                    <i class="fa fa-search" aria-hidden="true" style="font-size: 16px;"></i>
+                </button>
+            </form>
+
+            <!-- Bottone per "Le mie azioni" -->
+            <form action="/my-stock" class="form-stock-btn">
                 <button class="my-stock-btn" th:if="${investimenti.size != 0}">
                     Le mie azioni <i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i>
                 </button>
             </form>
+
         </div>
         <div class="main">
             <div id="carousel-container">
@@ -89,7 +102,7 @@
                                         <h3 th:text="${azione.name}" class="name-stock"></h3>
                                     </div>
                                     <div class="right-part">
-                                        <h2 th:text="${azione.price} + ' $'" class="price-stock"></h2>
+                                        <h2 th:text="${#numbers.formatDecimal(azione.price, 1, 2)} + ' $'" class="price-stock"></h2>
                                     </div>
                                 </div>
                             </button>
@@ -100,8 +113,16 @@
 
                 </div>
                 <div class="button-movement">
+                    <form action="/search" class="top-form" th:if="${page != -1}">
+                        <input type="hidden" name="page" th:value="${page - 1}" />
+                        <button class="previous-page" type="submit" th:disabled="${page == 0}"><i class="fa fa-angle-left arrow" style="padding-right: 10px" aria-hidden="true"></i>Previous Page</button>
+                    </form>
                     <button id="prev"><i class="fa fa-angle-left arrow" aria-hidden="true"></i></button>
                     <button id="next"><i class="fa fa-angle-right arrow" aria-hidden="true"></i></button>
+                    <form action="/search" class="bottom-form" th:if="${page != -1}">
+                        <input type="hidden" name="page" th:value="${page + 1}" />
+                        <button class="next-page">Next Page<i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i></button>
+                    </form>
                 </div>
             </div>
         </div>

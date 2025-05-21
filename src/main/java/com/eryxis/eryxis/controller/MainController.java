@@ -97,7 +97,7 @@ public class MainController {
                     boolean hasPrepagata = carte.stream().anyMatch(c -> c.getTipo().equals("prepagata"));
 
                     transazioni.sort(
-                            Comparator.comparing(Transazioni::getDataTransazione, Comparator.nullsLast(Comparator.naturalOrder())).reversed()
+                            Comparator.comparing(Transazioni::getDataTransazione, Comparator.nullsLast(Comparator.naturalOrder()))
                     );
                     model.addAttribute("id", id);
                     model.addAttribute("nome", nome);

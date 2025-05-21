@@ -414,6 +414,7 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
 <script th:inline="javascript">
     const transazioni = [[${transazioni}]];
+    const valuta = [[${valuta}]]; // Niente virgolette!
 
     function formatDate(dataString) {
         const data = new Date(dataString);
@@ -429,7 +430,7 @@
     const outcomeMap = {};
 
     transazioni.forEach(t => {
-        if (t.causale && t.causale.toLowerCase() === 'ricarica') return; // Salta le "ricarica"
+        if (t.causale && t.causale.toLowerCase() === 'ricarica') return;
 
         const date = formatDate(t.dataTransazione);
         if (!incomeMap[date]) incomeMap[date] = 0;
@@ -442,9 +443,10 @@
         }
     });
 
-    const sortedDates = Object.keys({ ...incomeMap, ...outcomeMap }).sort((a, b) =>
-        new Date('2025 ' + a) - new Date('2025 ' + b)
-    );
+    // Ricava le date nell’ordine originale (senza duplicati)
+    const sortedDates = transazioni
+        .map(t => formatDate(t.dataTransazione))
+        .filter((date, index, self) => self.indexOf(date) === index);
 
     const incomeData = sortedDates.map(d => incomeMap[d] || 0);
     const outcomeData = sortedDates.map(d => outcomeMap[d] || 0);
@@ -455,7 +457,7 @@
         tooltip: {
             trigger: 'axis',
             formatter: params =>
-                params.map(p => `${p.seriesName}: $${p.value.toFixed(2)}`).join('<br/>')
+                params.map(p => `${p.seriesName}: ${valuta}${p.value.toFixed(2)}`).join('<br/>')
         },
         xAxis: {
             type: 'category',
@@ -464,7 +466,7 @@
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '${value}'
+                formatter: value => `${valuta}${value}`
             }
         },
         series: [
@@ -491,7 +493,6 @@
 
     chart.setOption(option);
 </script>
-
 <script>
     function updateDateTime() {
         const now = new Date();

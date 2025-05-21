@@ -38,6 +38,7 @@ public class TradingController {
     @GetMapping("/trading")
     public String trading(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        int page = 0;
 
         // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
         if (auth instanceof CustomAuthenticationToken customAuth) {
@@ -48,7 +49,47 @@ public class TradingController {
             Utenti utente = utentiService.findByIdUtente(id);
 
             List<Investimenti> investimenti = investimentiService.findByUtente(utente);
-            List<Azioni> azioni = azioniService.getListAzioni(0, 50);
+            List<Azioni> azioni = azioniService.getListAzioni(0,  49);
+
+            model.addAttribute("nome", nome);
+            model.addAttribute("cognome", cognome);
+            model.addAttribute("listaAzioni", azioni);
+            model.addAttribute("investimenti", investimenti);
+            model.addAttribute("page", page);
+
+            return "trading";
+        }
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/search")
+    public String trade(Model model,@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                    @RequestParam(name = "filtro", required = false, defaultValue = "") String filtro) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int id = customAuth.getIdUtente();
+            String nome = customAuth.getNome();
+            String cognome = customAuth.getCognome();
+
+            Utenti utente = utentiService.findByIdUtente(id);
+
+            List<Investimenti> investimenti = investimentiService.findByUtente(utente);
+            List<Azioni> azioni;
+
+            if(!filtro.isEmpty()){
+                azioni = azioniService.cercaAzioniPerSymbol(filtro);
+                model.addAttribute("page", -1);
+            }
+            else if (page != 0) {
+                azioni = azioniService.getListAzioni(page * 50, (page * 50) + 49);
+                model.addAttribute("page", page + 1);
+            }
+            else {
+                return null;
+            }
 
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
@@ -60,6 +101,7 @@ public class TradingController {
 
         return "redirect:/login";
     }
+
 
     @PostMapping("/dettaglio-azione")
     public String dettaglioAzione(Model model,
