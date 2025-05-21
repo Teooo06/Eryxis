@@ -83,9 +83,12 @@ public class TradingController {
                 azioni = azioniService.cercaAzioniPerSymbol(filtro);
                 model.addAttribute("page", -1);
             }
+            else if (page == 0){
+                return "redirect:/trading";
+            }
             else if (page != 0) {
                 azioni = azioniService.getListAzioni(page * 50, (page * 50) + 49);
-                model.addAttribute("page", page + 1);
+                model.addAttribute("page", page);
             }
             else {
                 return null;

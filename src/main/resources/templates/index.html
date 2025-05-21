@@ -429,7 +429,7 @@
     const incomeMap = {};
     const outcomeMap = {};
 
-    transazioni.forEach(t => {
+    transazioni.reverse().forEach(t => {
         if (t.causale && t.causale.toLowerCase() === 'ricarica') return;
 
         const date = formatDate(t.dataTransazione);
