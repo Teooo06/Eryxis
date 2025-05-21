@@ -13,5 +13,6 @@ public interface UtentiRepository extends JpaRepository<Utenti, Integer> {
     Utenti findByIdUtente (int idUtente);
     Utenti findByMailAndPassword (String mail, String password);
     Utenti findByMail (String mail);
-    List<Utenti> findByPermesso(Permessi permesso);
+    List<Utenti> findByPermesso (Permessi permesso);
+    Utenti findByIdUtenteAndPermesso (int idUtente, Permessi permesso);
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Support Page</title>
+  <link rel="stylesheet" th:href="@{/style/style.css}">
+  <link rel="stylesheet" href="../static/style/style.css">
+  <link rel="stylesheet" th:href="@{/style/adStyle.css}">
+  <link rel="stylesheet" href="../static/style/adStyle.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1 class="nunito-1">eryxis</h1>
+  </div>
+  <div class="menu-section">
+    <nav>
+      <ul>
+        <li>
+          <form action="/home">
+            <button class="menu-button">
+              <i class="fa fa-home spacing" aria-hidden="true"></i>
+              Overview
+            </button>
+          </form>
+        </li>
+        <li>
+          <form action="/creditManagement">
+            <button class="menu-button">
+              <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+              Credit Management
+            </button>
+          </form>
+        </li>
+        <li class="select">
+          <form>
+            <button class="menu-button">
+              <i class="fa fa-comments spacing" aria-hidden="true"></i>
+              Support
+            </button>
+          </form>
+        </li>
+        <li>
+          <form action="/adSetting">
+            <button class="menu-button">
+              <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+              Settings
+            </button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="user-sec">
+    <div class="user-name">
+      <div class="user-image">
+        <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+      </div>
+      <h3 class="name" th:text="${nome + ' ' + cognome}"></h3>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="credit-sec">
+    <div class="top-sec">
+      <div class="title-user">
+        <h2>Ticket</h2>
+      </div>
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titolo</th>
+          <th>Stato</th>
+          <th>Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ticket : ${tickets}">
+          <td th:text="${ticket.idTicket}"></td>
+          <td th:text="${ticket.titolo}"></td>
+          <td th:text="${ticket.stato}"></td>
+          <td>Dettagli / chiudi</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

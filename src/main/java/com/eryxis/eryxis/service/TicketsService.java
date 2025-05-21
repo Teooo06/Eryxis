@@ -82,4 +82,13 @@ public class TicketsService {
         return ticketsRepository.findByUtenteAndStato(utente, stato);
     }
 
+    /**
+     * Retrieves all tickets from the repository.
+     *
+     * @return A list of all tickets.
+     */
+    public List<Tickets> findAll() {
+        return ticketsRepository.findAll();
+    }
+
 }

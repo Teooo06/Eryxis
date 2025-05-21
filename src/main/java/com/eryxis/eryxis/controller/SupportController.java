@@ -77,5 +77,28 @@ public class SupportController {
         return "redirect:/login";
     }
 
+    @GetMapping("/supportAdmin")
+    public String getAllTicket(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        // Check if the user is authenticated with CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int userId = customAuth.getIdUtente();
+            Utenti utente = utentiService.findByIdUtente(userId);
+            String codicePermesso = utente.getPermesso().getCodicePermesso();
+
+            if (!"07".equals(codicePermesso) && !"05".equals(codicePermesso)) {
+                return "redirect:/login"; // Redirect if the user is not authorized
+            }
+            List<Tickets> tickets = ticketsService.findAll();
+
+            model.addAttribute("tickets", tickets);
+            model.addAttribute("nome", customAuth.getNome());
+
+            // pagina admin per tickets
+            // return "supportAdmin";
+        }
+
+        return "redirect:/login"; // Redirect if the user is not authenticated
+    }
 }
