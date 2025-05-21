@@ -17,9 +17,15 @@
         </form>
         <h2>Investimenti</h2>
     </div>
-    <div class="investimento">
+    <div class="investimento" th:each="investimento : ${investimenti}">
         <div class="details">
+            <div class="stock">
+                <h2 th:text="${investimento.symbol}" class="symbol">Prova</h2>
+                <h3 th:text="${investimento.name}" class="name-st">The First Trust Combined Series 447: Investment Grade Multi-Asset Income Portfolio, Long Term, Series 12</h3>
+            </div>
+            <div class="sell-section">
 
+            </div>
         </div>
         <div class="chart-container">
 
