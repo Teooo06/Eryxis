@@ -6,6 +6,7 @@ import com.eryxis.eryxis.repository.CarteRepository;
 import com.eryxis.eryxis.repository.TransazioniRepository;
 import com.eryxis.eryxis.service.*;
 import com.eryxis.eryxis.service.externalAPI.AzioniService;
+import com.eryxis.eryxis.service.externalAPI.MoneyChange;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,6 +35,8 @@ public class TradingController {
     private ContiService contiService;
     @Autowired
     private CarteService carteService;
+    @Autowired
+    private MoneyChange moneyChange;
 
     @GetMapping("/trading")
     public String trading(Model model) {
@@ -47,14 +50,13 @@ public class TradingController {
             String cognome = customAuth.getCognome();
 
             Utenti utente = utentiService.findByIdUtente(id);
+            Conti conto = contiService.findByUtente(utente);
 
             List<Investimenti> investimenti = investimentiService.findByUtente(utente);
-            List<Azioni> azioni = azioniService.getListAzioni(0,  49);
+            List<Azioni> azioni = azioniService.getListAzioni(0, 49);
 
-            model.addAttribute("nome", nome);
-            model.addAttribute("cognome", cognome);
-            model.addAttribute("listaAzioni", azioni);
-            model.addAttribute("investimenti", investimenti);
+            // Convert currency for both lists
+            aggiungiModel(model, nome, cognome, conto, investimenti, azioni);
             model.addAttribute("page", page);
 
             return "trading";
@@ -64,8 +66,9 @@ public class TradingController {
     }
 
     @GetMapping("/search")
-    public String trade(Model model,@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                    @RequestParam(name = "filtro", required = false, defaultValue = "") String filtro) {
+    public String trade(Model model,
+                        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                        @RequestParam(name = "filtro", required = false, defaultValue = "") String filtro) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
@@ -75,34 +78,41 @@ public class TradingController {
             String cognome = customAuth.getCognome();
 
             Utenti utente = utentiService.findByIdUtente(id);
+            Conti conto = contiService.findByUtente(utente);
 
             List<Investimenti> investimenti = investimentiService.findByUtente(utente);
             List<Azioni> azioni;
 
-            if(!filtro.isEmpty()){
+            if (!filtro.isEmpty()) {
                 azioni = azioniService.cercaAzioniPerSymbol(filtro);
                 model.addAttribute("page", -1);
-            }
-            else if (page == 0){
+            } else if (page == 0) {
                 return "redirect:/trading";
-            }
-            else if (page != 0) {
+            } else if (page != 0) {
                 azioni = azioniService.getListAzioni(page * 50, (page * 50) + 49);
                 model.addAttribute("page", page);
-            }
-            else {
+            } else {
                 return null;
             }
 
-            model.addAttribute("nome", nome);
-            model.addAttribute("cognome", cognome);
-            model.addAttribute("listaAzioni", azioni);
-            model.addAttribute("investimenti", investimenti);
+            // Convert currency for both lists
+            aggiungiModel(model, nome, cognome, conto, investimenti, azioni);
 
             return "trading";
         }
 
         return "redirect:/login";
+    }
+
+    private void aggiungiModel(Model model, String nome, String cognome, Conti conto, List<Investimenti> investimenti, List<Azioni> azioni) {
+        String targetCurrency = conto.getValuta(); // Use the account's currency as the target
+        investimenti = moneyChange.convertCurrencyForInvestimentiList(targetCurrency, investimenti, conto);
+        azioni = moneyChange.convertCurrencyForAzioniList(targetCurrency, azioni, conto);
+
+        model.addAttribute("nome", nome);
+        model.addAttribute("cognome", cognome);
+        model.addAttribute("listaAzioni", azioni);
+        model.addAttribute("investimenti", investimenti);
     }
 
 

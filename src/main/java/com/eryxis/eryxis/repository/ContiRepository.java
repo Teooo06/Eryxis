@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ContiRepository extends JpaRepository<Conti, String> {
     Conti findByIBAN (String iban);
-    List<Conti> findByUtente (Utenti utente);
+    Conti findByUtente (Utenti utente);
     List<Conti> findByConsulente (Utenti consulente);
 }

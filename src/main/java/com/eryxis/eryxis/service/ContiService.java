@@ -37,7 +37,7 @@ public class ContiService {
      * @param utente L'utente proprietario dei conti.
      * @return Lista di conti collegati all'utente.
      */
-    public List<Conti> findByUtente(Utenti utente) {
+    public Conti findByUtente(Utenti utente) {
         return contiRepository.findByUtente(utente);
     }
 
