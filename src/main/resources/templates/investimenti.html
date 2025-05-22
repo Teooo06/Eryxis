@@ -10,31 +10,130 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
+<header>
+    <div class="title">
+        <h1 class="nunito-1">eryxis</h1>
+    </div>
+    <div class="menu-section">
+        <nav>
+            <ul>
+                <li>
+                    <form action="/home">
+                        <button class="menu-button">
+                            <i class="fa fa-home spacing" aria-hidden="true"></i>
+                            Overview
+                        </button>
+                    </form>
+                </li>
+                <li class="select">
+                    <form action="/trading">
+                        <button class="menu-button">
+                            <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+                            Tradings
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form action="/setting">
+                        <button class="menu-button">
+                            <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+                            Settings
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form action="">
+                        <button class="menu-button">
+                            <i class="fa fa-comments spacing" aria-hidden="true"></i>
+                            Support
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="user-sec">
+        <div class="user-name">
+            <div class="user-image">
+                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+            </div>
+            <h3 class="name" th:text="${nome + ' ' + cognome}"></h3>
+        </div>
+    </div>
+</header>
+
 <section class="hero-investimenti">
-    <div class="header">
-        <form action="/trading">
-            <button class="back-button"><i class="fas fa-arrow-left"></i></button>
-        </form>
-        <h2>Investimenti</h2>
-    </div>
-    <div class="investimento" th:each="investimento : ${investimenti}">
-        <div class="details">
-            <div class="stock">
-                <h2 th:text="${investimento.symbol}" class="symbol">Prova</h2>
-                <h3 th:text="${investimento.name}" class="name-st">The First Trust Combined Series 447: Investment Grade Multi-Asset Income Portfolio, Long Term, Series 12</h3>
-            </div>
-            <div class="sell-section">
-
+    <div class="top-stocks">
+        <div class="portfolio">
+            <h2 class="titolo-portfolio">Portfolio</h2>
+            <div class="portfolio-block">
+                <h2 class="totale"><span class="number" th:text="${totalAmount}"></span></h2>
+                <div id="pieChart" class="pie-chart"></div>
             </div>
         </div>
-        <div class="chart-container">
+        <div class="assets">
 
         </div>
-    </div>
-    <div class="investimento">
-
     </div>
 
 </section>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let investimenti = [[${investimenti}]];
+
+    // Conta i tipi
+    let counts = {};
+    investimenti.forEach(investimento => {
+        let tipo = investimento.type;
+        counts[tipo] = (counts[tipo] || 0) + 1;
+    });
+
+    // Trasforma in formato compatibile con ECharts
+    let data = [];
+    for (let tipo in counts) {
+        data.push({
+            name: tipo,
+            value: counts[tipo]
+        });
+    }
+
+    // Inizializza il grafico
+    let chartDom = document.getElementById('pieChart');
+    let myChart = echarts.init(chartDom);
+    let option = {
+        title: {
+            text: 'Distribuzione degli Investimenti',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+        },
+        series: [
+            {
+                name: 'Tipo di Asset',
+                type: 'pie',
+                radius: '50%',
+                data: data,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+    /*]]>*/
+</script>
+
 </body>
 </html>

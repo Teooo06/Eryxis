@@ -28,6 +28,9 @@ public class Investimenti {
     @Column(nullable = false)
     private int quantita;
 
+    @Column(nullable = false)
+    private String type;
+
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp dataAcquisto;
 

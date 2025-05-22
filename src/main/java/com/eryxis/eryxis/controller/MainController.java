@@ -90,9 +90,9 @@ public class MainController {
 
                     return  "adPage";
                 }
-                List<Conti> conto = contiService.findByUtente(utente);
-                if (!conto.isEmpty()) {
-                    List<Transazioni> transazioni = transazioniService.findByConto(conto.get(0));
+                Conti conto = contiService.findByUtente(utente);
+                if (conto != null) {
+                    List<Transazioni> transazioni = transazioniService.findByConto(conto);
                     boolean hasDebito = carte.stream().anyMatch(c -> c.getTipo().equals("debito"));
                     boolean hasPrepagata = carte.stream().anyMatch(c -> c.getTipo().equals("prepagata"));
 
@@ -105,8 +105,8 @@ public class MainController {
                     model.addAttribute("carte", carte);
                     model.addAttribute("cardCount", carte.size());
                     model.addAttribute("transazioni", transazioni);
-                    model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.get(0).getValuta(), conto.get(0).getValuta()));
-                    model.addAttribute("saldo", conto.get(0).getSaldo());
+                    model.addAttribute("valuta", CURRENCY_SYMBOLS.getOrDefault(conto.getValuta(), conto.getValuta()));
+                    model.addAttribute("saldo", conto.getSaldo());
                     model.addAttribute("hasDebito", hasDebito);
                     model.addAttribute("hasPrepagata", hasPrepagata);
                     model.addAttribute("rubriche", rubriche);

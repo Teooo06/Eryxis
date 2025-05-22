@@ -12,48 +12,48 @@ USE `banca`;
 
 -- Create permessi table first since other tables reference it
 CREATE TABLE `permessi`(
- `idPermesso` INT PRIMARY KEY,
- `ruolo` VARCHAR(10) NOT NULL,
- `codicePermesso` CHAR(2) UNIQUE NOT NULL
+`idPermesso` INT PRIMARY KEY,
+`ruolo` VARCHAR(10) NOT NULL,
+`codicePermesso` CHAR(2) UNIQUE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `permessi` (`idPermesso`, `ruolo`, `codicePermesso`) VALUES
- (1, 'admin', '07'),
- (2, 'support', '05'),
- (3, 'client', '70'),
- (4, 'advisor', '75');
+(1, 'admin', '07'),
+(2, 'support', '05'),
+(3, 'client', '70'),
+(4, 'advisor', '75');
 
 -- Now create utenti table
 CREATE TABLE `utenti`(
- `idUtente` INT PRIMARY KEY AUTO_INCREMENT,
- `nome` VARCHAR(50) NOT NULL,
- `cognome` VARCHAR(50) NOT NULL,
- `dataNascita` DATE DEFAULT '2000-01-01',
- `toponimo` VARCHAR(10) NOT NULL,
- `indirizzo` VARCHAR(100) NOT NULL,
- `numeroCivico` INT NOT NULL CHECK ( numeroCivico > 0 ),
- `codiceFiscale` CHAR(16) UNIQUE NOT NULL,
- `mail` VARCHAR(150) UNIQUE NOT NULL,
- `prefisso` VARCHAR(6) NOT NULL,
- `telefono` VARCHAR(15) NOT NULL,
- `password` VARCHAR(100)  NOT NULL,
- `passPhrase` VARCHAR(255) UNIQUE,
- `OTP` BOOLEAN NOT NULL,
- `id_permesso` INT NOT NULL,
- CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
+`idUtente` INT PRIMARY KEY AUTO_INCREMENT,
+`nome` VARCHAR(50) NOT NULL,
+`cognome` VARCHAR(50) NOT NULL,
+`dataNascita` DATE DEFAULT '2000-01-01',
+`toponimo` VARCHAR(10) NOT NULL,
+`indirizzo` VARCHAR(100) NOT NULL,
+`numeroCivico` INT NOT NULL CHECK ( numeroCivico > 0 ),
+`codiceFiscale` CHAR(16) UNIQUE NOT NULL,
+`mail` VARCHAR(150) UNIQUE NOT NULL,
+`prefisso` VARCHAR(6) NOT NULL,
+`telefono` VARCHAR(15) NOT NULL,
+`password` VARCHAR(100)  NOT NULL,
+`passPhrase` VARCHAR(255) UNIQUE,
+`OTP` BOOLEAN NOT NULL,
+`id_permesso` INT NOT NULL,
+CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
 
 -- Create conti table next since other tables reference it
 CREATE TABLE `conti` (
- `IBAN` CHAR(27) PRIMARY KEY,
- `saldo` DECIMAL(20, 2) DEFAULT 0,
- `stato` BOOLEAN DEFAULT TRUE,
- `valuta` VARCHAR(3) NOT NULL,
- `dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- `id_utente` INT NOT NULL,
- `id_consulente` INT DEFAULT NULL,
- CONSTRAINT `fk_conto_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE,
- CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+`IBAN` CHAR(27) PRIMARY KEY,
+`saldo` DECIMAL(20, 2) DEFAULT 0,
+`stato` BOOLEAN DEFAULT TRUE,
+`valuta` VARCHAR(3) NOT NULL,
+`dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+`id_utente` INT NOT NULL,
+`id_consulente` INT DEFAULT NULL,
+CONSTRAINT `fk_conto_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE,
+CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Now create the other tables
@@ -68,21 +68,21 @@ CONSTRAINT `fk_ticket_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idU
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `rubriche`(
- `idContatto` INT PRIMARY KEY AUTO_INCREMENT,
- `nome` VARCHAR(100) NOT NULL,
- `cognome` VARCHAR(100) NOT NULL,
- `IBAN` CHAR(27) NOT NULL,
- `id_utente` INT NOT NULL,
- CONSTRAINT `fk_rubrica_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+`idContatto` INT PRIMARY KEY AUTO_INCREMENT,
+`nome` VARCHAR(100) NOT NULL,
+`cognome` VARCHAR(100) NOT NULL,
+`IBAN` CHAR(27) NOT NULL,
+`id_utente` INT NOT NULL,
+CONSTRAINT `fk_rubrica_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `logs`(
- `idLog` INT PRIMARY KEY AUTO_INCREMENT,
- `dataModifica` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- `tipoModifica` VARCHAR(50) NOT NULL,
- `descrizione` VARCHAR(255) NOT NULL,
- `id_utente` INT NOT NULL,
- CONSTRAINT `fk_log_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+`idLog` INT PRIMARY KEY AUTO_INCREMENT,
+`dataModifica` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+`tipoModifica` VARCHAR(50) NOT NULL,
+`descrizione` VARCHAR(255) NOT NULL,
+`id_utente` INT NOT NULL,
+CONSTRAINT `fk_log_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `transazioni`(
@@ -110,22 +110,23 @@ CONSTRAINT `fk_carta_conto` FOREIGN KEY (`IBAN`) REFERENCES `conti`(`IBAN`) ON D
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `investimenti`(
-    `idInvestimento` INT PRIMARY KEY AUTO_INCREMENT,
-    `symbol` VARCHAR(12) NOT NULL,
-    `nomeAzione` VARCHAR(500) NOT NULL,
-    `prezzoAcquisto` DECIMAL(10, 2) NOT NULL,
-    `quantita` INT NOT NULL CHECK (quantita > 0),
-    `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `id_utente` INT NOT NULL,
-    CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
+`idInvestimento` INT PRIMARY KEY AUTO_INCREMENT,
+`symbol` VARCHAR(12) NOT NULL,
+`nomeAzione` VARCHAR(500) NOT NULL,
+`prezzoAcquisto` DECIMAL(10, 2) NOT NULL,
+`quantita` INT NOT NULL CHECK (quantita > 0),
+`type` VARCHAR(10) NOT NULL,
+`dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+`id_utente` INT NOT NULL,
+CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `valoriAzioni` (
-    `idInvestimento` INT AUTO_INCREMENT,
-    `dataValore` DATE,
-    `valore` DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (`idInvestimento`, `dataValore`),
-    CONSTRAINT `fk_investimento_valoriAzioni` FOREIGN KEY (`idInvestimento`) REFERENCES `investimenti`(`idInvestimento`) ON DELETE CASCADE
+`idInvestimento` INT AUTO_INCREMENT,
+`dataValore` DATE,
+`valore` DECIMAL(10, 2) NOT NULL,
+PRIMARY KEY (`idInvestimento`, `dataValore`),
+CONSTRAINT `fk_investimento_valoriAzioni` FOREIGN KEY (`idInvestimento`) REFERENCES `investimenti`(`idInvestimento`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `finanziamenti`(

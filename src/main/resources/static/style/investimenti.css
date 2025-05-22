@@ -1,72 +1,49 @@
 .hero-investimenti{
-    margin: 75px;
-    height: 750px;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
+    margin: 50px 50px 45px 20vw;
+    height: 850px;
+    display: flex;
 }
 
-.header{
+.top-stocks{
     width: 100%;
-    height: 60px;
-    background-color: white;
-    position: sticky;
+    height: 40%;
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
 
-form{
-    width: 150px;
-    height: 75%;
-    margin: 0 39% 0 0;
-    padding: 0;
-}
-
-.back-button{
-    width: 100%;
+.portfolio{
+    width: 40%;
     height: 100%;
-}
-
-.investimento{
-    width: 100%;
-    height: 275px;
-    border-radius: 30px;
-    margin: 0 0 20px;
+    border-radius: 20px;
+    padding: 10px 0 0 10px;
     background-color: #660708;
 }
 
-.investimento:nth-child(odd) {
-    background-color: #161A1D;
+.titolo-portfolio{
+    width: 100%;
+    height: 10%;
+    font-size: 35px;
+    margin: 0;
 }
 
-.details{
-    width: 50%;
-    height: 100%;
+.portfolio-block{
+    width: 100%;
+    height: 90%;
     display: flex;
     flex-direction: row;
-    color: white;
 }
 
-.stock{
-    width: 75%;
+.totale{
+    width: 40%;
     height: 100%;
 }
 
-.sell-section{
-    width: 25%;
+.pie-chart{
+    width: 60%;
     height: 100%;
 }
 
-.symbol{
-    margin: 30px;
-    font-size: 40px;
-    font-weight: bold;
-    font-family: 'josefin sans', sans-serif;
-}
-
-.name-st{
-    margin: 0 30px 30px;
-    font-size: 20px;
-    font-weight: bold;
-    font-family: 'josefin sans', sans-serif;
+.assets{
+    width: 60%;
+    height: 100%;
 }
