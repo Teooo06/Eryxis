@@ -2,6 +2,14 @@
     margin: 50px 50px 45px 20vw;
     height: 850px;
     display: flex;
+    flex-direction: column;
+}
+
+.intestazione{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
 }
 
 .top-stocks{
@@ -9,6 +17,12 @@
     height: 40%;
     display: flex;
     flex-direction: row;
+}
+
+.bottom-stocks{
+    width: 100%;
+    height: 50%;
+    margin: 40px 0;
 }
 
 .portfolio{
@@ -20,10 +34,12 @@
 }
 
 .titolo-portfolio{
-    width: 100%;
-    height: 10%;
+    width: 80%;
+    height: 100%;
     font-size: 35px;
     margin: 0;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
 }
 
 .portfolio-block{
@@ -43,7 +59,220 @@
     height: 100%;
 }
 
+.titolo-assets{
+    width: 100%;
+    height: 100%;
+    font-size: 35px;
+    margin: 0;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
 .assets{
     width: 60%;
     height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.first-stock, .second-stock, .third-stock{
+    width: 30%;
+    height: 100%;
+    border-radius: 20px;
+    padding-top: 10px;
+}
+
+.first-stock{
+    margin: 0 2.5% 0 5%;
+    background-color: rgba(0, 128, 0);
+}
+
+.second-stock{
+    margin: 0 2.5% 0 0;
+    background-color: #bfbfbf;
+}
+
+.third-stock{
+    background-color: rgba(208, 0, 0);
+}
+
+.symbol-title-box{
+    width: 100%;
+    height: 20%;
+    text-align: center;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.stock-title{
+    width: 100%;
+    height: 100%;
+    font-size: 60px;
+    margin: 25px 0 50px;
+    color: #161A1D;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.top-title-stock{
+    font-size: 15px;
+    color: #161A1D;
+    margin: 30px 10px 0;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.quantity-stock{
+    width: 100%;
+    height: 30%;
+    font-size: 35px;
+    margin: 5px 10px 30px;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.bottom-info{
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-direction: column-reverse;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.stock-value{
+    width: 100%;
+    height: 50%;
+    font-size: 35px;
+    margin: 0 10px 50px;
+    color: white;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+/* Bottom Stock List */
+.stock-list-title{
+    width: 100%;
+    height: 15%;
+}
+
+.stock-list-title-text{
+    width: 100%;
+    height: 100%;
+    font-size: 35px;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+    margin: 0;
+}
+
+.stock-list-info{
+    width: 100%;
+    height: 10%;
+}
+
+table{
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.name-table, .name-stock-sec{
+    width: 30%;
+    height: 100%;
+}
+
+.value-table, .value-stock-sec{
+    width: 15%;
+    height: 100%;
+}
+
+.changes-table, .changes-stock-sec{
+    width: 15%;
+    height: 100%;
+}
+
+.type-table, .type-stock-sec{
+    width: 10%;
+    height: 100%;
+}
+
+.buy-date-table, .buy-date-stock-sec{
+    width: 15%;
+    height: 100%;
+}
+
+.sell-table, .sell-stock-sec{
+    width: 15%;
+    height: 100%;
+}
+
+.sell-stock-sec{
+    align-content: center;
+    justify-items: center;
+}
+
+.stock-list{
+    width: 100%;
+    height: 75%;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+}
+
+.stock-list-element{
+    width: 100%;
+    height: 27.5%;
+    background-color: #161A1D;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    align-content: center;
+}
+
+.stock-symbol-list{
+    width: 100%;
+    height: 35%;
+    font-size: 25px;
+    margin: 10px;
+}
+
+.stock-name-list{
+    width: 100%;
+    height: 25%;
+    font-size: 15px;
+    margin: 0 10px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.value-stock-list, .change-stock-list, .type-stock-list, .buy-date-stock-list{
+    width: 100%;
+    height: 50%;
+    font-size: 25px;
+}
+
+.form-sell-stock{
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    justify-items: center;
+}
+
+.sell-stock-list-button{
+    width: 50%;
+    height: 50%;
+    margin: 0;
+    background-color:  rgba(0, 128, 0);
+    font-size: 15px;
+    font-weight: bold;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.sell-stock-list-button:hover{
+    background-color: #0c490c;
 }
