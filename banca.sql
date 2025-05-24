@@ -57,7 +57,6 @@ CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utent
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Now create the other tables
----lo stato a "0" indica che è ancora aperto il ticket
 CREATE TABLE `tickets`(
 `idTicket` INT PRIMARY KEY AUTO_INCREMENT,
 `titolo` VARCHAR(20) NOT NULL,
@@ -147,20 +146,20 @@ CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utent
 
 -- Inserimento utenti
 INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivico, codiceFiscale, mail, prefisso, telefono, password, passPhrase, OTP, id_permesso) VALUES
-('Lorenzo', 'Molteni', '2006-04-29', 'Via', 'Morigiola', 10, 'RSSMRA80A01H501Z', 'moltenilorenzo6@gmail.com', '+39', '3331234567', 'segreta', 'adminSecret', FALSE, 1),
-('Laura', 'Neri', '1990-01-01', 'Via', 'Centrale', 5, 'NRALRA90A01H501Z', 'laura.neri@banca.it', '+39', '3311112222', 'adminPass', 'newAdminSecret', FALSE, 1),
-('Simone', 'Verdi', '1959-12-28', 'Piazza', 'Garibaldi', 3, 'VRDSMN80A01H501Z', 'simone.verdi@support.it', '+39', '3391234567', 'supportPass', 'supportPhrase', TRUE, 2),
-('Lucia', 'Conti', '1952-03-30', 'Via', 'Roma', 7, 'CNTLCU85B41H501Z', 'lucia.conti@advisor.it', '+39', '3405556677', 'advisorPass', 'advisorPhrase', TRUE, 4),
-('Giulia', 'Bianchi', '1995-05-15', 'Corso', 'Italia', 21, 'BNCGLI95E55F205W', 'giulia@banca.it', '+39', '3339876543', 'userPass456', 'userSecret', TRUE, 3),
-('Eugenia', 'Caracciolo', '2003-04-07', 'Piazza', 'Borgo Garozzo', 71, 'LBcbfn21A81H501Z', 'eugenia.caracciolo@banca.it', '+39', '0265423511', 'passEugenia', 'phraseEugenia', TRUE, 3),
-('Rosaria', 'Bertolucci', '1980-01-06', 'Borgo', 'Rotonda Pasquale', 36, 'TunPFz41A39H501Z', 'rosaria.bertolucci@banca.it', '+39', '9696532871', 'passRosaria', 'phraseRosaria', TRUE, 3),
-('Severino', 'Antonioni', '2000-05-10', 'Strada', 'Contrada Giradello', 190, 'fUFeWI03A91H501Z', 'severino.antonioni@banca.it', '+39', '4657871331', 'passSeverino', 'phraseSeverino', TRUE, 3),
-('Rembrandt', 'Vigliotti', '1996-06-27', 'Strada', 'Canale Adriana', 109, 'AFEnzd01A32H501Z', 'rembrandt.vigliotti@banca.it', '+39', '2343098050', 'passRembrandt', 'phraseRembrandt', TRUE, 3),
-('Ippazio', 'Cuda', '1971-05-04', 'Viale', 'Vicolo Trupiano', 24, 'iqhgVJ08A41H501Z', 'ippazio.cuda@banca.it', '+39', '1640052427', 'passIppazio', 'phraseIppazio', TRUE, 3),
-('Gianfrancesco', 'Filippelli', '1980-06-08', 'Viale', 'Contrada Gentilini', 130, 'vreXrw30A36H501Z', 'gianfrancesco.filippelli@banca.it', '+39', '0196556981', 'passGianfrancesco', 'phraseGianfrancesco', TRUE, 3),
-('Salvatore', 'Donarelli', '1995-03-06', 'Canale', 'Contrada Uberto', 51, 'RtoZmj95A13H501Z', 'salvatore.donarelli@banca.it', '+39', '6320163287', 'passSalvatore', 'phraseSalvatore', FALSE, 3),
-('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', 'passBeatrice', 'phraseBeatrice', FALSE, 3),
-('Matteo', 'Bertoldini', '2000-01-01', 'Via', 'Risorgimento', 1, 'BRTMTT06H07E507V', 'matteobertoldini06@gmail.com', '+39', '3703316356', 'segreta', 'ESAHN3Q42VQUWJT6ARZ5CYWP6JOM4MOL', TRUE, 3);
+('Lorenzo', 'Molteni', '2006-04-29', 'Via', 'Morigiola', 10, 'RSSMRA80A01H501Z', 'moltenilorenzo6@gmail.com', '+39', '3331234567', '$2a$10$9qOEB6xfoLraLSS.ia8vDOBFldSrN6I3A6De4AIhDceuFFMecITuS', 'adminSecret', FALSE, 1),
+('Laura', 'Neri', '1990-01-01', 'Via', 'Centrale', 5, 'NRALRA90A01H501Z', 'laura.neri@banca.it', '+39', '3311112222', '$2a$10$ccgJKXWGDPBgIn9iB7RdeeeCTdJEDtbcGhrwvbHxGRy4S301OfEz6', 'newAdminSecret', FALSE, 1),
+('Simone', 'Verdi', '1959-12-28', 'Piazza', 'Garibaldi', 3, 'VRDSMN80A01H501Z', 'simone.verdi@support.it', '+39', '3391234567', '$2a$10$MtKELl4Tthn03IP3yDLTjOj6EMV3mRm7PfzVx/kyS6xSUmxA.iRHm', 'supportPhrase', TRUE, 2),
+('Lucia', 'Conti', '1952-03-30', 'Via', 'Roma', 7, 'CNTLCU85B41H501Z', 'lucia.conti@advisor.it', '+39', '3405556677', '$2a$10$8xY/MfohcdDdAGGG/2tfVOcEKbLfcqrTnTXxhoNBiTJR9TKPJsz4C', 'advisorPhrase', TRUE, 4),
+('Giulia', 'Bianchi', '1995-05-15', 'Corso', 'Italia', 21, 'BNCGLI95E55F205W', 'giulia@banca.it', '+39', '3339876543', '$2a$10$UuhNaeVYLfDk7inB8ShQlevPGjd95I3HvJXWnqw6RaFUVOcpOa6Ra', 'userSecret', TRUE, 3),
+('Eugenia', 'Caracciolo', '2003-04-07', 'Piazza', 'Borgo Garozzo', 71, 'LBcbfn21A81H501Z', 'eugenia.caracciolo@banca.it', '+39', '0265423511', '$2a$10$Gh2sic5n4zAOEmatn4EzledfPzvb3O4PJ4n2R94LFL02E7gscPC7K', 'phraseEugenia', TRUE, 3),
+('Rosaria', 'Bertolucci', '1980-01-06', 'Borgo', 'Rotonda Pasquale', 36, 'TunPFz41A39H501Z', 'rosaria.bertolucci@banca.it', '+39', '9696532871', '$2a$10$WdhGIV6pL.Cw5zgWYMLVFuOaM4wVJo.47DgY.hl2KpQB9lFVeS8am', 'phraseRosaria', TRUE, 3),
+('Severino', 'Antonioni', '2000-05-10', 'Strada', 'Contrada Giradello', 190, 'fUFeWI03A91H501Z', 'severino.antonioni@banca.it', '+39', '4657871331', '$2a$10$RAChnqFJD26oESnwuBYHF..jEmCoxmqThWSpRIfKm4Y67fvOO6ou6', 'phraseSeverino', TRUE, 3),
+('Rembrandt', 'Vigliotti', '1996-06-27', 'Strada', 'Canale Adriana', 109, 'AFEnzd01A32H501Z', 'rembrandt.vigliotti@banca.it', '+39', '2343098050', '$2a$10$8d78okeLg8T2IzoAsK9omuDAhT2sxMONub1WWTqjSm8tkPh9o4DOG', 'phraseRembrandt', TRUE, 3),
+('Ippazio', 'Cuda', '1971-05-04', 'Viale', 'Vicolo Trupiano', 24, 'iqhgVJ08A41H501Z', 'ippazio.cuda@banca.it', '+39', '1640052427', 'passIppazio', '$2a$10$pL7AzW7nEC.LU2s0xraweupnJ6MYHGjc7.D4IUEJSYoRZOtt4u05m', TRUE, 3),
+('Gianfrancesco', 'Filippelli', '1980-06-08', 'Viale', 'Contrada Gentilini', 130, 'vreXrw30A36H501Z', 'gianfrancesco.filippelli@banca.it', '+39', '0196556981', '$2a$10$vEx/t0yCtCFWLeCEDMkA8OErbE0sn3uqistuHUk3uJVtDOKzOhFUu', 'phraseGianfrancesco', TRUE, 3),
+('Salvatore', 'Donarelli', '1995-03-06', 'Canale', 'Contrada Uberto', 51, 'RtoZmj95A13H501Z', 'salvatore.donarelli@banca.it', '+39', '6320163287', '$2a$10$9nmDY0dr9S9F2DPTtld.PuUT6yDK4K/yH5mKiSdcn5xRcmQ8AFa7O', 'phraseSalvatore', FALSE, 3),
+('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', '$2a$10$4/CiQcapeDL910tmVYzGbOkDMC13pDZ8VN3lfP0/TBPMLcd4FaMSu', 'phraseBeatrice', FALSE, 3),
+('Matteo', 'Bertoldini', '2000-01-01', 'Via', 'Risorgimento', 1, 'BRTMTT06H07E507V', 'matteobertoldini06@gmail.com', '+39', '3703316356', '$2a$10$uhn8RIuaY5h4ormWpBJqV.fqHms/FFoe6DDDnJWna7XIpzC6R.lLK', 'ESAHN3Q42VQUWJT6ARZ5CYWP6JOM4MOL', TRUE, 3);
 
 
 -- Inserimento conti
@@ -220,6 +219,13 @@ INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`,
 (-379452.16, '2025-03-05 11:44:30', 'bonifico', 'Ferrari S.P.A.', 'Acquisto', 'IT60X0542811101000000123456'),
 (645234.34, '2025-03-18 16:20:00', 'accredito', 'Eryxis Bank S.P.A.', '', 'IT60X0542811101000000123456');
 
+-- Inserimento nuovi ticket nella tabella tickets
+INSERT INTO tickets (titolo, descrizione, stato, id_utente) VALUES
+('Problema login', 'Non riesco ad accedere al mio conto con le credenziali corrette.', 0, 5),
+('Carta smarrita', 'Ho perso la mia carta di credito e vorrei bloccarla il prima possibile.', 0, 6),
+('Errore saldo', 'Il saldo del mio conto corrente è errato rispetto agli ultimi movimenti.', 0, 7),
+('Modifica mail', 'Vorrei aggiornare il mio indirizzo email di contatto.', 0, 8),
+('Richiesta finanziamento', 'Desidero informazioni su come richiedere un prestito personale.', 0, 9);
 
 INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `causale`,`IBAN`) VALUES
 -- Carte di debito (14.99)

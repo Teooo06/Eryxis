@@ -63,13 +63,9 @@ public class AuthController {
         if (isValidOTP) {
             // Recupera i dati dell'utente
             Utenti utente = utentiService.findByMail(email);
-            List<Conti> conto = contiService.findByUtente(utente);
+            Conti conto = contiService.findByUtente(utente);
 
-            if (conto.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nessun conto associato all'utente.");
-            }
-
-            List<Carte> carte = carteService.findByConto(conto.get(0));
+            List<Carte> carte = carteService.findByConto(conto);
 
             // Crea un oggetto UserDetails (senza password, perché non serve qui)
             CustomAuthenticationToken authToken = getCustomAuthenticationToken(email, utente, carte);
@@ -104,6 +100,7 @@ public class AuthController {
         CustomAuthenticationToken authToken = new CustomAuthenticationToken(
                 userDetails.getUsername(),
                 userDetails.getPassword(),
+
                 userDetails.getAuthorities(),
                 utente.getIdUtente(),
                 utente.getNome(),

@@ -8,6 +8,7 @@ import com.eryxis.eryxis.repository.CarteRepository;
 import com.eryxis.eryxis.service.ContiService;
 import com.eryxis.eryxis.service.PermessiService;
 import com.eryxis.eryxis.service.Security.OTPService;
+import com.eryxis.eryxis.service.Security.PasswordService;
 import com.eryxis.eryxis.service.UtentiService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -44,6 +45,8 @@ public class RegisterController {
     private CarteRepository carteRepository;
     @Autowired
     private CarteController carteController;
+    @Autowired
+    private PasswordService passwordService;
 
     @GetMapping("/register")
     public String registerPage(Model model, @RequestParam(required = false) String msg) {
@@ -96,7 +99,9 @@ public class RegisterController {
             return "redirect:/registerPassword?msg=Le%20password%20non%20corrispondono";
         }
         Utenti utenti = (Utenti) session.getAttribute("utente");
-        utenti.setPassword(password);
+        String newPassword = passwordService.hashPassword(password);
+        utenti.setPassword(newPassword);
+
         // Genero l'OTP
         String otpSecret = OTPService.generateSecretKey();
         utenti.setPassPhrase(otpSecret); // salva nel DB o sessione

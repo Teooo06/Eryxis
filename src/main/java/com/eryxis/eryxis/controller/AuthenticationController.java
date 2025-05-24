@@ -29,11 +29,9 @@ public class AuthenticationController {
 
 
     // Metodi HTTP POST
-
     // esegue la prima verifica di login
     @PostMapping("/login")
     public String login(Model model, @RequestParam String email, @RequestParam String password) {
-        // TODO: aggiungere dei controlli per evitare delle query injection
 
         if (!utentiService.findByMailAndPasswordBool(email, password)) {
             model.addAttribute("msg", "Credenziali errate");
@@ -43,4 +41,5 @@ public class AuthenticationController {
         // Reindirizza alla pagina OTP
         return "redirect:/auth/otp?email=" + email;
     }
+
 }

@@ -3,6 +3,7 @@ package com.eryxis.eryxis.service;
 import com.eryxis.eryxis.model.Permessi;
 import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.repository.UtentiRepository;
+import com.eryxis.eryxis.service.Security.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public class UtentiService {
     private UtentiRepository utentiRepository;
     @Autowired
     private PermessiService permessiService;
+    @Autowired
+    private PasswordService passwordService;
 
     /**
      * Recupera un utente a partire dall'ID specificato.
@@ -64,8 +67,10 @@ public class UtentiService {
      * @return true se l'utente esiste, false altrimenti.
      */
     public boolean findByMailAndPasswordBool(String mail, String password) {
-        Utenti utente = utentiRepository.findByMailAndPassword(mail, password);
-        return utente != null;
+        Utenti utente = utentiRepository.findByMail(mail);
+        if (utente == null) return false;
+
+        return passwordService.verifyPassword(password, utente.getPassword());
     }
 
     /**
