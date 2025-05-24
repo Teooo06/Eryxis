@@ -104,6 +104,7 @@ public class RegisterController {
 
         // Genero l'OTP
         String otpSecret = OTPService.generateSecretKey();
+        String passphrase = passwordService.encrypt(otpSecret);
         utenti.setPassPhrase(otpSecret); // salva nel DB o sessione
         String accountName = utenti.getMail(); // o nome utente
         String qrCodeURL = OTPService.getQRCodeURL(accountName, otpSecret);

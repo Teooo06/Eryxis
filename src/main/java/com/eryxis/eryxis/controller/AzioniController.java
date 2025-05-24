@@ -37,10 +37,21 @@ public class AzioniController {
         return azioniService.getDatiAzione(symbol);
     }
 
-    // End point per hashare password (se mai dovesse servire)
-    @GetMapping("/prova")
-    public String getString(@RequestParam String password) {
+    /* End point per hashare password (se mai dovesse servire)
+    @GetMapping("/hash")
+    public String getHash(@RequestParam String password) {
         return passwordService.hashPassword(password);
     }
+     */
 
+    /*
+    @GetMapping("/encrypt")
+    public String getEncrypt(@RequestParam String password) {
+        try {
+            return passwordService.encrypt(password);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante la cifratura: " + e.getMessage());
+        }
+    }
+     */
 }

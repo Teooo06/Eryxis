@@ -82,7 +82,12 @@ public class UtentiService {
     public String findPassPhrase(String mail) {
         Utenti utente = utentiRepository.findByMail(mail);
         if (utente != null) {
-            return utente.getPassPhrase();
+            String passphrase = utente.getPassPhrase();
+            try {
+                return passwordService.decrypt(passphrase);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         return null;
     }
