@@ -37,7 +37,7 @@ CREATE TABLE `utenti`(
 `prefisso` VARCHAR(6) NOT NULL,
 `telefono` VARCHAR(15) NOT NULL,
 `password` VARCHAR(100)  NOT NULL,
-`passPhrase` VARCHAR(255) UNIQUE,
+`passPhrase` VARCHAR(255),
 `OTP` BOOLEAN NOT NULL,
 `id_permesso` INT NOT NULL,
 CONSTRAINT `fk_utente_permesso` FOREIGN KEY (`id_permesso`) REFERENCES `permessi`(`idPermesso`) ON DELETE CASCADE
@@ -113,7 +113,7 @@ CREATE TABLE `investimenti`(
 `symbol` VARCHAR(12) NOT NULL,
 `nomeAzione` VARCHAR(500) NOT NULL,
 `prezzoAcquisto` DECIMAL(10, 2) NOT NULL,
-`quantita` INT NOT NULL CHECK (quantita > 0),
+`quantita` DECIMAL(10, 2) NOT NULL CHECK (quantita > 0),
 `type` VARCHAR(10) NOT NULL,
 `dataAcquisto` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 `id_utente` INT NOT NULL,
@@ -121,7 +121,7 @@ CONSTRAINT `fk_investimento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `valoriAzioni` (
-`idInvestimento` INT AUTO_INCREMENT,
+`idInvestimento` INT,
 `dataValore` DATE,
 `valore` DECIMAL(10, 2) NOT NULL,
 PRIMARY KEY (`idInvestimento`, `dataValore`),

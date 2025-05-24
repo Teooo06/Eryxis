@@ -60,4 +60,13 @@ public class ValoriAzioniService {
         }
     }
 
+    public List<ValoriAzioni> getByListInvestimenti(List<Investimenti> investimenti){
+        List<Integer> ids = investimenti.stream()
+                                        .map(Investimenti::getIdInvestimento)
+                                        .toList();
+        return valoriAzioniRepository.findByIdInvestimentoIn(ids);
+    }
+
+    public ValoriAzioni save(ValoriAzioni valoriAzioni){return valoriAzioniRepository.save(valoriAzioni);}
+
 }

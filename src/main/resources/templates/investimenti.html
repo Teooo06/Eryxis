@@ -43,7 +43,7 @@
                     </form>
                 </li>
                 <li>
-                    <form action="">
+                    <form action="/support">
                         <button class="menu-button">
                             <i class="fa fa-comments spacing" aria-hidden="true"></i>
                             Support
@@ -71,7 +71,7 @@
     <div class="top-stocks">
         <div class="portfolio">
             <div class="portfolio-block">
-                <h2 class="totale"><span class="number" th:text="${totalAmount}"></span></h2>
+                <h2 class="totale"><span class="number" th:text="${#numbers.formatDecimal(totalAmount, 1, 'COMMA', 2, 'POINT')}"></span></h2>
                 <div id="pieChart" class="pie-chart"></div>
             </div>
         </div>
@@ -81,29 +81,29 @@
                     <h2 class="stock-title" th:text="${investimenti[0].symbol}">Prova</h2>
                 </div>
                 <h5 class="top-title-stock">Quantity:</h5>
-                <h3 class="quantity-stock" th:text="${investimenti[0].quantita}">Prova</h3>
+                <h3 class="quantity-stock" th:text="${#numbers.formatDecimal(investimenti[0].quantita, 1, 'COMMA', 2, 'POINT')}">Prova</h3>
                 <div class="bottom-info">
-                    <h4 class="stock-value">Valore</h4>
+                    <h4 class="stock-value" th:text="${#numbers.formatDecimal(valoriAzioni[0].valore, 1, 'COMMA', 2, 'POINT')}">Valore</h4>
                 </div>
             </div>
-            <div class="second-stock">
+            <div class="second-stock" th:if="${#lists.size(investimenti) > 1}">
                 <div class="symbol-title-box">
                     <h2 class="stock-title" th:text="${investimenti[1].symbol}">Prova</h2>
                 </div>
                 <h5 class="top-title-stock">Quantity:</h5>
-                <h3 class="quantity-stock" th:text="${investimenti[1].quantita}">Prova</h3>
+                <h3 class="quantity-stock" th:text="${#numbers.formatDecimal(investimenti[1].quantita, 1, 'COMMA', 2, 'POINT')}">Prova</h3>
                 <div class="bottom-info">
-                    <h4 class="stock-value">Valore</h4>
+                    <h4 class="stock-value" th:text="${#numbers.formatDecimal(valoriAzioni[1].valore, 1, 'COMMA', 2, 'POINT')}">Valore</h4>
                 </div>
             </div>
-            <div class="third-stock">
+            <div class="third-stock" th:if="${#lists.size(investimenti) > 2}">
                 <div class="symbol-title-box">
                     <h2 class="stock-title" th:text="${investimenti[2].symbol}">Prova</h2>
                 </div>
                 <h5 class="top-title-stock">Quantity:</h5>
-                <h3 class="quantity-stock" th:text="${investimenti[2].quantita}">Prova</h3>
+                <h3 class="quantity-stock" th:text="${#numbers.formatDecimal(investimenti[2].quantita, 1, 'COMMA', 2, 'POINT')}">Prova</h3>
                 <div class="bottom-info">
-                    <h4 class="stock-value">Valore</h4>
+                    <h4 class="stock-value" th:text="${#numbers.formatDecimal(valoriAzioni[2].valore, 1, 'COMMA', 2, 'POINT')}">Valore</h4>
                 </div>
             </div>
         </div>
@@ -127,29 +127,28 @@
             </table>
         </div>
         <div class="stock-list">
-            <div class="stock-list-element">
+            <div class="stock-list-element" th:each="investimento, iter  : ${investimenti}">
                 <div class="name-stock-sec">
-                    <h2 class="stock-symbol-list">Prova</h2>
-                    <h4 class="stock-name-list">Prova</h4>
+                    <h2 class="stock-symbol-list" th:text="${investimento.symbol}">Prova</h2>
+                    <h4 class="stock-name-list" th:text="${investimento.nomeAzione}">Prova</h4>
                 </div>
                 <div class="value-stock-sec">
-                    <h2 class="value-stock-list">Prova</h2>
+                    <h2 class="value-stock-list" th:text="${#numbers.formatDecimal((valoriAzioni[iter.index].valore), 1, 'COMMA', 2, 'POINT')}">Prova</h2>
                 </div>
                 <div class="changes-stock-sec">
-                    <h2 class="change-stock-list">Prova</h2>
+                    <h2 class="change-stock-list" th:text="${valoriAzioni[iter.index].valore == (investimento.prezzoAcquisto * investimento.quantita) ? '0.00 %' : #numbers.formatDecimal(((valoriAzioni[iter.index].valore - (investimento.prezzoAcquisto * investimento.quantita)) / (investimento.prezzoAcquisto * investimento.quantita)) * 100, 1, 'COMMA', 2, 'POINT') + ' %'}"
+                    >Prova</h2>
                 </div>
                 <div class="type-stock-sec">
-                    <h2 class="type-stock-list">Prova</h2>
+                    <h2 class="type-stock-list" th:text="${investimento.type}">Prova</h2>
                 </div>
                 <div class="buy-date-stock-sec">
-                    <h2 class="buy-date-stock-list">Prova</h2>
+                    <h2 class="buy-date-stock-list" th:text="${#strings.substring(investimento.dataAcquisto, 8, 10) + '/' + #strings.substring(investimento.dataAcquisto, 5, 7) + '/'  + #strings.substring(investimento.dataAcquisto, 2, 4)}">Prova</h2>
                 </div>
                 <div class="sell-stock-sec">
                     <form action="" class="form-sell-stock">
-                        <input type="hidden" name="id" value="" />
-                        <input type="hidden" name="id" value="" />
-                        <input type="hidden" name="id" value="" />
-                        <input type="hidden" name="id" value="" />
+                        <input type="hidden" name="id" value="${investimento.id}" />
+                        <input type="hidden" name="id" value="${investimento.symbol}" />
                         <button class="sell-stock-list-button" type="submit"> Sell</button>
                     </form>
                 </div>

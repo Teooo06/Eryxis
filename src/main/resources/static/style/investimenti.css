@@ -107,7 +107,7 @@
 .stock-title{
     width: 100%;
     height: 100%;
-    font-size: 60px;
+    font-size: 50px;
     margin: 25px 0 50px;
     color: #161A1D;
     font-weight: bold;
@@ -179,7 +179,7 @@ table{
 }
 
 .name-table, .name-stock-sec{
-    width: 30%;
+    width: 35%;
     height: 100%;
 }
 
@@ -204,7 +204,7 @@ table{
 }
 
 .sell-table, .sell-stock-sec{
-    width: 15%;
+    width: 10%;
     height: 100%;
 }
 
@@ -226,6 +226,7 @@ table{
     width: 100%;
     height: 27.5%;
     background-color: #161A1D;
+    margin: 0 0 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: row;
@@ -241,7 +242,7 @@ table{
 }
 
 .stock-name-list{
-    width: 100%;
+    width: 95%;
     height: 25%;
     font-size: 15px;
     margin: 0 10px 10px;

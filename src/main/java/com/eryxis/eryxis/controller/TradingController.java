@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,6 +40,8 @@ public class TradingController {
     private CarteService carteService;
     @Autowired
     private MoneyChange moneyChange;
+    @Autowired
+    private ValoriAzioniService valoriAzioniService;
 
     @GetMapping("/trading")
     public String trading(Model model) {
@@ -157,7 +162,7 @@ public class TradingController {
         return "redirect:/login";
     }
 
-    @PostMapping("/my-stock")
+    @GetMapping("/my-stock")
     public String myStock(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -170,12 +175,29 @@ public class TradingController {
 
             List<Investimenti> investimenti = investimentiService.findByUtente(utente);
 
+            List<ValoriAzioni> valoriAzioni = valoriAzioniService.getByListInvestimenti(investimenti);
+
+            double totalAmount = valoriAzioni.stream().map(ValoriAzioni::getValore).reduce(0.0, Double::sum);
+
+            valoriAzioni.sort(Comparator.comparingDouble(ValoriAzioni::getValore).reversed());
+
+            Map<Integer, Integer> ordineIdMap = new HashMap<>();
+            for (int i = 0; i < valoriAzioni.size(); i++) {
+                ordineIdMap.put(valoriAzioni.get(i).getIdInvestimento(), i);
+            }
+
+            investimenti.sort(Comparator.comparingInt(
+                    inv -> ordineIdMap.getOrDefault(inv.getIdInvestimento(), Integer.MAX_VALUE)
+            ));
+
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
+            model.addAttribute("totalAmount", totalAmount);
             model.addAttribute("investimenti", investimenti);
+            model.addAttribute("valoriAzioni", valoriAzioni);
+
+            return "/investimenti";
         }
-
-
         return "redirect:/login";
     }
 
@@ -220,9 +242,16 @@ public class TradingController {
             investimento.setSymbol(symbol);
             investimento.setNomeAzione(azione.getName());
             investimento.setPrezzoAcquisto(azione.getPrice());
-            investimento.setQuantita((int) (importo / azione.getPrice()));
+            investimento.setQuantita(importo / azione.getPrice());
+            investimento.setType(azione.getType());
             investimento.setUtente(utente);
             investimentiService.save(investimento);
+
+            ValoriAzioni valoreAzioni = new ValoriAzioni();
+            valoreAzioni.setIdInvestimento(investimento.getIdInvestimento());
+            valoreAzioni.setDataValore(LocalDate.now());
+            valoreAzioni.setValore(importo);
+            valoriAzioniService.save(valoreAzioni);
 
             // Creazione e salvataggio della transazione
             Transazioni transazione = new Transazioni();

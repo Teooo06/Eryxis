@@ -88,7 +88,7 @@ public class InvestimentiService {
         Investimenti investimenti = investimentiRepository.findByIdInvestimento(idInvestimento);
         if (investimenti != null) {
             double prezzoAcquisto = investimenti.getPrezzoAcquisto();
-            int quantita = investimenti.getQuantita();
+            double quantita = investimenti.getQuantita();
             double valoreAcquistoComplessivo = getValoreComplessivo(quantita, prezzoAcquisto);
 
             LocalDate today = LocalDate.now();
@@ -119,7 +119,7 @@ public class InvestimentiService {
         double valoreAttualeComplessivo = 0;
 
         for (Investimenti investimento : investimenti) {
-            int quantita = investimento.getQuantita();
+            double quantita = investimento.getQuantita();
             double prezzoAcquisto = investimento.getPrezzoAcquisto();
             double valoreAcquistoComplessivo = getValoreComplessivo(quantita, prezzoAcquisto);
             valoreComplessivo += valoreAcquistoComplessivo;
@@ -144,7 +144,7 @@ public class InvestimentiService {
      * @param prezzoAcquisto  Il prezzo di acquisto per azione.
      * @return Il valore complessivo dell'investimento.
      */
-    private double getValoreComplessivo (int quantita, double prezzoAcquisto) {
+    private double getValoreComplessivo (double quantita, double prezzoAcquisto) {
         return quantita * prezzoAcquisto;
     }
 
