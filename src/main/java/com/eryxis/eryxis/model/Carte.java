@@ -34,9 +34,6 @@ public class Carte {
     @Column(columnDefinition = "DECIMAL(20, 2) DEFAULT 0")
     private double saldoContabile;
 
-    @Column(length = 3)
-    private String circuito;
-
     @ManyToOne
     @JoinColumn(name = "IBAN", nullable = false)
     private Conti conto;

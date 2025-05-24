@@ -25,8 +25,8 @@ public class Investimenti {
     @Column(nullable = false, columnDefinition = "DECIMAL(10, 2)")
     private double prezzoAcquisto;
 
-    @Column(nullable = false)
-    private int quantita;
+    @Column(nullable = false, columnDefinition = "DECIMAL(10, 2)")
+    private double quantita;
 
     @Column(nullable = false)
     private String type;
