@@ -40,8 +40,32 @@
     background-color: #660708;
 }
 
-.card-title{
+.card-title-2{
     color: #7d362e;
     margin: 0;
     padding: 0;
 }
+
+.card-section-2{
+    width: 150%;
+    height: 53.3%;
+    border-radius: 25px;
+    background-color: #161A1D;
+    display: flex;
+    flex-direction: row;
+}
+
+.right-side-3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Allinea verticalmente */
+    width: 30%;
+}
+
+button.active {
+    background-color: #660708;
+    color: white;
+}
+
+

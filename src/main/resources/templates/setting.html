@@ -65,12 +65,12 @@
   <section class="hero-1">
     <h1 class="title-1" style="text-align: center;">Settings Page</h1>
 
-    <h2 class="sottotitolo-1" style="text-align: center;">Modifica Dati</h2>
+    <h2 class="sottotitolo-1" style="text-align: center;">Modifica Dati Account</h2>
 
     <div class="card-section" style="padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 400px;">
 
       <form style="width: 100%">
-        <h4 class="card-title" style="text-align: center;">Anagrafica</h4><br>
+        <h4 class="card-title-2" style="text-align: center;">Anagrafica</h4><br>
         <label class="card-part-2">Email: <input class="card-input" type="email" name="email" required></label>
         <label class="card-part-2">Telefono: <input class="card-input" type="tel" name="telefono" required></label>
         <label class="card-part-2">Toponimo: <input class="card-input" type="text" name="toponimo" required></label>
@@ -80,8 +80,541 @@
       </form>
     </div>
 
+
+    <div style="display: flex; justify-content: flex-end;">
+      <div class="card-section" style="padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 400px;">
+
+        <form style="width: 100%">
+          <h4 class="card-title-2" style="text-align: center;">Accesso</h4><br>
+          <label class="card-part-2">questo serve al bertold per l'otp</label>
+        </form>
+      </div>
+    </div>
+
+    <div class="card-section" style="padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 400px;">
+
+      <form style="width: 100%">
+        <h4 class="card-title-2" style="text-align: center;">Password</h4><br>
+        <label class="card-part-2">Password precedente: <input class="card-input" type="text" name="text" required></label>
+        <label class="card-part-2">Nuova Password: <input class="card-input" type="password" name="password" required></label>
+        <label class="card-part-2">Conferma nuova Password: <input class="card-input" type="password" name="password" required></label>
+        <button class="button-salva" type="submit">Salva</button>
+      </form>
+    </div>
+
+    <!-- SEZIONE CARTE -->
+
+    <h2 class="sottotitolo-1" style="text-align: center;">Modifica Dati Carte</h2>
+    <section class="hero" >
+      <div class="saldo-sec">
+        <div class="card-section-2">
+          <!-- Right Section -->
+          <div class="left-side">
+            <div class="card-list">
+              <div class="card-part">
+                <h3 class="card-title">My Credit Card</h3>
+                <!-- First Card -->
+                <div class="card credit">
+                  <div class="ex-date">
+                    <h4 class="expire" th:text="${#strings.substring(carte[0].dataScadenza, 5, 7) + '/' + #strings.substring(carte[0].dataScadenza, 2, 4)}"></h4>
+                  </div>
+                  <div class="number-sec">
+                    <h2 class="number" th:text="${ '**** ' + #strings.substring(carte[0].numeroCarta, 3 * carte[0].numeroCarta.length() / 4)}"></h2>
+                  </div>
+                  <div class="balance-sec">
+                    <div class="balance-text">
+                      <h6 class="caption-bal">Balance</h6>
+                      <h3 class="balance" th:text="${valuta + ' ' + carte[0].saldoDisponibile}" id="saldo-carta-1"></h3>
+                    </div>
+                    <div class="circuit">
+                      <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-part" th:if="${cardCount >= 2 }">
+                <h3 class="card-title">My Debit Card</h3>
+                <!-- Second Card -->
+                <div class="card debit">
+                  <div class="ex-date">
+                    <h4 class="expire" th:text="${#strings.substring(carte[1].dataScadenza, 5, 7) + '/' + #strings.substring(carte[1].dataScadenza, 2, 4)}"></h4>
+                  </div>
+                  <div class="number-sec">
+                    <h2 class="number" th:text="${ '**** ' + #strings.substring(carte[1].numeroCarta, 3 * carte[1].numeroCarta.length() / 4)}"></h2>
+                  </div>
+                  <div class="balance-sec">
+                    <div class="balance-text">
+                      <h6 class="caption-bal">Balance</h6>
+                      <h3 class="balance" th:text="${valuta + ' ' + carte[1].saldoDisponibile}" id="saldo-carta-2"></h3>
+                    </div>
+                    <div class="circuit">
+                      <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-part" th:if="${cardCount == 3 }">
+                <h3 class="card-title">My PrePaid Card</h3>
+                <!-- Third Card -->
+                <div class="card prepaid">
+                  <div class="ex-date">
+                    <h4 class="expire" th:text="${#strings.substring(carte[2].dataScadenza, 5, 7) + '/' + #strings.substring(carte[2].dataScadenza, 2, 4)}"></h4>
+                  </div>
+                  <div class="number-sec">
+                    <h2 class="number" th:text="${ '**** ' + #strings.substring(carte[2].numeroCarta, 3 * carte[2].numeroCarta.length() / 4)}"></h2>
+                  </div>
+                  <div class="balance-sec">
+                    <div class="balance-text">
+                      <h6 class="caption-bal">Balance</h6>
+                      <h3 class="balance" th:text="${valuta + ' ' + carte[2].saldoDisponibile}" id="saldo-carta-3"></h3>
+                    </div>
+                    <div class="circuit">
+                      <img class="circuit-logo-visa" src="/images/visa.svg" alt="visa logo">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="indicators" th:if="${cardCount > 1}"></div>
+          </div>
+          <!-- Right Section -->
+          <div class="right-side-3">
+            <h3 class="card-title" style ="color: white">State</h3>
+            <div class="transfer">
+              <button class="transfer-b" id="activeBtn">
+                <i class="fa fa-check fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Active
+              </button>
+            </div>
+            <div class="transfer">
+              <button class="rubrica-b" id="disabledBtn">
+                <i class="fas fa-times fa-2x" style="padding-bottom: 10px" aria-hidden="true"></i> Disabled
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </section>
 </main>
 
 </body>
 </html>
+
+<script>
+
+  const slides = document.querySelectorAll(".card-list .card-part");
+  const indicatorsContainer = document.querySelector(".indicators");
+  const slider = document.querySelector(".card-list");
+  let currentIndex = 0;
+
+  const activeBtn = document.getElementById('activeBtn');
+  const disabledBtn = document.getElementById('disabledBtn');
+
+  // Funzione per attivare uno e disattivare l'altro
+  function toggleButtons(active) {
+    if (active) {
+      activeBtn.classList.add('active');
+      disabledBtn.classList.remove('active');
+    } else {
+      disabledBtn.classList.add('active');
+      activeBtn.classList.remove('active');
+    }
+  }
+
+  // Event listeners
+  activeBtn.addEventListener('click', () => updateButtonAndDB(true));
+  disabledBtn.addEventListener('click', () => updateButtonAndDB(false));
+
+
+  function updateButtonAndDB(){
+//da mettere dentro il cambio di sfondo per il pulsante (funzione già esistente)
+    //da mettere dentro l'aggiornamento del a
+    }
+
+  // Imposta stato iniziale (facoltativo)
+  function activateRightButton() {
+
+  }
+
+
+  function createIndicators() {
+    slides.forEach((_, index) => {
+      const indicator = document.createElement("div");
+      indicator.classList.add("indicator");
+      if (index === 0) indicator.classList.add("active");
+      indicator.addEventListener("click", () => changeSlide(index));
+      indicatorsContainer.appendChild(indicator);
+    });
+  }
+
+  function updateIndicators() {
+    document.querySelectorAll(".indicator").forEach((dot, index) => {
+      dot.classList.toggle("active", index === currentIndex);
+    });
+  }
+
+  function changeSlide(index) {
+    currentIndex = index;
+
+    const card = slides[0];
+    const cardWidth = card.offsetWidth;
+    const offset = (cardWidth + 200) * index;
+    activateRightButton();
+
+    slider.scrollTo({
+      left: offset,
+      behavior: 'smooth'
+    });
+
+    updateIndicators();
+  }
+
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    changeSlide(currentIndex);
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    changeSlide(currentIndex);
+  }
+
+  const cardCount = [[${cardCount}]];
+
+  if (cardCount > 1) {
+    createIndicators();
+    changeSlide(0);
+    setInterval(autoChangeSlide, 10000);
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
+<script th:inline="javascript">
+  const transazioni = [[${transazioni}]];
+  const valuta = [[${valuta}]]; // Niente virgolette!
+
+  function formatDate(dataString) {
+    const data = new Date(dataString);
+    if (isNaN(data)) return 'Invalid Date';
+
+    const giorno = String(data.getDate()).padStart(2, '0');
+    const mesi = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const mese = mesi[data.getMonth()];
+    return `${giorno} ${mese}`;
+  }
+
+  const incomeMap = {};
+  const outcomeMap = {};
+
+  transazioni.reverse().forEach(t => {
+    if (t.causale && t.causale.toLowerCase() === 'ricarica') return;
+
+    const date = formatDate(t.dataTransazione);
+    if (!incomeMap[date]) incomeMap[date] = 0;
+    if (!outcomeMap[date]) outcomeMap[date] = 0;
+
+    if (t.importo > 0) {
+      incomeMap[date] += t.importo;
+    } else {
+      outcomeMap[date] += Math.abs(t.importo);
+    }
+  });
+
+  // Ricava le date nell’ordine originale (senza duplicati)
+  const sortedDates = transazioni
+          .map(t => formatDate(t.dataTransazione))
+          .filter((date, index, self) => self.indexOf(date) === index);
+
+  const incomeData = sortedDates.map(d => incomeMap[d] || 0);
+  const outcomeData = sortedDates.map(d => outcomeMap[d] || 0);
+
+  const chart = echarts.init(document.getElementById('chart'));
+
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      formatter: params =>
+              params.map(p => `${p.seriesName}: ${valuta}${p.value.toFixed(2)}`).join('<br/>')
+    },
+    xAxis: {
+      type: 'category',
+      data: sortedDates
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: value => `${valuta}${value}`
+      }
+    },
+    series: [
+      {
+        name: 'Entrate',
+        type: 'line',
+        smooth: true,
+        data: incomeData,
+        lineStyle: { color: '#D3D3D3' },
+        itemStyle: { color: '#D3D3D3' },
+        areaStyle: { color: 'rgba(191,191,191,0.64)' }
+      },
+      {
+        name: 'Uscite',
+        type: 'line',
+        smooth: true,
+        data: outcomeData,
+        lineStyle: { color: '#660708' },
+        itemStyle: { color: '#660708' },
+        areaStyle: { color: 'rgba(102, 7, 8, 0.1)' }
+      }
+    ]
+  };
+
+  chart.setOption(option);
+</script>
+<script>
+  function updateDateTime() {
+    const now = new Date();
+
+    // Data in italiano → "giovedì 24 aprile 2025"
+    const options = { day:'numeric', month:'long', year:'numeric' };
+    let parts = new Intl.DateTimeFormat('it-IT', options).formatToParts(now);
+
+    // Trova la parte 'month' e capitalizza solo la prima lettera
+    parts = parts.map(p =>
+            p.type === 'month'
+                    ? { ...p, value: p.value[0].toUpperCase() + p.value.slice(1) }
+                    : p
+    );
+
+    // Ricompone la data
+    const dateStr = parts.map(p => p.value).join('');
+
+    // Ora hh:mm:ss
+    const timeStr = now.toLocaleTimeString('it-IT', {
+      hour:'2-digit', minute:'2-digit'
+    });
+
+    document.getElementById('currentDateTime').textContent =
+            `${dateStr} – ${timeStr}`;
+  }
+
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+</script>
+<script>
+  const openBtn   = document.getElementById('openBtn');
+  const overlay   = document.getElementById('popupOverlay');
+  const closeBtn  = overlay.querySelector('.closeBtn');
+
+  // apre il popup
+  openBtn.addEventListener('click', () => {
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+  });
+
+  // chiude quando si clicca sulla X
+  closeBtn.addEventListener('click', closeModal);
+
+  // chiude cliccando fuori dal riquadro
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  function closeModal() {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+  });
+</script>
+<script>
+  const openB   = document.getElementById('transactionBtn');
+  const overlay2   = document.getElementById('popupOverLay2');
+  const closeB  = overlay2.querySelector('.closeBTN1');
+
+  // apre il popup
+  openB.addEventListener('click', () => {
+    overlay2.classList.add('active');
+    overlay2.setAttribute('aria-hidden', 'false');
+  });
+
+  // chiude quando si clicca sulla X
+  closeB.addEventListener('click', closeModal);
+
+  // chiude cliccando fuori dal riquadro
+  overlay2.addEventListener('click', (e) => {
+    if (e.target === overlay2) closeModal();
+  });
+
+  function closeModal() {
+    overlay2.classList.remove('active');
+    overlay2.setAttribute('aria-hidden', 'true');
+  }
+
+  /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay2.classList.contains('active')) closeModal();
+  });
+</script>
+<script>
+  const open   = document.getElementById('rubricaBtn');
+  const over   = document.getElementById('popUp');
+  const close  = over.querySelector('.close');
+
+  // apre il popup
+  open.addEventListener('click', () => {
+    over.classList.add('active');
+    over.setAttribute('aria-hidden', 'false');
+  });
+
+  // chiude quando si clicca sulla X
+  close.addEventListener('click', closeModal);
+
+  // chiude cliccando fuori dal riquadro
+  over.addEventListener('click', (e) => {
+    if (e.target === over) closeModal();
+  });
+
+  function closeModal() {
+    over.classList.remove('active');
+    over.setAttribute('aria-hidden', 'true');
+  }
+
+  /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && over.classList.contains('active')) closeModal();
+  });
+</script>
+<script>
+  const openB1   = document.getElementById('chargeCard');
+  const overlay3   = document.getElementById('popupOverLay3');
+  const closeB1  = overlay3.querySelector('.closeBT1');
+
+  // apre il popup
+  openB1.addEventListener('click', () => {
+    overlay3.classList.add('active');
+    overlay3.setAttribute('aria-hidden', 'false');
+  });
+
+  // chiude quando si clicca sulla X
+  closeB1.addEventListener('click', closeModal);
+
+  // chiude cliccando fuori dal riquadro
+  overlay3.addEventListener('click', (e) => {
+    if (e.target === overlay3) closeModal();
+  });
+
+  function closeModal() {
+    overlay3.classList.remove('active');
+    overlay3.setAttribute('aria-hidden', 'true');
+  }
+
+  /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay3.classList.contains('active')) closeModal();
+  });
+</script>
+<script>
+  const openBTn   = document.getElementById('transfer-b');
+  const overLay   = document.getElementById('popupOverLay1');
+  const closeBTn  = overLay.querySelector('.closeBTn');
+
+  // apre il popup
+  openBTn.addEventListener('click', () => {
+    overLay.classList.add('active');
+    overLay.setAttribute('aria-hidden', 'false');
+  });
+
+  // chiude quando si clicca sulla X
+  closeBTn.addEventListener('click', closeModal);
+
+  // chiude cliccando fuori dal riquadro
+  overLay.addEventListener('click', (e) => {
+    if (e.target === overLay) closeModal();
+  });
+
+  function closeModal() {
+    overLay.classList.remove('active');
+    overLay.setAttribute('aria-hidden', 'true');
+  }
+
+  /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overLay.classList.contains('active')) closeModal();
+  });
+</script>
+<script>
+  // Funzione per formattare i numeri
+  function formatNumber(number) {
+    return new Intl.NumberFormat('it-IT', {
+      maximumFractionDigits: 2,  // Puoi cambiare i decimali come preferisci
+      minimumFractionDigits: 0   // Per evitare di mostrare decimali se il numero è intero
+    }).format(number);
+  }
+
+  // Quando la pagina è completamente caricata
+  window.onload = function() {
+    // Formattare l'elemento con id 'saldo'
+    let saldoElement = document.getElementById("saldo");
+    if (saldoElement) {
+      let saldoText = saldoElement.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+      let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+      saldoElement.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+    }
+
+    // Formattare tutti gli elementi con la classe 'saldo-carta'
+    let saldoElements1 = document.querySelectorAll(".saldo-carta-1");
+    saldoElements1.forEach(function(element) {
+      let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+      let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+      element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+    });
+
+    // Formattare tutti gli elementi con la classe 'saldo-carta'
+    let saldoElements2 = document.querySelectorAll(".saldo-carta-2");
+    saldoElements2.forEach(function(element) {
+      let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+      let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+      element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+    });
+
+    // Formattare tutti gli elementi con la classe 'saldo-carta'
+    let saldoElements3 = document.querySelectorAll(".saldo-carta-3");
+    saldoElements3.forEach(function(element) {
+      let saldoText = element.textContent.trim(); // Ottieni il testo (es. "€1500000000")
+      let saldoNumber = parseFloat(saldoText.replace('€', '').replace(/,/g, '').trim()); // Rimuovi la valuta e formato
+      element.textContent = "€" + formatNumber(saldoNumber); // Riformatta il numero
+    });
+  }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Delegazione degli eventi per gestire i pulsanti "Seleziona"
+    document.querySelector('.rubrica-list').addEventListener('click', function(e) {
+      if (e.target.classList.contains('seleziona-contatto')) {
+        e.preventDefault();
+
+        // Chiudi il popup della rubrica
+        document.getElementById('popUp').classList.remove('active');
+
+        // Recupera i dati dall'attributo data
+        const iban = e.target.getAttribute('data-iban');
+        const nome = e.target.getAttribute('data-nome');
+
+        // Apri il popup di trasferimento
+        const transferOverlay = document.getElementById('popupOverLay1');
+        transferOverlay.classList.add('active');
+
+        // Precompila i campi
+        document.getElementById('iban').value = iban;
+        document.getElementById('destinatario').value = nome;
+
+        // Focus sul campo importo
+        document.getElementById('importo').focus();
+      }
+    });
+  });
+</script>

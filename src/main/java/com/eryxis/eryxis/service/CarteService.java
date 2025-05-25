@@ -2,7 +2,9 @@ package com.eryxis.eryxis.service;
 
 import com.eryxis.eryxis.model.Carte;
 import com.eryxis.eryxis.model.Conti;
+import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.repository.CarteRepository;
+import com.eryxis.eryxis.repository.ContiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -116,5 +118,11 @@ public class CarteService {
         }
         carteRepository.saveAll(allCards);
         System.out.println("Saldo contabile updated for all cards.");
+    }
+
+    public void aggiornaCarta(String numeroCarta, boolean stato) {
+        Carte carta = carteRepository.findByNumeroCarta(numeroCarta);
+        carta.setStato(stato);
+        save(carta);
     }
 }

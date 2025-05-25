@@ -160,7 +160,9 @@ INSERT INTO utenti (nome, cognome, dataNascita, toponimo, indirizzo, numeroCivic
 ('Salvatore', 'Donarelli', '1995-03-06', 'Canale', 'Contrada Uberto', 51, 'RtoZmj95A13H501Z', 'salvatore.donarelli@banca.it', '+39', '6320163287', '$2a$10$9nmDY0dr9S9F2DPTtld.PuUT6yDK4K/yH5mKiSdcn5xRcmQ8AFa7O', 'phraseSalvatore', FALSE, 3),
 ('Beatrice', 'Pacillo', '2001-04-26', 'Viale', 'Incrocio Vigliotti', 109, 'tqohUm55A74H501Z', 'beatrice.pacillo@banca.it', '+39', '3749894134', '$2a$10$4/CiQcapeDL910tmVYzGbOkDMC13pDZ8VN3lfP0/TBPMLcd4FaMSu', 'phraseBeatrice', FALSE, 3),
 ('Matteo', 'Bertoldini', '2000-01-01', 'Via', 'Risorgimento', 1, 'BRTMTT06H07E507V', 'matteobertoldini06@gmail.com', '+39', '3703316356', '$2a$10$uhn8RIuaY5h4ormWpBJqV.fqHms/FFoe6DDDnJWna7XIpzC6R.lLK', 'ESAHN3Q42VQUWJT6ARZ5CYWP6JOM4MOL', TRUE, 3),
-('Nico', 'Molteni', '2006-04-03', 'Via', 'Morigiola', 10, 'RSSMRA80A01H501A', 'molteni.nico06@gmail.com', '+39', '3331234567', '$2a$10$9qOEB6xfoLraLSS.ia8vDOBFldSrN6I3A6De4AIhDceuFFMecITuS', 'adminSecrets', FALSE, 3);
+('Nico', 'Molteni', '2006-04-03', 'Via', 'Morigiola', 10, 'RSSMRA80A01H501A', 'molteni.nico06@gmail.com', '+39', '3331234567', '$2a$10$9qOEB6xfoLraLSS.ia8vDOBFldSrN6I3A6De4AIhDceuFFMecITuS', 'adminSecrets', FALSE, 3),
+('Lorenzo', 'Nava', '2006-12-04', 'Frazione', 'San Dionigi', 10, 'NVALNZ06T04E507G', 'lorenzo.nava2006@gmail.com', '+39', '3331234567', '$2a$10$9qOEB6xfoLraLSS.ia8vDOBFldSrN6I3A6De4AIhDceuFFMecITuS', 'passwd', FALSE, 3);
+
 
 
 -- Inserimento conti
@@ -177,7 +179,8 @@ INSERT INTO conti (IBAN, saldo, stato, valuta, id_utente, id_consulente) VALUES
 ('IT60X0542811101000000000008', 2900.00, TRUE, 'EUR', 13, 4),
 ('IT60X0542811101000000000009', 2600.00, TRUE, 'EUR', 4, 4),
 ('IT60X0542811101000000652321', 2500.00, true, 'EUR', 14, 1),
-('IT60X0542811101000000652322', 5000.00, true, 'EUR', 15, 1);
+('IT60X0542811101000000652322', 5000.00, true, 'EUR', 15, 1),
+('IT60X0542811101000000090310', 100309.00, true, 'EUR', 16, 1);
 
 
 -- Inserimento carte di credito per clienti e advisor
@@ -194,6 +197,7 @@ INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldo
 ('3245453234549005', '121', '2050-01-01', '84013', 'credito', 29645.00, 29645.00, TRUE, 'IT60X0542811101000000123456'),
 ('2342354312943542', '129', '2050-01-01', '54896', 'credito', 250435.00, 250435.00, true, 'IT60X0542811101000000652321'),
 ('2342354312943543', '130', '2050-01-01', '11111', 'credito', 250435.00, 250435.00, true, 'IT60X0542811101000000652322'),
+('9999333311110000', '309', '2050-01-01', '90310', 'credito', 1090031039.00, 1090031039.00, true, 'IT60X0542811101000000090310'),
 
 -- Advisor (Lucia Conti)
 ('5555345678901234', '739', '2029-01-01', '66721', 'credito', 15000.00, 2600.00, TRUE, 'IT60X0542811101000000000009');
@@ -205,12 +209,15 @@ INSERT INTO `carte` (`numeroCarta`, `CVV`, `dataScadenza`, `PIN`, `tipo`, `saldo
 ('5111111111111118', '499', '2027-03-01', '54321', 'debito', 3200.00, 3200.00, TRUE, 'IT60X0542811101000000000002'),
 ('4444333322221111', '777', '2026-12-01', '98765', 'debito', 2750.00, 2750.00, TRUE, 'IT60X0542811101000000000003'),
 ('2345345234234543', '124', '2050-01-01', '53424', 'debito', 26645.00, 26645.00, TRUE, 'IT60X0542811101000000123456'),
+('9999333311110001', '319', '2050-01-01', '90311', 'debito', 26645.00, 26645.00, TRUE, 'IT60X0542811101000000090310'),
+
 
 -- Carte prepagate
 ('4916011111111113', '334', '2028-10-01', '11223', 'prepagata', 500.00, 500.00, TRUE, 'IT60X0542811101000000000001'),
 ('5222222222222225', '665', '2026-06-01', '33445', 'prepagata', 1000.00, 1000.00, TRUE, 'IT60X0542811101000000000002'),
 ('375987654321001', '889', '2027-04-01', '55667', 'prepagata', 750.00, 750.00, TRUE, 'IT60X0542811101000000000003'),
-('2342354312543542', '122', '2050-01-01', '54893', 'prepagata', 25435.00, 25435.00, TRUE, 'IT60X0542811101000000123456');
+('2342354312543542', '122', '2050-01-01', '54893', 'prepagata', 25435.00, 25435.00, TRUE, 'IT60X0542811101000000123456'),
+('9999333311110002', '329', '2050-01-01', '90312', 'prepagata', 26645.00, 26645.00, TRUE, 'IT60X0542811101000000090310');
 
 -- Transazioni generiche
 INSERT INTO `transazioni` (`importo`, `dataTransazione`, `tipo`, `destinatario`, `causale`,`IBAN`) VALUES

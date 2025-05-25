@@ -37,4 +37,7 @@ public class Carte {
     @ManyToOne
     @JoinColumn(name = "IBAN", nullable = false)
     private Conti conto;
+
+    @Column(columnDefinition = "TINYINT(1) DEFAULT 1")
+    private boolean stato;
 }
