@@ -146,16 +146,61 @@
                     <h2 class="buy-date-stock-list" th:text="${#strings.substring(investimento.dataAcquisto, 8, 10) + '/' + #strings.substring(investimento.dataAcquisto, 5, 7) + '/'  + #strings.substring(investimento.dataAcquisto, 2, 4)}">Prova</h2>
                 </div>
                 <div class="sell-stock-sec">
-                    <form action="" class="form-sell-stock">
-                        <input type="hidden" name="id" value="${investimento.id}" />
-                        <input type="hidden" name="id" value="${investimento.symbol}" />
-                        <button class="sell-stock-list-button" type="submit"> Sell</button>
-                    </form>
+                    <button class="sell-stock-list-button" type="button"
+                            th:attr="data-id=${investimento.idInvestimento}, data-symbol=${investimento.symbol}, data-max=${investimento.quantita}"
+                            onclick="openSellModal(this)">Sell</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<div id="modalBackdrop" class="modal-backdrop"></div>
+
+<div id="sellModal" class="modal-container">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="header-modal">
+            <h2>Vendi Azioni</h2>
+            <button class="close-button" onclick="closeSellModal()">X</button>
+        </div>
+        <form id="sellForm" method="post" th:action="@{/sellStock}" class="form-modal-sell-stock">
+            <input type="hidden" name="id" id="sell-id">
+            <input type="hidden" name="symbol" id="sell-symbol">
+            <label for="sell-quantity" class="label-form">Quantità da vendere:</label>
+            <input type="number" name="quantity" id="sell-quantity" placeholder="Inserire la quantità da vendere..." step="0.01" min="0.01" required>
+            <br>
+            <button type="submit" class="confirm-button">Conferma Vendita</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('sellModal');
+    const backdrop = document.getElementById('modalBackdrop');
+
+    function openSellModal(button) {
+        const id = button.getAttribute('data-id');
+        const symbol = button.getAttribute('data-symbol');
+        const max = button.getAttribute('data-max');
+
+        document.getElementById('sell-id').value = id;
+        document.getElementById('sell-symbol').value = symbol;
+        document.getElementById('sell-quantity').max = max;
+
+        modal.style.display = 'block';
+        backdrop.style.display = 'block';
+        document.body.classList.add('modal-open');
+    }
+
+    function closeSellModal() {
+        modal.style.display = 'none';
+        backdrop.style.display = 'none';
+        document.body.classList.remove('modal-open');
+    }
+
+    // Chiudi modale cliccando fuori
+    backdrop.addEventListener('click', closeSellModal);
+</script>
 
 <script th:inline="javascript">
     /*<![CDATA[*/

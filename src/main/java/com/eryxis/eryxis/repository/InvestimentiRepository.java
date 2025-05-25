@@ -12,4 +12,5 @@ public interface InvestimentiRepository extends JpaRepository<Investimenti, Stri
     Investimenti findByIdInvestimento(int idInvestimento);
     List<Investimenti> findByUtente (Utenti utente);
     Investimenti findByUtenteAndSymbol (Utenti utente, String symbol);
+    void deleteByIdInvestimento(int idInvestimenti);
 }
