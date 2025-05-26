@@ -54,4 +54,13 @@ public class AzioniController {
         }
     }
      */
+
+    @GetMapping("/encrypt")
+    public String getEncrypt(@RequestParam String password) {
+        try {
+            return passwordService.encrypt(password);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante la cifratura: " + e.getMessage());
+        }
+    }
 }

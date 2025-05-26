@@ -283,8 +283,8 @@ public class TradingController {
     }
 
     @PostMapping("/sellStock")
-    public String vendiStock(@RequestParam("idInvestimento") int idInvestimento,
-                             @RequestParam("sell-quantity") float quantita,
+    public String vendiStock(@RequestParam("id") int idInvestimento,
+                             @RequestParam("quantity") float quantita,
                              @RequestParam("symbol") String symbol,
                              Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -316,7 +316,7 @@ public class TradingController {
 
                             if (investimento.getQuantita() == quantita){
                                 investimentiService.deleteById(idInvestimento);
-                                valoriAzioniService.deleteByValoreAzioni(valoreAzioni);
+                                valoriAzioniService.deleteByIdInvestimentoAndDataValore(valoreAzioni.getIdInvestimento(), valoreAzioni.getDataValore());
                             }
                             else{
                                 investimento.setQuantita(investimento.getQuantita()-quantita);

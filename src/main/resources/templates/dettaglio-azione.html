@@ -95,12 +95,12 @@
             <label for="importo">Importo da investire: </label>
             <input type="number" min="0" step="0.1" placeholder="Inserisci l'importo..." name="importo" id="importo" required>
 
-            <label for="monetary-source" th:if="${cardCount>1}">Seleziona la carta da cui investire: </label>
-            <select id="monetary-source" name="carte" required th:if="${cardCount>1}">
+            <label for="monetary-source">Seleziona la carta da cui investire: </label>
+            <select id="monetary-source" name="carte" required>
                 <option value=""></option>
                 <option value="conto">Conto</option>
                 <option value="credito">Credito</option>
-                <option value="debito">Debito</option>
+                <option value="debito" th:if="${cardCount>1}">Debito</option>
                 <option value="prepagata" th:if="${cardCount == 3}">Prepagata</option>
             </select>
 
