@@ -69,38 +69,7 @@
     </div>
     <div class="hero-2">
       <div class="left-block">
-        <div class="data-section">
-          <h2 class="title-data">Personal Data</h2>
 
-          <form class="data-form">
-            <label for="mail">Email:</label>
-            <input type="email" name="mail"  id="mail" required>
-            <label for="telefono">Telefono:</label>
-            <input type="tel" name="telefono" id="telefono" required>
-            <label for="toponimo">Toponimo:</label>
-            <input type="text" name="toponimo" id="toponimo" required>
-            <label for="indirizzo">Indirizzo:</label>
-            <input type="text" name="indirizzo" id="indirizzo" required>
-            <label for="civico">Civico:</label>
-            <input type="text" name="civico" id="civico" required>
-            <button class="button-salva" type="submit">Salva</button>
-          </form>
-        </div>
-
-
-        <div class="card-section">
-          <form>
-            <h4 class="card-title-2" style="text-align: center;">Password</h4><br>
-            <label>Password precedente: <input type="text" name="text" required></label>
-            <label>Nuova Password: <input type="password" name="password" required></label>
-            <label>Conferma nuova Password: <input type="password" name="password" required></label>
-            <button class="button-salva" type="submit">Salva</button>
-          </form>
-        </div>
-      </div>
-
-      <!-- SEZIONE CARTE -->
-      <div class="right-block">
         <div class="card-section-2">
           <!-- Right Section -->
           <div class="left-side">
@@ -188,6 +157,40 @@
               </button>
             </div>
           </div>
+        </div>
+
+        <div class="password-section">
+          <h2 class="title-data margini">Modify Password</h2>
+          <form class="data-form">
+            <label for="old-password">Password precedente:</label>
+            <input type="password" name="text" id="old-password" required>
+            <label for="new-password">Nuova Password:</label>
+            <input type="password" name="password" id="new-password" required>
+            <label for="confirm-new-password">Conferma nuova Password:</label>
+            <input type="password" name="password" id="confirm-new-password" required>
+            <button class="button-salva" type="submit">Salva</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- SEZIONE CARTE -->
+      <div class="right-block">
+        <div class="data-section">
+          <h2 class="title-data">Personal Data</h2>
+
+          <form class="data-form">
+            <label for="mail">Email:</label>
+            <input type="email" name="mail"  id="mail" required>
+            <label for="telefono">Telefono:</label>
+            <input type="tel" name="telefono" id="telefono" required>
+            <label for="toponimo">Toponimo:</label>
+            <input type="text" name="toponimo" id="toponimo" required>
+            <label for="indirizzo">Indirizzo:</label>
+            <input type="text" name="indirizzo" id="indirizzo" required>
+            <label for="civico">Civico:</label>
+            <input type="text" name="civico" id="civico" required>
+            <button class="button-salva" type="submit">Salva</button>
+          </form>
         </div>
 
         <div class="opt-section">
