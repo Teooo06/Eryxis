@@ -197,6 +197,11 @@ button:hover{
     color: white;
     background-color: #660708;
     border: solid 2px white;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 /* right side */

@@ -137,4 +137,19 @@ public class SettingController {
         }
         return "redirect:/setting";
     }
+
+    @PostMapping("/deleteAccount")
+    public String deleteAccount(HttpSession session){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth instanceof CustomAuthenticationToken customAuth){
+            int idUtente = customAuth.getIdUtente();
+
+            Utenti utente = utentiService.findByIdUtente(idUtente);
+            utentiService.deleteByUtente(utente);
+            return "redirect:/login";
+        }
+
+        return "redirect:/login";
+    }
 }

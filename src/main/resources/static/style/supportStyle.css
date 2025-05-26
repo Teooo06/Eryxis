@@ -64,22 +64,10 @@
 
 .bottone-supporto {
     background-color: #660708;
-    color: white;
-    border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center;
-}
-
-.bottone-supporto:hover {
-    background-color: #880809;
-    transform: scale(1.05);
-}
-
-.bottone-supporto:active {
-    transform: scale(0.95);
 }
 
 .modal {
