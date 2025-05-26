@@ -61,12 +61,12 @@ public class InvestimentiService {
     }
 
     /**
-     * Elimina un investimento in base al codice ISIN.
+     * Elimina un investimento in base al codice.
      *
-     * @param idInvestimento Il codice ISIN dell'investimento da eliminare.
+     * @param idInvestimento Il codice auto generato dell'investimento da eliminare.
      */
-    public void deleteById(String idInvestimento) {
-        investimentiRepository.deleteById(idInvestimento);
+    public void deleteById(int idInvestimento) {
+        investimentiRepository.deleteByIdInvestimento(idInvestimento);
     }
 
     /**

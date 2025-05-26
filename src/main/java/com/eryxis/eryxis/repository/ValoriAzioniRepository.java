@@ -15,4 +15,8 @@ public interface ValoriAzioniRepository extends JpaRepository<ValoriAzioni, Valo
     ValoriAzioni findByIdInvestimentoAndDataValore(int idInvestimento, LocalDate dataValore);
 
     List<ValoriAzioni> findByIdInvestimentoIn(List<Integer> symbols);
+
+    ValoriAzioni findByIdInvestimento(int idInvestimento);
+
+    void deleteValoriAzioni(ValoriAzioni valoriAzioni);
 }

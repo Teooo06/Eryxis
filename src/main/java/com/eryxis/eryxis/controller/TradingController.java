@@ -281,4 +281,65 @@ public class TradingController {
 
         return "redirect:/login";
     }
+
+    @PostMapping("/sellStock")
+    public String vendiStock(@RequestParam("idInvestimento") int idInvestimento,
+                             @RequestParam("sell-quantity") float quantita,
+                             @RequestParam("symbol") String symbol,
+                             Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            List<Carte> carte = customAuth.getCarte();
+            Conti conto = customAuth.getCarte().get(0).getConto();
+
+            if (conto != null) {
+                // Recupera l'investimento dal database
+                Investimenti investimento = investimentiService.findByIdInvestimento(idInvestimento);
+                if (investimento != null) {
+
+                    if (investimento.getQuantita() > quantita) {
+                        // Calcola il valore totale delle azioni da vendere
+                        ValoriAzioni valoreAzioni = valoriAzioniService.getByIdInvestimento(idInvestimento);
+
+                        if (valoreAzioni != null) {
+                            double valore = valoreAzioni.getValore() / investimento.getQuantita();
+                            double venduto = quantita * valore;
+
+                            Transazioni transazione = new Transazioni();
+                            transazione.setImporto(venduto);
+                            transazione.setTipo("accredito");
+                            transazione.setDestinatario(symbol);
+                            transazione.setCausale("Vendita di azioni");
+                            transazione.setConto(conto);
+                            transazioniService.save(transazione);
+
+                            if (investimento.getQuantita() == quantita){
+                                investimentiService.deleteById(idInvestimento);
+                                valoriAzioniService.deleteByValoreAzioni(valoreAzioni);
+                            }
+                            else{
+                                investimento.setQuantita(investimento.getQuantita()-quantita);
+                                investimentiService.save(investimento);
+                                valoreAzioni.setValore(valoreAzioni.getValore() - venduto);
+                                valoriAzioniService.save(valoreAzioni);
+                            }
+
+                            conto.setSaldo(conto.getSaldo() + venduto);
+                            contiService.save(conto);
+
+                            return "redirect:/my-stock";
+                        }
+                    }
+                    else{
+                        return "redirect:/my-stock";
+                    }
+
+                }
+            }
+
+        }
+
+        return "redirect:/login";
+    }
 }
