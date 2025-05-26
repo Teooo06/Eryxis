@@ -18,5 +18,5 @@ public interface ValoriAzioniRepository extends JpaRepository<ValoriAzioni, Valo
 
     ValoriAzioni findByIdInvestimento(int idInvestimento);
 
-    void deleteValoriAzioni(ValoriAzioni valoriAzioni);
+    void deleteByIdInvestimentoAndDataValore(int idInvestimento, LocalDate dataValore);
 }

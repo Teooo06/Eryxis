@@ -69,7 +69,8 @@ public class ValoriAzioniService {
 
     public ValoriAzioni getByIdInvestimento(int idInvestimento){return valoriAzioniRepository.findByIdInvestimento(idInvestimento);}
 
-    public void deleteByValoreAzioni(ValoriAzioni valoriAzioni){valoriAzioniRepository.deleteValoriAzioni(valoriAzioni);}
+    public void deleteByIdInvestimentoAndDataValore(int idInvestimento, LocalDate data){valoriAzioniRepository.deleteByIdInvestimentoAndDataValore(idInvestimento, data);}
+
     public ValoriAzioni save(ValoriAzioni valoriAzioni){return valoriAzioniRepository.save(valoriAzioni);}
 
 }
