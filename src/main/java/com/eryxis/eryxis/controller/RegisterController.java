@@ -91,6 +91,9 @@ public class RegisterController {
         return "registerPassword";
     }
 
+
+
+
     @PostMapping("/registerOTP")
     public String registerOTP(@RequestParam String password,
                               @RequestParam String confirmPassword,
@@ -105,7 +108,7 @@ public class RegisterController {
         // Genero l'OTP
         String otpSecret = OTPService.generateSecretKey();
         String passphrase = passwordService.encrypt(otpSecret);
-        utenti.setPassPhrase(otpSecret); // salva nel DB o sessione
+        utenti.setPassPhrase(passphrase); // salva nel DB o sessione
         String accountName = utenti.getMail(); // o nome utente
         String qrCodeURL = OTPService.getQRCodeURL(accountName, otpSecret);
         OTPService.generateQRCodeImage(qrCodeURL, 350, 350, "QRCode.png");
