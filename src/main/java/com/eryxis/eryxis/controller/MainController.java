@@ -119,4 +119,13 @@ public class MainController {
         // Se l'autenticazione non è valida, reindirizza alla pagina di login
         return "redirect:/login";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            SecurityContextHolder.clearContext(); // pulisce il contesto di sicurezza
+        }
+        return "redirect:/"; // reindirizza alla pagina di login
+    }
 }
