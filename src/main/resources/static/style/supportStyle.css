@@ -1,8 +1,20 @@
+.hero-1 {
+    padding: 20px;
+}
+
+.title-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
 .tickets-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    padding: 20px;
+    padding: 0 15px;
 }
 
 .ticket {
@@ -13,11 +25,11 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    background-color: #f0f8ff; /* Colore di sfondo leggermente colorato */
+    background-color: #f5f5f5; /* Colore di sfondo leggermente colorato */
 }
 
 .ticket:nth-child(odd) {
-    background-color: #e6f7ff; /* Colore alternato per i ticket dispari */
+    background-color: #e0e0e0; /* Colore alternato per i ticket dispari */
 }
 
 .ticket:hover {
@@ -57,8 +69,125 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
 }
 
 .bottone-supporto:hover {
     background-color: #880809;
+    transform: scale(1.05);
+}
+
+.bottone-supporto:active {
+    transform: scale(0.95);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow: hidden;
+    position: fixed;
+    inset: 0; /* shorthand for top/right/bottom/left: 0 */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+.modal-content .title-div {
+    padding: 0 10px;
+    margin-bottom: 30px;
+}
+
+.modal-content form {
+    padding: 0 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.form-group textarea {
+    height: auto;
+    min-height: 120px;
+    max-height: none;
+    resize: none;
+    overflow: hidden;
+}
+
+.form-group textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-group textarea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.form-group input {
+    height: 45px;
+}
+
+.char-counter {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+    margin-top: 4px;
+}
+
+.submit-button {
+    margin-left: 0;
+    background-color: #660708;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.submit-button:hover {
+    background-color: #880809;
+    transform: scale(1.05);
+}
+
+.submit-button:active {
+    transform: scale(0.95);
 }
