@@ -2,6 +2,7 @@ package com.eryxis.eryxis.controller;
 
 import com.eryxis.eryxis.model.Azioni;
 import com.eryxis.eryxis.model.Histories;
+import com.eryxis.eryxis.service.Security.OTPService;
 import com.eryxis.eryxis.service.Security.PasswordService;
 import com.eryxis.eryxis.service.externalAPI.AzioniService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,16 @@ public class AzioniController {
     public Histories getDatiAzione(
             @RequestParam String symbol) {
         return azioniService.getDatiAzione(symbol);
+    }
+
+    @GetMapping("/OTPGENERATE")
+    public String otpGenra(){
+        String otpSecret = OTPService.generateSecretKey();
+        try {
+            return passwordService.encrypt(otpSecret);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante la cifratura: " + e.getMessage());
+        }
     }
 
     /* End point per hashare password (se mai dovesse servire)
