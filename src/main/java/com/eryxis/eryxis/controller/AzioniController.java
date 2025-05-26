@@ -38,6 +38,8 @@ public class AzioniController {
         return azioniService.getDatiAzione(symbol);
     }
 
+
+    /* End point per generare otp criptati
     @GetMapping("/OTPGENERATE")
     public String otpGenra(){
         String otpSecret = OTPService.generateSecretKey();
@@ -47,6 +49,7 @@ public class AzioniController {
             throw new RuntimeException("Errore durante la cifratura: " + e.getMessage());
         }
     }
+    */
 
     /* End point per hashare password (se mai dovesse servire)
     @GetMapping("/hash")
