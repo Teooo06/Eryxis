@@ -9,6 +9,11 @@
   <link rel="stylesheet" th:href="@{/style/settingsStyle.css}">
   <link rel="stylesheet" href="../static/style/settingsStyle.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .d-none {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -84,9 +89,29 @@
     <div style="display: flex; justify-content: flex-end;">
       <div class="card-section" style="padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 400px;">
 
-        <form style="width: 100%">
+        <form style="width: 100%" action="/modificaOTP" method="post" th:attr="data-otp-method=${otpMethod}">
           <h4 class="card-title-2" style="text-align: center;">Accesso</h4><br>
-          <label class="card-part-2">questo serve al bertold per l'otp</label>
+          <div class="mb-4 text-start">
+            <label class="form-label">Metodo OTP</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="otpMethod" id="otpEmail" value="email" onchange="toggleOtpMethod()">
+              <label class="form-check-label" for="otpEmail">
+                Via Email
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="otpMethod" id="otpAuthenticator" value="authenticator" onchange="toggleOtpMethod()">
+              <label class="form-check-label" for="otpAuthenticator">
+                Google Authenticator
+              </label>
+            </div>
+          </div>
+
+          <div id="qrCodeSection" class="mb-4 text-center">
+            <p>Scansiona il codice QR con Google Authenticator:</p>
+            <img th:src="@{/qr-code(secret=${secret}, user=${accountName})}" alt="QR Code Google Authenticator">
+          </div>
+          <button>Salva</button>
         </form>
       </div>
     </div>
@@ -197,9 +222,40 @@
 
   </section>
 </main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Prendo il form per leggere il valore otpMethod passato dal backend
+    const form = document.querySelector("form[data-otp-method]");
+    if (!form) return;
 
+    // Usa getAttribute per leggere il valore con Thymeleaf
+    const otpMethod = form.getAttribute("data-otp-method");
+
+    // Seleziona il radio corretto e lo spunta
+    const radio = document.querySelector(`input[name="otpMethod"][value="${otpMethod}"]`);
+    if (radio) {
+      radio.checked = true;
+    }
+
+    // Mostra o nascondi il QR code in base alla selezione iniziale
+    const qrCode = document.getElementById("qrCodeSection");
+    if (qrCode) {
+      qrCode.style.display = otpMethod === "authenticator" ? "block" : "none";
+    }
+  });
+
+  // Funzione che mostra/nasconde QR code in base al radio selezionato
+  function toggleOtpMethod() {
+    const method = document.querySelector('input[name="otpMethod"]:checked')?.value || "email";
+    const qrCode = document.getElementById("qrCodeSection");
+    if (!qrCode) return;
+
+    qrCode.style.display = method === "authenticator" ? "block" : "none";
+  }
+</script>
 </body>
 </html>
+
 
 <script>
 
@@ -225,6 +281,7 @@
   // Event listeners
   activeBtn.addEventListener('click', () => updateButtonAndDB(true));
   disabledBtn.addEventListener('click', () => updateButtonAndDB(false));
+
 
 
   function updateButtonAndDB(){

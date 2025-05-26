@@ -3,11 +3,13 @@ package com.eryxis.eryxis.controller;
 import com.eryxis.eryxis.configuration.CustomAuthenticationToken;
 import com.eryxis.eryxis.model.Carte;
 import com.eryxis.eryxis.model.Conti;
-import com.eryxis.eryxis.model.Transazioni;
 import com.eryxis.eryxis.model.Utenti;
 import com.eryxis.eryxis.service.CarteService;
 import com.eryxis.eryxis.service.ContiService;
+import com.eryxis.eryxis.service.Security.OTPService;
+import com.eryxis.eryxis.service.Security.PasswordService;
 import com.eryxis.eryxis.service.UtentiService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,6 +35,8 @@ public class SettingController {
     private ContiService contiService;
     @Autowired
     private UtentiService utentiService;
+    @Autowired
+    private PasswordService passwordService;
 
     private static final Map<String, String> CURRENCY_SYMBOLS = Map.ofEntries(
             Map.entry("EUR", "€"),
@@ -48,7 +52,7 @@ public class SettingController {
     );
 
     @GetMapping("/setting")
-    public String setting(Model model) {
+    public String setting(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
@@ -69,6 +73,25 @@ public class SettingController {
                 carte.sort(Comparator.comparing(carta -> ordineTipo.indexOf(carta.getTipo())));
             }
 
+            String otpSecret = null;
+            try {
+                otpSecret = passwordService.decrypt(utente.getPassPhrase());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            String accountName = utente.getMail(); // o nome utente
+            String qrCodeURL = OTPService.getQRCodeURL(accountName, otpSecret);
+            try {
+                OTPService.generateQRCodeImage(qrCodeURL, 350, 350, "QRCode.png");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            String otpMethod = utente.isOTP() ? "authenticator" : "email"; // Determina il metodo OTP
+            model.addAttribute("otpMethod", otpMethod);
+            model.addAttribute("secret", otpSecret);
+            model.addAttribute("accountName", accountName);
+
+
             if (conto != null) {
                 model.addAttribute("id", id);
                 model.addAttribute("nome", nome);
@@ -88,5 +111,30 @@ public class SettingController {
     public void modificaCarta(@RequestParam String numeroCarta,
                                 @RequestParam boolean stato) {
         carteService.aggiornaCarta(numeroCarta, stato);
+    }
+
+    @PostMapping("/modificaOTP")
+    public String modificaOTP(@RequestParam String otpMethod) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        int idUtente = 0;
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            idUtente = customAuth.getIdUtente();
+
+            Utenti utenti = utentiService.findByIdUtente(idUtente);
+
+            if (utenti == null) {
+                throw new IllegalArgumentException("Utente non trovato");
+            }
+
+            if (("email").equals(otpMethod)) { // Il metodo OTP via mail OTP = 0
+                utenti.setOTP(false);
+            } else if (("authenticator").equals(otpMethod)) {
+                utenti.setOTP(true); // Il metodo OTP via Google Authenticator OTP = 1
+            }
+            utentiService.save(utenti);
+            return  "redirect:/setting";
+        }
+        return "redirect:/setting";
     }
 }
