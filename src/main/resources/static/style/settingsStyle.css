@@ -1,3 +1,36 @@
+.setting{
+    margin: 75px 100px 75px 20vw;
+}
+
+.hero-2{
+    width: 100%;
+    height: 750px;
+    display: flex;
+    flex-direction: row;
+}
+
+.left-block{
+    width: 50%;
+    height: 100%;
+}
+
+.right-block {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-header{
+    width: 100%;
+    height: 10%;
+}
+
+.saldo-sec-2{
+    width: 100%;
+    height: 100%;
+}
+
 .title-1 {
     color: #660708;
     font-weight: bold;
@@ -15,20 +48,28 @@
     background-color: rgba(255, 255, 255, 0.9);;
 }
 
-.pezzo-grosso{
-    margin: 0 0 0 20vh;
+.title-data{
+    width: 100%;
+    height: 10%;
+    margin: 0;
+    font-size: 35px;
 }
 
-.card-part-2{
+.data-section{
+    width: 95%;
+    height: 65%;
+    margin: 0 5% 5% 0;
+}
 
-    background-color: transparent;
-    align-content: center;
-    color: white;
-    flex-shrink: 0;
+.data-form{
+    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
-    gap: 8px
+    flex-direction: column;
+}
 
+.data-form input button{
+    width: 95%;
 }
 
 .button-salva{
@@ -40,19 +81,46 @@
     background-color: #660708;
 }
 
-.card-title-2{
-    color: #7d362e;
+.header-card-sec{
+    width: 25%;
+    height: 10%;
+    color: white;
     margin: 0;
-    padding: 0;
+    position: absolute;
+}
+
+.title-card{
+    margin: 15px 0 0 10%;
+    font-size: 35px;
+}
+
+.card-list-2{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    gap: 200px;
 }
 
 .card-section-2{
-    width: 150%;
+    width: 100%;
     height: 53.3%;
     border-radius: 25px;
     background-color: #161A1D;
     display: flex;
     flex-direction: row;
+}
+
+.card-part-2{
+    background-color: transparent;
+    align-content: center;
+    color: white;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px
 }
 
 .right-side-3{
@@ -68,4 +136,8 @@ button.active {
     color: white;
 }
 
-
+.opt-section{
+    width: 100%;
+    height: 45%;
+    margin: 1.7% 0 0;
+}
