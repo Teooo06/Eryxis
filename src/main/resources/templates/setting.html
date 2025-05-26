@@ -194,30 +194,35 @@
         </div>
 
         <div class="opt-section">
-          <form style="width: 100%" action="/modificaOTP" method="post" th:attr="data-otp-method=${otpMethod}">
-            <h4 class="card-title-2" style="text-align: center;">Accesso</h4><br>
-            <div class="mb-4 text-start">
-              <label class="form-label">Metodo OTP</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="otpMethod" id="otpEmail" value="email" onchange="toggleOtpMethod()">
-                <label class="form-check-label" for="otpEmail">
-                  Via Email
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="otpMethod" id="otpAuthenticator" value="authenticator" onchange="toggleOtpMethod()">
-                <label class="form-check-label" for="otpAuthenticator">
-                  Google Authenticator
-                </label>
-              </div>
+          <h2 class="access-title">Access Control</h2>
+          <div class="otp-container">
+            <div class="otp-form-container">
+              <form class="otp-form" action="/modificaOTP" method="post" th:attr="data-otp-method=${otpMethod}">
+                <div class="otp-selection">
+                  <h3 class="otp-title">Selezione del metodo OTP</h3>
+                  
+                  <div class="otp-options">
+                    <div class="otp-option">
+                      <input type="radio" name="otpMethod" id="otpEmail" value="email" onchange="toggleOtpMethod()">
+                      <label for="otpEmail">Via Email</label>
+                    </div>
+                    
+                    <div class="otp-option">
+                      <input type="radio" name="otpMethod" id="otpAuthenticator" value="authenticator" onchange="toggleOtpMethod()">
+                      <label for="otpAuthenticator">Google Authenticator</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-container">
+                  <button class="button-salva-access">Salva</button>
+                </div>
+              </form>
             </div>
-
-            <div id="qrCodeSection" class="mb-4 text-center">
+            <div id="qrCodeSection" class="qr-code-container">
               <p>Scansiona il codice QR con Google Authenticator:</p>
               <img th:src="@{/qr-code(secret=${secret}, user=${accountName})}" alt="QR Code Google Authenticator">
             </div>
-            <button>Salva</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -242,7 +247,13 @@
     // Mostra o nascondi il QR code in base alla selezione iniziale
     const qrCode = document.getElementById("qrCodeSection");
     if (qrCode) {
-      qrCode.style.display = otpMethod === "authenticator" ? "block" : "none";
+      qrCode.style.display = otpMethod === "authenticator" ? "flex" : "none";
+      
+      // Aggiusta lo spazio del form quando il QR code è nascosto
+      const formContainer = document.querySelector(".otp-form-container");
+      if (formContainer) {
+        formContainer.style.flex = otpMethod === "authenticator" ? "1" : "2";
+      }
     }
   });
 
@@ -252,7 +263,13 @@
     const qrCode = document.getElementById("qrCodeSection");
     if (!qrCode) return;
 
-    qrCode.style.display = method === "authenticator" ? "block" : "none";
+    qrCode.style.display = method === "authenticator" ? "flex" : "none";
+    
+    // Aggiusta lo spazio del form quando il QR code è nascosto
+    const formContainer = document.querySelector(".otp-form-container");
+    if (formContainer) {
+      formContainer.style.flex = method === "authenticator" ? "1" : "2";
+    }
   }
 </script>
 </body>

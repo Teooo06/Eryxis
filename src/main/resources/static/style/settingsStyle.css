@@ -90,6 +90,21 @@
     background-color: #660708;
 }
 
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start; /* Allinea il contenuto a sinistra */
+    padding: 10px 0;
+}
+
+.button-salva-access{
+    width: 275px;
+    display: block;
+    margin: 5px 0 5px;
+    background-color: #660708;
+    padding: 8px 15px;
+}
+
 .header-card-sec{
     width: 25%;
     height: 10%;
@@ -148,5 +163,89 @@ button.active {
 .opt-section{
     width: 100%;
     height: 45%;
-    margin: 1.7% 0 0;
+    margin: 5% 0 0 5%;
+    background-color: #161A1D;
+    border-radius: 20px;
+    color: white;
+}
+
+.access-title{
+    font-size: 35px;
+    margin: 20px 10px 10px 20px;
+}
+
+/* Stili per il form OTP ristrutturato */
+.otp-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 20px;
+    gap: 30px;
+}
+
+.otp-form-container {
+    flex: 1;
+    min-width: 250px;
+}
+
+.qr-code-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.qr-code-container p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.qr-code-container img {
+    max-width: 200px;
+    height: auto;
+}
+
+.otp-form {
+    width: 100%;
+    padding: 15px 0;
+}
+
+.otp-selection {
+    margin-bottom: 20px;
+}
+
+.otp-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.otp-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.otp-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.otp-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.otp-option label {
+    font-size: 16px;
+    cursor: pointer;
 }
