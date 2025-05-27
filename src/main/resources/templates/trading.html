@@ -33,6 +33,14 @@
                     </button>
                 </li>
                 <li>
+                    <form action="/funding">
+                        <button class="menu-button">
+                            <i class="fa-solid fa-money-check spacing"></i>
+                            Funding's
+                        </button>
+                    </form>
+                </li>
+                <li>
                     <form action="/setting">
                         <button class="menu-button">
                             <i class="fa fa-sliders spacing" aria-hidden="true"></i>
@@ -86,7 +94,7 @@
             <!-- Bottone per "Le mie azioni" -->
             <form action="/my-stock" class="form-stock-btn">
                 <button class="my-stock-btn" th:if="${investimenti.size != 0}">
-                    Le mie azioni <i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i>
+                    Wallets <i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i>
                 </button>
             </form>
 
