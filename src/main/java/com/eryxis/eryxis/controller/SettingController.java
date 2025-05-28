@@ -65,7 +65,8 @@ public class SettingController {
             List<String> ordineTipo = Arrays.asList("credito", "debito", "prepagata");
             int idUser = customAuth.getIdUtente();
             Utenti utente = utentiService.findByIdUtente(idUser);
-
+            model.addAttribute("utente", utente);
+            System.out.println("Utente: " + utente);
             Conti conto = contiService.findByUtente(utente);
 
 
@@ -111,6 +112,61 @@ public class SettingController {
     public void modificaCarta(@RequestParam String numeroCarta,
                                 @RequestParam boolean stato) {
         carteService.aggiornaCarta(numeroCarta, stato);
+    }
+
+    @PostMapping("/modificaUtente")
+    public String modificaUtente(@RequestParam String email,
+                               @RequestParam String telefono,
+                               @RequestParam String toponimo,
+                               @RequestParam String indirizzo,
+                               @RequestParam int civico) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int idUser = customAuth.getIdUtente();
+            Utenti utente = utentiService.findByIdUtente(idUser);
+            if (utente == null) {
+                throw new IllegalArgumentException("Utente non trovato");
+            }
+            // Controllo mail:
+            if (email == null || email.isEmpty()) {
+                throw new IllegalArgumentException("L'email non può essere vuota");
+            } else if (!email.matches("^[\\w-\\.]+@[\\w-]+\\.[a-zA-Z]{2,}$")) { // controlla che l'email contenga
+                throw new IllegalArgumentException("L'email non è valida");
+            }
+            utente.setMail(email);
+            if (telefono == null || telefono.isEmpty()) {
+                throw new IllegalArgumentException("Il telefono non può essere vuoto");
+            } else if (!telefono.matches("^\\+?[0-9]{10,15}$")) { // controlla che il telefono contenga solo numeri
+                throw new IllegalArgumentException("Il telefono non è valido");
+            }
+            utente.setTelefono(telefono);
+            if (toponimo == null || toponimo.isEmpty()) {
+                throw new IllegalArgumentException("Il toponimo non può essere vuoto");
+            } else if (!toponimo.matches("^[a-zA-Z\\s]+$")) { // controlla che il toponimo contenga solo lettere e spazi
+                throw new IllegalArgumentException("Il toponimo non è valido");
+            }
+            utente.setToponimo(toponimo);
+            if (indirizzo == null || indirizzo.isEmpty()) {
+                throw new IllegalArgumentException("L'indirizzo non può essere vuoto");
+            } else if (!indirizzo.matches("^[a-zA-Z0-9\\s,.-]+$")) { // controlla che l'indirizzo contenga lettere, numeri e alcuni caratteri speciali
+                throw new IllegalArgumentException("L'indirizzo non è valido");
+            }
+            utente.setIndirizzo(indirizzo);
+            if (civico != -1) {
+                if (civico < 1 || civico > 9999) { // controlla che il numero civico sia un numero valido
+                    throw new IllegalArgumentException("Il numero civico non è valido");
+                }
+            } else {
+                throw new IllegalArgumentException("Il numero civico non può essere -1");
+            }
+            utente.setNumeroCivico(civico);
+            // Salva le modifiche dell'utente
+            utentiService.save(utente);
+            return "redirect:/setting";
+        }
+        return "redirect:/setting";
     }
 
     @PostMapping("/modificaOTP")

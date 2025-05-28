@@ -194,18 +194,18 @@
         <div class="data-section">
           <h2 class="title-data">Personal Data</h2>
 
-          <form class="data-form">
-            <label for="mail">Email:</label>
-            <input type="email" name="mail"  id="mail" required>
+          <form class="data-form" action="/modificaUtente" method="post" th:if="${utente != null}">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email"  th:value="${utente.mail}" required>
             <label for="telefono">Telefono:</label>
-            <input type="tel" name="telefono" id="telefono" required>
+            <input type="tel" name="telefono" id="telefono" th:value="${utente.telefono}" required>
             <label for="toponimo">Toponimo:</label>
-            <input type="text" name="toponimo" id="toponimo" required>
+            <input type="text" name="toponimo" id="toponimo"  th:value="${utente.toponimo}" required>
             <label for="indirizzo">Indirizzo:</label>
-            <input type="text" name="indirizzo" id="indirizzo" required>
+            <input type="text" name="indirizzo" id="indirizzo"  th:value="${utente.indirizzo}" required>
             <label for="civico">Civico:</label>
-            <input type="text" name="civico" id="civico" required>
-            <button class="button-salva" type="submit">Salva</button>
+            <input type="text" name="civico" id="civico"  th:value="${utente.numeroCivico}" required>
+            <button class="button-salva"  type="submit">Salva</button>
           </form>
         </div>
 
