@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -27,11 +28,11 @@ public class Tickets {
     @Column(nullable = false)
     private short stato;
 
-    @Column(nullable = false, columnDefinition="DEFAULT CURRENT_TIMESTAMP")
-    private Date dataApertura;
+    @Column(nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp dataApertura;
 
-    @Column(nullable = false, columnDefinition="DEFAULT CURRENT_TIMESTAMP")
-    private Date dataChiusura;
+    @Column(nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp dataChiusura;
 
     @ManyToOne
     @JoinColumn(name = "id_utente", nullable = false)

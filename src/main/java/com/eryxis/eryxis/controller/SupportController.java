@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -147,7 +148,7 @@ public class SupportController {
             }
 
             Tickets ticket = ticketsService.findByIdTicket(idTicket);
-            ticket.setDataChiusura(new java.sql.Date(System.currentTimeMillis()));
+            ticket.setDataChiusura(new Timestamp(System.currentTimeMillis()));
             ticket.setStato((short) 3); // Stato 3 indica che il ticket è chiuso
             ticketsService.save(ticket);
 

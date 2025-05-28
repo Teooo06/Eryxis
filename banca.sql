@@ -59,11 +59,11 @@ CONSTRAINT `fk_conto_consulente` FOREIGN KEY (`id_consulente`) REFERENCES `utent
 -- Now create the other tables
 CREATE TABLE `tickets`(
 `idTicket` INT PRIMARY KEY AUTO_INCREMENT,
-`titolo` VARCHAR(20) NOT NULL,
+`titolo` VARCHAR(50) NOT NULL,
 `descrizione` VARCHAR(500) NOT NULL,
 `stato` SMALLINT NOT NULL,
-`dataApertura` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-`dataChiusura` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`dataApertura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+`dataChiusura` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 `id_utente` INT NOT NULL,
 CONSTRAINT `fk_ticket_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
