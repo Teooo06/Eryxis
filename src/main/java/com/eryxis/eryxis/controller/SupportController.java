@@ -147,6 +147,7 @@ public class SupportController {
             }
 
             Tickets ticket = ticketsService.findByIdTicket(idTicket);
+            ticket.setDataChiusura(new java.sql.Date(System.currentTimeMillis()));
             ticket.setStato((short) 3); // Stato 3 indica che il ticket è chiuso
             ticketsService.save(ticket);
 
