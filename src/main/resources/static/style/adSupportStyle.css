@@ -87,3 +87,21 @@ td {
     background-color: #cccccc;
     cursor: not-allowed;
 }
+
+.close-ticket-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    pointer-events: none;
+}
+
+/* Stili per i bottoni disabilitati nel modal */
+.progress-btn:disabled,
+.close-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    pointer-events: none;
+    display: none;
+}
+
+

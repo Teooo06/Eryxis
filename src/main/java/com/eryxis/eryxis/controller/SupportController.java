@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -61,11 +60,12 @@ public class SupportController {
         if (auth instanceof CustomAuthenticationToken customAuth) {
             int userId = customAuth.getIdUtente();
             Utenti utente = utentiService.findByIdUtente(userId);
-            String codicePermesso = utente.getPermesso().getCodicePermesso();
+            int idPermesso = utente.getPermesso().getIdPermesso();
 
-            if (!"07".equals(codicePermesso) && !"05".equals(codicePermesso)) {
+            if (idPermesso == 3) {
                 return "redirect:/login"; // Redirect if the user is not authorized
             }
+
             List<Tickets> tickets = ticketsService.findAll();
 
             model.addAttribute("tickets", tickets);
@@ -73,6 +73,7 @@ public class SupportController {
 
             // pagina admin per tickets
             // return "supportAdmin";
+            return "adSupport";
         }
 
         return "redirect:/login"; // Redirect if the user is not authenticated
@@ -108,7 +109,7 @@ public class SupportController {
     }
 
     // Endpoint per mettere in stato di risoluzione un ticket (solo admin)
-    @PatchMapping("/risolviTicket")
+    @PostMapping("/risolviTicket")
     public String risolviTicket(@RequestParam int idTicket) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -116,9 +117,9 @@ public class SupportController {
         if (auth instanceof CustomAuthenticationToken customAuth) {
             int userId = customAuth.getIdUtente();
             Utenti utente = utentiService.findByIdUtente(userId);
-            String codicePermesso = utente.getPermesso().getCodicePermesso();
+            int idPermesso = utente.getPermesso().getIdPermesso();
 
-            if (!"07".equals(codicePermesso) && !"05".equals(codicePermesso)) {
+            if (idPermesso == 3) {
                 return "redirect:/login"; // Redirect if the user is not authorized
             }
 
@@ -133,7 +134,7 @@ public class SupportController {
     }
 
     // Endpoint per chiudere un ticket (solo admin)
-    @PatchMapping("/chiudiTicket")
+    @PostMapping("/chiudiTicket")
     public String chiudiTicket(@RequestParam int idTicket) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -141,9 +142,9 @@ public class SupportController {
         if (auth instanceof CustomAuthenticationToken customAuth) {
             int userId = customAuth.getIdUtente();
             Utenti utente = utentiService.findByIdUtente(userId);
-            String codicePermesso = utente.getPermesso().getCodicePermesso();
+            int idPermesso = utente.getPermesso().getIdPermesso();
 
-            if (!"07".equals(codicePermesso) && !"05".equals(codicePermesso)) {
+            if (idPermesso == 3) {
                 return "redirect:/login"; // Redirect if the user is not authorized
             }
 
