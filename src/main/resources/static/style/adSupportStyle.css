@@ -1,0 +1,89 @@
+.details-btn, .close-ticket-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: none;
+}
+
+.details-btn {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.close-ticket-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.details-btn:hover {
+    background-color: #357abd;
+    transform: none;
+}
+
+.close-ticket-btn:hover {
+    background-color: #45a049;
+    transform: none;
+}
+
+.close-ticket-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+td {
+    text-align: center;
+}
+
+.details-btn:hover{
+    color: white;
+    background-color: #357abd;
+    border: none;
+    transform: none;
+}
+
+.close-ticket-btn:hover{
+    color: white;
+    background-color: #45a049;
+    border: none;
+    transform: none;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.progress-btn {
+    background-color: #ffa500;
+}
+
+.close-btn {
+    background-color: #f44336;
+}
+
+.progress-btn:hover {
+    background-color: #ff8c00;
+}
+
+.close-btn:hover {
+    background-color: #d32f2f;
+}
+
+.progress-btn:disabled, .close-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

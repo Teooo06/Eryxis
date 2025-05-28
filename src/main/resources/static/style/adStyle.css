@@ -107,7 +107,3 @@ tbody tr:nth-child(even) {
     background-color: #a2aaac;
 }
 
-tr:hover {
-    background-color: #ba3b2d;
-}
-

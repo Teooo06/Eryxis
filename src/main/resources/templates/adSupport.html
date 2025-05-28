@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="../static/style/style.css">
   <link rel="stylesheet" th:href="@{/style/adStyle.css}">
   <link rel="stylesheet" href="../static/style/adStyle.css">
+  <link rel="stylesheet" th:href="@{/style/adSupportStyle.css}">
+  <link rel="stylesheet" href="../static/style/adSupportStyle.css">
+  <link rel="stylesheet" th:href="@{/style/supportStyle.css}">
+  <link rel="stylesheet" href="../static/style/supportStyle.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -88,10 +92,21 @@
         </thead>
         <tbody>
         <tr th:each="ticket : ${tickets}">
-          <td th:text="${ticket.idTicket}"></td>
-          <td th:text="${ticket.titolo}"></td>
-          <td th:text="${ticket.stato}"></td>
-          <td>Dettagli / chiudi</td>
+            <td th:text="${ticket.idTicket}"></td>
+            <td th:text="${ticket.titolo}"></td>
+            <td th:text="${ticket.stato == 1 ? 'Creato' : (ticket.stato == 2 ? 'In Risoluzione' : 'Chiuso')}"></td>
+            <td class="action-buttons">
+                <button class="details-btn" th:data-id="${ticket.idTicket}"
+                        th:data-title="${ticket.titolo}"
+                        th:data-description="${ticket.descrizione}"
+                        th:data-status="${ticket.stato}">
+                    <i class="fa fa-info-circle"></i>
+                </button>
+                <button class="close-ticket-btn" th:data-id="${ticket.idTicket}"
+                        th:disabled="${ticket.stato == 3}">
+                    <i class="fa fa-check-circle"></i>
+                </button>
+            </td>
         </tr>
         </tbody>
       </table>
@@ -99,5 +114,120 @@
   </section>
 </main>
 
+
+<div id="ticketDetailsModal" class="modal">
+  <div class="modal-content">
+    <div class="title-div">
+      <div>
+        <h2>Ticket Details</h2>
+      </div>
+      <div>
+        <button class="bottone-chiudi" id="closeDetailsBtn">Chiudi</button>
+      </div>
+    </div>
+    <div class="ticket-details">
+        <div class="form-group">
+            <label>Titolo:</label>
+            <p id="detailsTitolo"></p>
+        </div>
+        <div class="form-group">
+            <label>Descrizione:</label>
+            <p id="detailsDescrizione"></p>
+        </div>
+        <div class="form-group">
+            <label>Stato:</label>
+            <p id="detailsStato"></p>
+        </div>
+        <div class="modal-actions">
+            <button id="inProgressBtn" class="progress-btn">
+                <i class="fa fa-clock-o"></i> In Risoluzione
+            </button>
+            <button id="closeTicketBtn" class="close-btn">
+                <i class="fa fa-check-circle"></i> Chiudi Ticket
+            </button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const detailsModal = document.getElementById("ticketDetailsModal");
+      const closeDetailsBtn = document.getElementById("closeDetailsBtn");
+      const detailsBtns = document.querySelectorAll(".details-btn");
+
+      detailsBtns.forEach(btn => {
+          btn.addEventListener("click", function(e) {
+              e.stopPropagation();
+              const title = this.getAttribute("data-title");
+              const description = this.getAttribute("data-description");
+              const status = this.getAttribute("data-status");
+
+              document.getElementById("detailsTitolo").textContent = title;
+              document.getElementById("detailsDescrizione").textContent = description;
+              document.getElementById("detailsStato").textContent =
+                  status == 1 ? "Creato" : (status == 2 ? "In Risoluzione" : "Chiuso");
+
+              detailsModal.style.display = "block";
+          });
+      });
+
+      closeDetailsBtn.addEventListener("click", function() {
+          detailsModal.style.display = "none";
+      });
+
+      window.addEventListener("click", function(event) {
+          if (event.target === detailsModal) {
+              detailsModal.style.display = "none";
+          }
+      });
+  });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const detailsModal = document.getElementById("ticketDetailsModal");
+    const closeDetailsBtn = document.getElementById("closeDetailsBtn");
+    const detailsBtns = document.querySelectorAll(".details-btn");
+    const inProgressBtn = document.getElementById("inProgressBtn");
+    const closeTicketBtn = document.getElementById("closeTicketBtn");
+
+    detailsBtns.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            const title = this.getAttribute("data-title");
+            const description = this.getAttribute("data-description");
+            const status = parseInt(this.getAttribute("data-status"));
+
+            document.getElementById("detailsTitolo").textContent = title;
+            document.getElementById("detailsDescrizione").textContent = description;
+            document.getElementById("detailsStato").textContent =
+                status == 1 ? "Creato" : (status == 2 ? "In Risoluzione" : "Chiuso");
+
+            // Manage buttons visibility based on status
+            if (status === 3) { // Ticket is closed
+                inProgressBtn.style.display = "none";
+                closeTicketBtn.style.display = "none";
+            } else if (status === 2) { // Ticket is in progress
+                inProgressBtn.style.display = "none";
+                closeTicketBtn.style.display = "block";
+            } else { // Ticket is new
+                inProgressBtn.style.display = "block";
+                closeTicketBtn.style.display = "block";
+            }
+
+            detailsModal.style.display = "block";
+        });
+    });
+
+    closeDetailsBtn.addEventListener("click", function() {
+        detailsModal.style.display = "none";
+    });
+
+    window.addEventListener("click", function(event) {
+        if (event.target === detailsModal) {
+            detailsModal.style.display = "none";
+        }
+    });
+});
+</script>
 </body>
 </html>
