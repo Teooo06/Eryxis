@@ -33,7 +33,28 @@ public class FinanziamentiService {
         return finanziamentiRepository.findByUtente(idUtente);
     }
 
+    /**
+     * Restituisce tutti i finanziamenti presenti nel repository.
+     *
+     * @return Lista di tutti i finanziamenti.
+     */
     public List<Finanziamenti> findAll(){return finanziamentiRepository.findAll();}
+
+    /**
+     * Aggiorna il tasso di interesse di un finanziamento specifico.
+     *
+     * @param idFinanziamento L'ID del finanziamento da aggiornare.
+     * @param interessi Il nuovo tasso di interesse da impostare.
+     */
+    public void aggiornaTasso(int idFinanziamento, double interessi) {
+        Finanziamenti finanziamento = findByIdFinanziamento(idFinanziamento);
+
+        if (finanziamento != null) {
+            finanziamento.setInteressi(interessi);
+            save(finanziamento);
+        }
+    }
+
 
     // funzioni di base per aggiungere o rimuovere
     /**
@@ -72,4 +93,5 @@ public class FinanziamentiService {
     public void deleteByFinanziamento(Finanziamenti finanziamento) {
         finanziamentiRepository.delete(finanziamento);
     }
+
 }

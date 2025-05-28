@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../static/style/style.css">
     <link rel="stylesheet" th:href="@{/style/adStyle.css}">
     <link rel="stylesheet" href="../static/style/adStyle.css">
+    <link rel="stylesheet" th:href="@{/style/creditManagementStyle.css}">
+    <link rel="stylesheet" href="../static/style/creditManagementStyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -117,6 +119,7 @@
                     <th>Valore Rata</th>
                     <th>Inizio Pagamento</th>
                     <th>Importo Pagamento</th>
+                    <th>Scelta Tasso</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -129,12 +132,70 @@
                     <td th:each="${finanziamento.valoreRata}"></td>
                     <td th:each="${finanziamento.inizioPagamento}"></td>
                     <td th:text="${finanziamento.importoPagato}"></td>
+                    <td>
+                        <button class="action-btn" th:data-id="${finanziamento.id}">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </section>
 </main>
+
+<div id="tassoModal" class="overlay">
+    <div class="popup-box">
+        <h2>Inserisci Tasso di Interesse</h2>
+        <div class="tasso-input-container">
+            <form action="/cambiaTasso" method="post">
+                <input type="hidden" id="idFinanziamento" name="idFinanziamento">
+                <input type="number" id="tasso" name="tasso" step="0.01" min="0" max="100" placeholder="Inserisci tasso (%)">
+                <div class="modal-buttons">
+                    <button type="submit" class="confirm-btn">Conferma</button>
+                    <button type="button" id="cancelTasso" class="cancel-btn">Annulla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('tassoModal');
+    const actionBtns = document.querySelectorAll('.action-btn');
+    const confirmBtn = document.getElementById('confirmTasso');
+    const cancelBtn = document.getElementById('cancelTasso');
+    const tassoInput = document.getElementById('tassoInput');
+    let currentFinanziamentoId;
+
+    actionBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentFinanziamentoId = this.getAttribute('data-id');
+            modal.style.display = 'grid';
+            tassoInput.value = '';
+        });
+    });
+
+    confirmBtn.addEventListener('click', function() {
+        const tasso = tassoInput.value;
+        if (tasso !== '' && tasso >= 0 && tasso <= 100) {
+            modal.style.display = 'none';
+            // Here you'll add the backend call to save the interest rate
+        }
+    });
+
+    cancelBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
 
 </body>
 </html>
