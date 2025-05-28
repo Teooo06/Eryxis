@@ -5,6 +5,8 @@
     <title>Funding</title>
     <link rel="stylesheet" th:href="@{/style/style.css}">
     <link rel="stylesheet" href="/static/style/style.css">
+    <link rel="stylesheet" th:href="@{/style/funding.css}">
+    <link rel="stylesheet" href="/static/style/funding.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -74,11 +76,57 @@
     </div>
 </header>
 
-<section class="hero">
-    <div class="funding-container-1" th:if="${fundingCount > 1}">
+<section class="hero-1">
+    <div class="funding-header">
+        <h2>Funding Management</h2>
+    </div>
+    <div class="funding-container-1" th:if="${fundingCount < 1}">
+        <h2 class="disclaimer">You don't have active funding's</h2>
+        <h3 class="attraction-text">Take the first step toward achieving your goals!<br>Apply for financing today and unlock new opportunities!</h3>
+        <button class="request-funding" id="funding-form">Apply Now!</button>
+    </div>
+    <div class="funding-management-sec" th:if="${fundingCount > 1}">
 
     </div>
 </section>
+
+<div id="popUp" class="overlay">
+    <div class="modal">
+        <button class="close">&times;</button>
+        <h2>Funding Form </h2>
+
+    </div>
+</div>
+
+<script>
+    const open   = document.getElementById('funding-form');
+    const over   = document.getElementById('popUp');
+    const close  = over.querySelector('.close');
+
+    // apre il popup
+    open.addEventListener('click', () => {
+        over.classList.add('active');
+        over.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    close.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    over.addEventListener('click', (e) => {
+        if (e.target === over) closeModal();
+    });
+
+    function closeModal() {
+        over.classList.remove('active');
+        over.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && over.classList.contains('active')) closeModal();
+    });
+</script>
 
 </body>
 </html>

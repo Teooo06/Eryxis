@@ -1,0 +1,39 @@
+.funding-header{
+    width: 100%;
+    height: 10%;
+}
+
+.funding-container-1{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.disclaimer{
+    width: 100%;
+    font-size: 35px;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.attraction-text{
+    width: 100%;
+    font-size: 25px;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.request-funding{
+    width: 25%;
+    height: 8%;
+    border-radius: 20px;
+    font-size: large;
+}
+
+.funding-management-se{
+    width: 100%;
+    height: 90%;
+    display: none;
+}
