@@ -51,6 +51,43 @@ public class FundingController {
         return "redirect:/login";
     }
 
+    @PostMapping("/finanziamenti")
+    public String financing(Model model, @RequestParam("tipo") String tipo,
+                                        @RequestParam("importo") int importo,
+                                        @RequestParam("descrizione") String descrizione) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int userId = customAuth.getIdUtente();
+            Utenti utente = utenteService.findByIdUtente(userId);
+
+            Finanziamenti finanziamento = new Finanziamenti();
+            finanziamento.setImporto(importo);
+            // Utilizziamo java.sql.Date che mantiene solo la parte della data
+            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            finanziamento.setDataErogazione(currentDate);
+            finanziamento.setInteressi(0);
+            finanziamento.setSpesaIncasso(2.5);
+            finanziamento.setTipoRata("mensile");
+            finanziamento.setInizioPagamento(currentDate);
+            finanziamento.setImportoPagato(0);
+            finanziamento.setDescrizione(descrizione);
+            finanziamento.setUtente(utente);
+            finanziamento.setStato(false);
+            if (tipo.equals("mutuo")) {
+                finanziamento.setTipo("verifica1");
+            } else if (tipo.equals("prestito")) {
+                finanziamento.setTipo("verifica2");
+            }
+            finanziamento.setValoreRata(0);
+
+            finanziamentoService.save(finanziamento);
+            return "redirect:/funding";
+        }
+
+        return "redirect:/login";
+    }
+
     @PostMapping("/apply-financials")
     public String applyFinancials(Model model, @RequestParam("action") String action,
                                                 @RequestParam("idFinanziamento") int id,
@@ -76,6 +113,28 @@ public class FundingController {
                     }
 
                     finanziamento.setTipoRata(type);
+
+                    double rate = 0.05;
+                    double i = 0;
+                    switch (type){
+                        case "mensile" -> {i = rate / 12;}
+                        case "bimestrale" -> {i= rate / 6;}
+                        case "trimestrale" -> {i= rate / 4;}
+                        case "semestrale" -> {i= rate / 2;}
+                        case "annuale" -> {i=rate;}
+                        default -> {i= rate/12;}
+                    }
+
+                    double rata = (finanziamento.getImporto() * i) / (1 - Math.pow((1 + i), -i));
+
+                    finanziamento.setValoreRata(rata);
+                    
+                    // Utilizziamo java.sql.Date che mantiene solo la parte della data
+                    java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+                    finanziamento.setDataErogazione(currentDate);
+                    finanziamento.setInizioPagamento(currentDate);
+                    finanziamento.setStato(true);
+                    finanziamentoService.save(finanziamento);
                 }
             }
             else{

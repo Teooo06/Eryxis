@@ -46,6 +46,9 @@ public class Finanziamenti {
     @Column(nullable = false, length = 250)
     private String descrizione;
 
+    @Column(nullable = false)
+    private boolean stato;
+
     @ManyToOne
     @JoinColumn(name = "id_utente", nullable = false)
     private Utenti utente;

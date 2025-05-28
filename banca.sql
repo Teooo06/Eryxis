@@ -142,7 +142,7 @@ CREATE TABLE `finanziamenti`(
 `inizioPagamento` DATE NOT NULL,
 `importoPagato` DECIMAL(15, 2) DEFAULT 0,
 `descrizione` VARCHAR(250) NOT NULL,
-`stato` TINYINT DEFAULT 1,
+`stato` BOOLEAN DEFAULT 1,
 `id_utente` INT NOT NULL,
 CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
