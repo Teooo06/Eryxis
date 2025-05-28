@@ -17,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -52,7 +54,7 @@ public class SettingController {
     );
 
     @GetMapping("/setting")
-    public String setting(Model model, HttpSession session) {
+    public String setting(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
@@ -78,6 +80,7 @@ public class SettingController {
             try {
                 otpSecret = passwordService.decrypt(utente.getPassPhrase());
             } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("popupMessage", "Errore nella decodifica della OTP.");
                 throw new RuntimeException(e);
             }
             String accountName = utente.getMail(); // o nome utente
@@ -85,6 +88,7 @@ public class SettingController {
             try {
                 OTPService.generateQRCodeImage(qrCodeURL, 350, 350, "QRCode.png");
             } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("popupMessage", "Errore nella generazione del QR Code.");
                 throw new RuntimeException(e);
             }
             String otpMethod = utente.isOTP() ? "authenticator" : "email"; // Determina il metodo OTP
@@ -103,8 +107,11 @@ public class SettingController {
 
                 return  "setting";
             }
+
+
         }
 
+        redirectAttributes.addFlashAttribute("popupMessage", "Sessione scaduta o accesso non autorizzato.");
         return "redirect:/login";
     }
 
@@ -204,6 +211,45 @@ public class SettingController {
             Utenti utente = utentiService.findByIdUtente(idUtente);
             utentiService.deleteByUtente(utente);
             return "redirect:/login";
+        }
+
+        return "redirect:/login";
+    }
+
+
+    @PostMapping("/changePassword")
+    public String changePassword(
+            @RequestParam("old-password") String oldPassword,
+            @RequestParam("new-password") String newPassword,
+            @RequestParam("confirm-new-password") String confirmNewPassword,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
+    ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int idUtente = customAuth.getIdUtente();
+            Utenti utente = utentiService.findByIdUtente(idUtente);
+
+            // Verifica che la password attuale sia corretta
+            if (!passwordService.verifyPassword(oldPassword, utente.getPassword())) {
+                redirectAttributes.addFlashAttribute("error", "Password attuale non corretta.");
+                return "redirect:/setting";
+            }
+
+            // Verifica che la nuova password coincida con la conferma
+            if (!newPassword.equals(confirmNewPassword)) {
+                redirectAttributes.addFlashAttribute("error", "Le nuove password non coincidono.");
+                return "redirect:/setting";
+            }
+
+            // Hash della nuova password e salvataggio
+            String hashedPassword = passwordService.hashPassword(newPassword);
+            utente.setPassword(hashedPassword);
+            utentiService.save(utente);
+
+            redirectAttributes.addFlashAttribute("success", "Password modificata con successo.");
+            return "redirect:/setting";
         }
 
         return "redirect:/login";

@@ -177,13 +177,16 @@
 
         <div class="password-section">
           <h2 class="title-data margini">Modify Password</h2>
-          <form class="data-form">
+          <form class="data-form" action="/changePassword" method="post" onsubmit="return confirmPasswordChange()">
             <label for="old-password">Password precedente:</label>
-            <input type="password" name="text" id="old-password" required>
+            <input type="password" name="old-password" id="old-password" required>
+
             <label for="new-password">Nuova Password:</label>
-            <input type="password" name="password" id="new-password" required>
+            <input type="password" name="new-password" id="new-password" required>
+
             <label for="confirm-new-password">Conferma nuova Password:</label>
-            <input type="password" name="password" id="confirm-new-password" required>
+            <input type="password" name="confirm-new-password" id="confirm-new-password" required>
+
             <button class="button-salva" type="submit">Salva</button>
           </form>
         </div>
@@ -249,6 +252,90 @@
         <button class="delete-button">Delete</button>
       </form>
     </div>
+
+
+    <!-- Popup per errore -->
+    <div th:if="${error}" id="errorPopUp" class="overlay">
+      <div class="modal">
+        <button class="close" onclick="closePopup('errorPopUp')" aria-label="Close popup">&times;</button>
+        <p th:text="${error}"></p>
+      </div>
+    </div>
+
+    <!-- Popup per successo -->
+    <div th:if="${success}" id="successPopUp" class="overlay">
+      <div class="modal">
+        <button class="close" onclick="closePopup('successPopUp')" aria-label="Close popup">&times;</button>
+        <p th:text="${success}"></p>
+      </div>
+    </div>
+
+    <script>
+      // Funzione per chiudere il popup
+      function closePopup(id) {
+        const popup = document.getElementById(id);
+        if (popup) {
+          popup.style.display = 'none';
+        }
+      }
+
+      // Chiude automaticamente dopo 5 secondi
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          closePopup('errorPopUp');
+          closePopup('successPopUp');
+        }, 5000);
+      });
+    </script>
+
+    <style>
+      .overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal {
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 10px;
+        max-width: 320px;
+        width: 90%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+        position: relative;
+        font-size: 1.3rem; /* testo più grande */
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .close {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        background: none;
+        border: none;
+        font-size: 26px;
+        color: #333;
+        cursor: pointer;
+        user-select: none;
+        font-weight: bold;
+      }
+
+      #errorPopUp .modal {
+        border-left: 6px solid #d9534f; /* rosso alert-danger */
+      }
+
+      #successPopUp .modal {
+        border-left: 6px solid #5cb85c; /* verde alert-success */
+      }
+    </style>
+
+
   </section>
 </main>
 <script>
@@ -385,6 +472,10 @@
     createIndicators();
     changeSlide(0);
     setInterval(autoChangeSlide, 10000);
+  }
+
+  function confirmPasswordChange() {
+    return confirm("Sei sicuro di voler modificare la password?");
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
