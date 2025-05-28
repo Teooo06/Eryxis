@@ -81,7 +81,7 @@
         <h2>Applied Funding</h2>
     </div>
     <div class="funding-management-sec-2">
-        <div class="top-funding-part" th:each="funding, iterStat : ${finanziamenti}" th:if="${funding.tipo == 'verifica1' || funding.tipo == 'verifica2'}">
+        <div class="top-funding-part margin-bottom" th:each="funding, iterStat : ${finanziamenti}" th:if="${funding.tipo == 'verifica1' || funding.tipo == 'verifica2'}">
             <div class="funding-element">
                 <div class="funding-details">
                     <div class="funding-details-title">
@@ -97,7 +97,7 @@
                     <div class="tipo-valore-rata">
                         <div class="valore-div">
                             <span class="valore-description">Monthly Rate Value:</span>
-                            <h3 class="valore-rata" th:text="${funding.valoreRata}">Valore rata</h3>
+                            <h3 class="valore-rata" th:text="${funding.valoreRata} + ' %'">Valore rata</h3>
                         </div>
                     </div>
                     <div class="descrizione">
@@ -106,7 +106,7 @@
                 </div>
                 
                 <div class="funding-graph">
-                    <form action="/apply-financials" class="accept-decline-form">
+                    <form action="/apply-financials" class="accept-decline-form" method="post">
                         <input type="hidden" name="idFinanziamento" value="" th:value="${funding.idFinanziamento}" />
 
                         <div class="accept-decline-tasso">

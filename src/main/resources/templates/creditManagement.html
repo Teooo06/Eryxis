@@ -91,14 +91,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="finanziamento : ${finanziamenti}" th:if="${finanziamento.tipo != 'verifica1' || finanziamento.tipo != 'verifica2'}}">
+                    <tr th:each="finanziamento : ${finanziamenti}" th:if="${finanziamento.tipo != 'verifica1' || finanziamento.tipo != 'verifica2'}">
                         <td th:text="${finanziamento.tipo}"></td>
                         <td th:text="${finanziamento.descrizione}"></td>
                         <td th:text="${finanziamento.importo}"></td>
                         <td th:text="${finanziamento.dataErogazione}"></td>
                         <td th:text="${finanziamento.interessi}"></td>
-                        <td th:each="${finanziamento.valoreRata}"></td>
-                        <td th:each="${finanziamento.inizioPagamento}"></td>
+                        <td th:text="${finanziamento.valoreRata}"></td>
+                        <td th:text="${finanziamento.inizioPagamento}"></td>
                         <td th:text="${finanziamento.importoPagato}"></td>
                     </tr>
                 </tbody>
@@ -123,17 +123,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="finanziamento : ${finanziamenti}" th:if="${finanziamento.tipo == 'verifica1' || finanziamento.tipo == 'verifica2'}}">
-                    <td th:text="${finanziamento.tipo}"></td>
+                <tr th:each="finanziamento : ${finanziamenti}" th:if="${finanziamento.tipo == 'verifica1' || finanziamento.tipo == 'verifica2'}">
+                    <td th:text="${finanziamento.tipo == 'verifica1' ? 'Mutuo' : 'Prestito'}"></td>
                     <td th:text="${finanziamento.descrizione}"></td>
                     <td th:text="${finanziamento.importo}"></td>
                     <td th:text="${finanziamento.dataErogazione}"></td>
                     <td th:text="${finanziamento.interessi}"></td>
-                    <td th:each="${finanziamento.valoreRata}"></td>
-                    <td th:each="${finanziamento.inizioPagamento}"></td>
+                    <td th:text="${finanziamento.valoreRata}"></td>
+                    <td th:text="${finanziamento.inizioPagamento}"></td>
                     <td th:text="${finanziamento.importoPagato}"></td>
                     <td>
-                        <button class="action-btn" th:data-id="${finanziamento.id}">
+                        <button class="action-btn" th:data-id="${finanziamento.idFinanziamento}">
                             <i class="fa fa-pencil"></i>
                         </button>
                     </td>
@@ -148,8 +148,9 @@
     <div class="popup-box">
         <h2>Inserisci Tasso di Interesse</h2>
         <div class="tasso-input-container">
-            <form action="/cambiaTasso" method="post">
+            <form action="/cambiaTasso" method="post" class="tasso-form">
                 <input type="hidden" id="idFinanziamento" name="idFinanziamento">
+                <label for="tasso">Seleziona tasso di interesse:</label>
                 <input type="number" id="tasso" name="tasso" step="0.01" min="0" max="100" placeholder="Inserisci tasso (%)">
                 <div class="modal-buttons">
                     <button type="submit" class="confirm-btn">Conferma</button>
@@ -161,40 +162,32 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('tassoModal');
-    const actionBtns = document.querySelectorAll('.action-btn');
-    const confirmBtn = document.getElementById('confirmTasso');
-    const cancelBtn = document.getElementById('cancelTasso');
-    const tassoInput = document.getElementById('tassoInput');
-    let currentFinanziamentoId;
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('tassoModal');
+        const actionBtns = document.querySelectorAll('.action-btn');
+        const cancelBtn = document.getElementById('cancelTasso');
+        const tassoInput = document.getElementById('tasso');
+        const idFinanziamentoInput = document.getElementById('idFinanziamento');
 
-    actionBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            currentFinanziamentoId = this.getAttribute('data-id');
-            modal.style.display = 'grid';
-            tassoInput.value = '';
+        actionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const finanziamentoId = this.getAttribute('data-id');
+                idFinanziamentoInput.value = finanziamentoId; // Assegna l'ID al campo hidden
+                tassoInput.value = ''; // Pulisce il campo del tasso
+                modal.style.display = 'grid'; // Mostra il modal
+            });
+        });
+
+        cancelBtn.addEventListener('click', function() {
+            modal.style.display = 'none'; // Chiude il modal
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none'; // Chiude il modal cliccando fuori
+            }
         });
     });
-
-    confirmBtn.addEventListener('click', function() {
-        const tasso = tassoInput.value;
-        if (tasso !== '' && tasso >= 0 && tasso <= 100) {
-            modal.style.display = 'none';
-            // Here you'll add the backend call to save the interest rate
-        }
-    });
-
-    cancelBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
 </script>
 
 </body>

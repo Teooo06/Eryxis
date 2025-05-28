@@ -43,11 +43,10 @@ public class FinanziamentiService {
     /**
      * Aggiorna il tasso di interesse di un finanziamento specifico.
      *
-     * @param idFinanziamento L'ID del finanziamento da aggiornare.
+     * @param finanziamento Finanziamento da aggiornare.
      * @param interessi Il nuovo tasso di interesse da impostare.
      */
-    public void aggiornaTasso(int idFinanziamento, double interessi) {
-        Finanziamenti finanziamento = findByIdFinanziamento(idFinanziamento);
+    public void aggiornaTasso(Finanziamenti finanziamento, double interessi) {
 
         if (finanziamento != null) {
             finanziamento.setInteressi(interessi);
@@ -93,5 +92,7 @@ public class FinanziamentiService {
     public void deleteByFinanziamento(Finanziamenti finanziamento) {
         finanziamentiRepository.delete(finanziamento);
     }
+
+    public List<Finanziamenti> getAll(){return finanziamentiRepository.findAll();}
 
 }

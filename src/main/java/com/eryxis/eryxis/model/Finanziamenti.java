@@ -16,7 +16,7 @@ public class Finanziamenti {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idFinanziamento;
 
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false, length = 10)
     private String tipo;
 
     @Column(columnDefinition = "DECIMAL(20, 2) DEFAULT 0")

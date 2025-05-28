@@ -29,7 +29,6 @@ public class AdminController {
 
     @GetMapping("/creditManagement")
     public String creditManagement(Model model) {
-        List<Finanziamenti> finanziamenti = finanziamentiService.findAll();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Verifica se l'utente è autenticato correttamente con CustomAuthenticationToken
@@ -37,9 +36,11 @@ public class AdminController {
             int id = customAuth.getIdUtente();
             String nome = customAuth.getNome();
             String cognome = customAuth.getCognome();
+            List<Finanziamenti> finanziamenti = finanziamentiService.getAll();
 
             model.addAttribute("nome", nome);
             model.addAttribute("cognome", cognome);
+            model.addAttribute("finanziamenti", finanziamenti);
 
             return "creditManagement";
         }
@@ -62,13 +63,20 @@ public class AdminController {
                 return "redirect:/login"; // Redirect if the user is not authorized
             }
 
-            finanziamentiService.aggiornaTasso(idFinanziamento, tasso);
+            Finanziamenti finanziamento = finanziamentiService.findByIdFinanziamento(idFinanziamento);
+
+            if (finanziamento != null) {
+                double rate = tasso / 100;
+                double i = rate/12;
+                double potenza = Math.pow(1 + i, 60);
+                double rata = finanziamento.getImporto() * (i * potenza) / (potenza - 1);
+                finanziamento.setValoreRata(rata);
+                finanziamentiService.aggiornaTasso(finanziamento, tasso);
+            }
 
             return "redirect:/creditManagement"; // Redirect to the admin support page
         }
 
         return "redirect:/login"; // Redirect if the user is not authenticated
     }
-
-
 }

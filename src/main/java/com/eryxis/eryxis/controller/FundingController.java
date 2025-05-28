@@ -36,7 +36,7 @@ public class FundingController {
             model.addAttribute("finanziamenti", finanziamento);
             model.addAttribute("nome", utente.getNome());
             model.addAttribute("cognome", utente.getCognome());
-            if (finanziamento.stream().anyMatch(f -> !f.getTipo().equals("verifica"))) {
+            if (finanziamento.stream().anyMatch(f -> !f.getTipo().equals("verifica1")) || finanziamento.stream().anyMatch(f -> !f.getTipo().equals("verifica2"))) {
                 listSize = 100;
             }
             else if (finanziamento.stream().anyMatch(f -> !f.getTipo().equals("mutuo") && !f.getTipo().equals("prestito"))) {
@@ -88,6 +88,25 @@ public class FundingController {
         return "redirect:/login";
     }
 
+    @GetMapping("/financials")
+    public String financials(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth instanceof CustomAuthenticationToken customAuth) {
+            int userId = customAuth.getIdUtente();
+            Utenti utente = utenteService.findByIdUtente(userId);
+            List<Finanziamenti> finanziamento = finanziamentoService.findByUtente(utente);
+
+            model.addAttribute("finanziamenti", finanziamento);
+            model.addAttribute("nome", utente.getNome());
+            model.addAttribute("cognome", utente.getCognome());
+
+            return "applied-funding";
+        }
+
+        return "redirect:/login";
+    }
+
     @PostMapping("/apply-financials")
     public String applyFinancials(Model model, @RequestParam("action") String action,
                                                 @RequestParam("idFinanziamento") int id,
@@ -114,27 +133,18 @@ public class FundingController {
 
                     finanziamento.setTipoRata(type);
 
-                    double rate = 0.05;
-                    double i = 0;
-                    switch (type){
-                        case "mensile" -> {i = rate / 12;}
-                        case "bimestrale" -> {i= rate / 6;}
-                        case "trimestrale" -> {i= rate / 4;}
-                        case "semestrale" -> {i= rate / 2;}
-                        case "annuale" -> {i=rate;}
-                        default -> {i= rate/12;}
-                    }
-
-                    double rata = (finanziamento.getImporto() * i) / (1 - Math.pow((1 + i), -i));
+                    double rata = getRata(type, finanziamento);
 
                     finanziamento.setValoreRata(rata);
-                    
+
                     // Utilizziamo java.sql.Date che mantiene solo la parte della data
                     java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
                     finanziamento.setDataErogazione(currentDate);
                     finanziamento.setInizioPagamento(currentDate);
                     finanziamento.setStato(true);
                     finanziamentoService.save(finanziamento);
+
+                    return "redirect:/funding";
                 }
             }
             else{
@@ -143,4 +153,43 @@ public class FundingController {
         }
         return "redirect:/login";
     }
+
+    private static double getRata(String type, Finanziamenti finanziamento) {
+        double rate = finanziamento.getInteressi() / 100;
+        double i = 0;
+        int n = 5;
+
+        switch (type) {
+            case "mensile" -> {
+                i = rate / 12;
+                n = 5 * 12;
+            }
+            case "bimestrale" -> {
+                i = rate / 6;
+                n = 5 * 6;
+            }
+            case "trimestrale" -> {
+                i = rate / 4;
+                n = 5 * 4;
+            }
+            case "semestrale" -> {
+                i = rate / 2;
+                n = 5 * 2;
+            }
+            case "annuale" -> {
+                i = rate;
+                n = 5;
+            }
+            default -> {
+                i = rate / 12;
+                n = 5 * 12;
+            }
+        }
+
+        double potenza = Math.pow(1 + i, n);
+        double rata = finanziamento.getImporto() * (i * potenza) / (potenza - 1);
+
+        return rata;
+    }
+
 }
