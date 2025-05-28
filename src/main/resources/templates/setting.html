@@ -241,6 +241,11 @@
               <p>Scansiona il codice QR con Google Authenticator:</p>
               <img th:src="@{/qr-code(secret=${secret}, user=${accountName})}" alt="QR Code Google Authenticator">
             </div>
+
+            <div id="altImageSection" style="display: none;">
+              <img src="/images/mail.jpg" alt="Email OTP" id="altImage" style="width: 100%; height: auto; border-radius: 10px">
+            </div>
+
           </div>
         </div>
       </div>
@@ -370,14 +375,22 @@
   function toggleOtpMethod() {
     const method = document.querySelector('input[name="otpMethod"]:checked')?.value || "email";
     const qrCode = document.getElementById("qrCodeSection");
-    if (!qrCode) return;
+    const altImage = document.getElementById("altImageSection");
 
-    qrCode.style.display = method === "authenticator" ? "flex" : "none";
-    
-    // Aggiusta lo spazio del form quando il QR code è nascosto
+    if (!qrCode || !altImage) return;
+
+    if (method === "authenticator") {
+      qrCode.style.display = "flex";
+      altImage.style.display = "none";
+    } else {
+      qrCode.style.display = "none";
+      altImage.style.display = "flex"; // oppure "block" in base al layout
+    }
+
+    // Aggiusta lo spazio del form
     const formContainer = document.querySelector(".otp-form-container");
     if (formContainer) {
-      formContainer.style.flex = method === "authenticator" ? "1" : "2";
+      formContainer.style.flex = "1"; // oppure gestisci con classi CSS
     }
   }
 </script>
