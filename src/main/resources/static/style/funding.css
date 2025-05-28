@@ -1,6 +1,9 @@
 .funding-header{
     width: 100%;
     height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .funding-container-1{
@@ -25,6 +28,23 @@
     font-family: "Josefin Sans", sans-serif;
 }
 
+.left-funding{
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.right-funding{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .request-funding{
     width: 25%;
     height: 8%;
@@ -32,8 +52,259 @@
     font-size: large;
 }
 
-.funding-management-se{
+.request-funding-1{
+    width: 50%;
+    height: 20%;
+    border-radius: 20px;
+    font-size: large;
+}
+
+.funding-form{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.applied-funding{
+    width: 20%;
+    height: 75%;
+    border-radius: 20px;
+}
+
+.funding-management-sec, .funding-management-sec-2{
     width: 100%;
     height: 90%;
 }
 
+.funding-management-sec-2{
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+
+.top-funding-part{
+    width: 100%;
+    height: 60%;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+
+.bottom-funding-part{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: row;
+}
+
+.funding-element{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.funding-details{
+    width: 70%;
+    height: 100%;
+    background-color: #161A1D;
+    border-radius: 20px;
+    color: white;
+}
+
+.funding-details-title{
+    width: 100%;
+    height: 10%;
+    margin: 0 0 0 20px;
+    padding: 10px 0 0 0;
+}
+
+.title-funding{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-size: 30px;
+}
+
+.importo-tasso{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.data-erogazione{
+    width: 100%;
+    height: 5%;
+}
+
+.tipo-valore-rata{
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.descrizione{
+    width: 100%;
+    height: 20%;
+}
+
+.importo-funding{
+    width: 50%;
+    height: 100%;
+    font-size: 30px;
+    margin: 20px 0 0 20px;
+    color: #FFD700;
+}
+
+.tasso-div{
+    width: 35%;
+    height: 100%;
+}
+
+.tasso-description{
+    width: 100%;
+    height: 10%;
+    margin: 0;
+    font-size: 18px;
+    color: #98a1a1;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.tasso-funding{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-size: 25px;
+}
+
+.data-erogazione-funding{
+    width: 100%;
+    height: 100%;
+    margin: -15px 0 0 20px;
+    font-size: 20px;
+    color: #98a1a1;
+}
+
+.tipo-funding{
+    width: 35%;
+    height: 100%;
+    margin: 70px 0 0;
+    font-size: 20px;
+}
+
+.valore-div{
+    width: 50%;
+    height: 100%;
+    margin: 50px 0 0 20px;
+}
+
+.valore-description{
+    width: 100%;
+    height: 10%;
+    margin: 0;
+    font-size: 18px;
+    color: #98a1a1;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.valore-rata{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-size: 40px;
+}
+
+.descrizione-funding{
+    width: 100%;
+    height: 100%;
+    margin: 20px 0 0 20px;
+    font-size: 20px;
+    color: #98a1a1;
+}
+
+.funding-graph{
+    width: 30%;
+    height: 100%;
+}
+
+.accept-decline-tasso{
+    width: 95%;
+    height: 50%;
+    background-color: #660708;
+    border-radius: 20px;
+    margin: 0 0 10px 10px;
+}
+
+.tipo-rata{
+    width: 95%;
+    height: 47%;
+    margin: 0 0 0 10px;
+    background-color: #660708;
+    border-radius: 20px;
+}
+
+.rate-title{
+    width: 90%;
+    height: 20%;
+    padding: 10px 0 0;
+    margin: 0 20px 10px;
+    font-size: 25px;
+    color: white;
+}
+
+.accept-decline-form{
+    width: 95%;
+    height: 100%;
+    margin: 0;
+    align-content: center;
+}
+
+.accept-btn{
+    width: 95%;
+    height: 80%;
+    border-radius: 20px;
+    font-size: large;
+    margin: 0 0 10px 10px;
+    background-color: green;
+}
+
+.decline-btn{
+    width: 95%;
+    height: 80%;
+    border-radius: 20px;
+    font-size: large;
+    margin: 10px 0 0 10px;
+    background-color: red;
+}
+
+.accept-btn:hover {
+    background-color: #0c490c;
+}
+
+.interest-rate-type{
+    width: 90%;
+    height: 20%;
+    padding: 10px 0 0;
+    margin: 0 20px 10px;
+    font-size: 25px;
+    color: white;
+}
+
+.type-rate-form {
+    width: 100%;
+    height: 100%;
+    margin: 20px 10px 10px;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.select-type-rate{
+    width: 95%;
+    background-color: #161A1D;
+    color: white;
+}

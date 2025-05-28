@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Funding</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}">
+    <link rel="stylesheet" href="/static/style/style.css">
+    <link rel="stylesheet" th:href="@{/style/funding.css}">
+    <link rel="stylesheet" href="/static/style/funding.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header>
+    <div class="title">
+        <h1 class="nunito-1">eryxis</h1>
+    </div>
+    <div class="menu-section">
+        <nav>
+            <ul>
+                <li>
+                    <form action="/home">
+                        <button class="menu-button">
+                            <i class="fa fa-home spacing" aria-hidden="true"></i>
+                            Overview
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form action="/trading">
+                        <button class="menu-button">
+                            <i class="fa fa-line-chart spacing" aria-hidden="true"></i>
+                            Tradings
+                        </button>
+                    </form>
+                </li>
+                <li class="select">
+                    <button class="menu-button">
+                        <i class="fa-solid fa-money-check spacing"></i>
+                        Funding's
+                    </button>
+                </li>
+                <li>
+                    <form action="/setting">
+                        <button class="menu-button">
+                            <i class="fa fa-sliders spacing" aria-hidden="true"></i>
+                            Settings
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form action="/support">
+                        <button class="menu-button">
+                            <i class="fa fa-comments spacing" aria-hidden="true"></i>
+                            Support
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form action="/logout">
+                        <button class="menu-button">
+                            <i class="fa-solid fa-arrow-right-from-bracket spacing"></i>
+                            Log Out
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="user-sec">
+        <div class="user-name">
+            <div class="user-image">
+                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+            </div>
+            <h3 class="name" th:text="${nome + ' ' + cognome}"></h3>
+        </div>
+    </div>
+</header>
+
+<section class="hero-1">
+    <div class="funding-header">
+        <h2>Applied Funding</h2>
+    </div>
+    <div class="funding-management-sec-2">
+        <div class="top-funding-part" th:each="funding, iterStat : ${finanziamenti}" th:if="${funding.tipo == 'verifica1' || funding.tipo == 'verifica2'}">
+            <div class="funding-element">
+                <div class="funding-details">
+                    <div class="funding-details-title">
+                        <h2 class="title-funding">Funding Details</h2>
+                    </div>
+                    <div class="importo-tasso">
+                        <h2 class="importo-funding" th:text="${funding.importo}">Importo</h2>
+                        <div class="tasso-div">
+                            <span class="tasso-description">Interest rate:</span>
+                            <h3 class="tasso-funding" th:text="${funding.interessi}">Tasso di interesse</h3>
+                        </div>
+                    </div>
+                    <div class="tipo-valore-rata">
+                        <div class="valore-div">
+                            <span class="valore-description">Monthly Rate Value:</span>
+                            <h3 class="valore-rata" th:text="${funding.valoreRata}">Valore rata</h3>
+                        </div>
+                    </div>
+                    <div class="descrizione">
+                        <h4 class="descrizione-funding" th:text="${funding.descrizione}">Descrizione</h4>
+                    </div>
+                </div>
+                
+                <div class="funding-graph">
+                    <form action="/apply-financials" class="accept-decline-form">
+                        <input type="hidden" name="idFinanziamento" value="" th:value="${funding.idFinanziamento}" />
+
+                        <div class="accept-decline-tasso">
+                            <h2 class="rate-title">Interest Rate</h2>
+                            <div class="button-list">
+                                <button class="accept-btn" type="submit" name="action" value="accept">Accept</button>
+                                <button class="decline-btn" type="submit" name="action" value="decline">Decline</button>
+                            </div>
+                        </div>
+
+                        <div class="tipo-rata">
+                            <h2 class="interest-rate-type">Interest Rate Type</h2>
+                            <div class="type-rate-form">
+                                <label for="tipo-rata">Select Rate Type</label>
+                                <select id="tipo-rata" name="tipo-rata" class="select-type-rate" required>
+                                    <option value="mensile" selected>Monthly</option>
+                                    <option value="bimestrale">Bimonthly</option>
+                                    <option value="trimestrale">Quarterly</option>
+                                    <option value="semestrale">Half-yearly</option>
+                                    <option value="annuale">Annual</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

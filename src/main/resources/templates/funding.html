@@ -79,14 +79,61 @@
 <section class="hero-1">
     <div class="funding-header">
         <h2>Funding Management</h2>
+        <button th:if="${fundingCount >= 100}" class="applied-funding">View your applied funding <i class="fa fa-angle-right arrow" style="padding-left: 10px" aria-hidden="true"></i></button>
     </div>
-    <div class="funding-container-1" th:if="${fundingCount < 1}">
+    <div class="funding-container-1" th:if="${fundingCount == 0}">
         <h2 class="disclaimer">You don't have active funding's</h2>
         <h3 class="attraction-text">Take the first step toward achieving your goals!<br>Apply for financing today and unlock new opportunities!</h3>
         <button class="request-funding" id="funding-form">Apply Now!</button>
     </div>
-    <div class="funding-management-sec" th:if="${fundingCount > 1}">
-        
+    <div class="funding-management-sec" th:if="${fundingCount > 1 && #lists.exists(finanziamenti, f -> f.tipo == 'prestito' || f.tipo == 'mutuo')}">
+        <div class="top-funding-part">
+            <div class="funding-element" th:each="funding, iterStat : ${finanziamenti}" th:if="${funding.tipo != 'verifica1' && funding.tipo == 'verifica2'}">
+                <div class="funding-details">
+                    <div class="funding-details-title">
+                        <h2 class="title-funding">Funding Details</h2>
+                    </div>
+                    <div class="importo-tasso">
+                        <h2 class="importo-funding" th:text="${funding.importo}">Importo</h2>
+                        <div class="tasso-div">
+                            <span class="tasso-description">Interest rate:</span>
+                            <h3 class="tasso-funding" th:text="${funding.interessi}">Tasso di interesse</h3>
+                        </div>
+                    </div>
+                    <div class="data-erogazione">
+                        <h4 class="data-erogazione-funding" th:text="'Data Erogazione: ' + ${funding.dataErogazione}">Data erogazione</h4>
+                    </div>
+                    <div class="tipo-valore-rata">
+                        <div class="valore-div">
+                            <span class="valore-description">Rate Value:</span>
+                            <h3 class="valore-rata" th:text="${funding.valoreRata}">Valore rata</h3>
+                        </div>
+                        <h3 class="tipo-funding" th:text="${funding.tipo}">Tipo</h3>
+                    </div>
+                    <div class="descrizione">
+                        <h4 class="descrizione-funding" th:text="${funding.descrizione}">Descrizione</h4>
+                    </div>
+                </div>
+                <div class="funding-graph">
+                    <div class="funding-chart"
+                         th:attr="id='chart-' + ${iterStat.index}"
+                         th:data-importo="${funding.importo}"
+                         th:data-interessi="${funding.interessi}"
+                         th:data-pagato="${funding.importoPagato}"
+                         style="width: 100%; height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-funding-part">
+            <div class="left-funding">
+                <h2 class="disclaimer">You need more money? Apply now!</h2>
+                <h3 class="attraction-text">Don't miss out on valuable opportunities! Take advantage of our financing options to achieve your financial goals.</h3>
+            </div>
+            <div class="right-funding">
+                <button class="request-funding-1" id="funding-form-1">Apply Now!</button>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -94,7 +141,22 @@
     <div class="modal">
         <button class="close">&times;</button>
         <h2>Funding Form </h2>
+        <form action="/finanziamenti" method="post" class="funding-form">
+            <label for="tipo">Tipo di Finanziamento:</label>
+            <select name="tipo" id="tipo" placeholder="Seleziona un tipo..." required>
+                <option value="" selected disabled hidden></option>
+                <option value="prestito">Prestito</option>
+                <option value="investimento">Mutuo</option>
+            </select>
 
+            <label for="importo">Importo Richiesto (€):</label>
+            <input type="number" id="importo" name="importo" step="0.01" min="0" required>
+
+            <label for="descrizione">Descrizione:</label>
+            <textarea id="descrizione" name="descrizione" rows="4" cols="50" maxlength="250" required></textarea><br><br>
+
+            <button type="submit">Invia Richiesta</button>
+        </form>
     </div>
 </div>
 
@@ -127,6 +189,97 @@
         if (e.key === 'Escape' && over.classList.contains('active')) closeModal();
     });
 </script>
+<script>
+    const open1   = document.getElementById('funding-form-1');
+    const over1   = document.getElementById('popUp');
+    const clos1  = over1.querySelector('.close');
+
+    // apre il popup
+    open1.addEventListener('click', () => {
+        over1.classList.add('active');
+        over1.setAttribute('aria-hidden', 'false');
+    });
+
+    // chiude quando si clicca sulla X
+    clos1.addEventListener('click', closeModal);
+
+    // chiude cliccando fuori dal riquadro
+    over1.addEventListener('click', (e) => {
+        if (e.target === over1) closeModal();
+    });
+
+    function closeModal() {
+        over1.classList.remove('active');
+        over1.setAttribute('aria-hidden', 'true');
+    }
+
+    /* --- (facoltativo) chiusura con tasto Esc per accessibilità --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && over1.classList.contains('active')) closeModal();
+    });
+</script>
+
+<!-- Includi ECharts -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chartDivs = document.querySelectorAll('.funding-chart');
+
+        chartDivs.forEach(function (chartDiv) {
+            const importo = parseFloat(chartDiv.dataset.importo);
+            const interessi = parseFloat(chartDiv.dataset.interessi);
+            const pagato = parseFloat(chartDiv.dataset.pagato);
+
+            const totale = importo + interessi;
+            const rimanente = Math.max(0, totale - pagato); // Evita valori negativi
+
+            const chart = echarts.init(chartDiv);
+            const option = {
+                title: {
+                    text: 'Stato Finanziamento',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} € ({d}%)'
+                },
+                legend: {
+                    bottom: 10,
+                    left: 'center'
+                },
+                series: [
+                    {
+                        name: 'Finanziamento',
+                        type: 'pie',
+                        radius: '70%',
+                        data: [
+                            { value: pagato, name: 'Importo Pagato' },
+                            { value: rimanente, name: 'Importo Rimanente' }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                        itemStyle: {
+                            color: function (params) {
+                                if (params.name === 'Importo Pagato') return '#4caf50'; // verde
+                                if (params.name === 'Importo Rimanente') return '#f44336'; // rosso
+                                return '#999';
+                            }
+                        }
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+        });
+    });
+</script>
+
 
 </body>
 </html>

@@ -810,11 +810,17 @@ button:active {
     flex-direction: column;
 }
 
-input, select{
+input, select, textarea{
     height: 30px;
     margin: 10px 0;
     border-radius: 10px;
     border: 2px solid #6c757d;
+}
+
+textarea{
+    width: auto;
+    height: 32.5%;
+    resize: none;
 }
 
 select{

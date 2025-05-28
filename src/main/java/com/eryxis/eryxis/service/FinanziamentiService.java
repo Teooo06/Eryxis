@@ -13,7 +13,13 @@ public class FinanziamentiService {
     @Autowired
     private FinanziamentiRepository finanziamentiRepository;
 
-    private Finanziamenti findByIdFinanziamento(int idFinanziamento) {
+    /**
+     * Trova un finanziamento in base all'ID.
+     *
+     * @param idFinanziamento L'ID del finanziamento da trovare.
+     * @return Il finanziamento corrispondente all'ID specificato.
+     */
+    public Finanziamenti findByIdFinanziamento(int idFinanziamento) {
         return finanziamentiRepository.findByIdFinanziamento(idFinanziamento);
     }
 
