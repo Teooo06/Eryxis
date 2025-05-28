@@ -132,7 +132,7 @@ CONSTRAINT `fk_investimento_valoriAzioni` FOREIGN KEY (`idInvestimento`) REFEREN
 
 CREATE TABLE `finanziamenti`(
 `idFinanziamento` INT PRIMARY KEY AUTO_INCREMENT,
-`tipo` VARCHAR(8) NOT NULL,
+`tipo` VARCHAR(10) NOT NULL,
 `importo` DECIMAL(20, 2) DEFAULT 0 CHECK ( importo > 0 ),
 `dataErogazione` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 `interessi` DECIMAL(15, 2) DEFAULT 0 CHECK ( interessi >= 0 ),
@@ -142,6 +142,7 @@ CREATE TABLE `finanziamenti`(
 `inizioPagamento` DATE NOT NULL,
 `importoPagato` DECIMAL(15, 2) DEFAULT 0,
 `descrizione` VARCHAR(250) NOT NULL,
+`stato` TINYINT DEFAULT 1,
 `id_utente` INT NOT NULL,
 CONSTRAINT `fk_finanziamento_utente` FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`idUtente`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=LATIN1;
