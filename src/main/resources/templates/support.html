@@ -89,12 +89,17 @@
         </div>
 
         <div class="tickets-container">
-            <div class="ticket" th:each="ticket : ${tickets}" th:onclick="'/ticket/' + ${ticket.idTicket}">
+            <div class="ticket" th:each="ticket : ${tickets}"
+                 th:data-id="${ticket.idTicket}"
+                 th:data-title="${ticket.titolo}"
+                 th:data-description="${ticket.descrizione}"
+                 th:data-status="${ticket.stato}">
                 <h3 th:text="'ID: ' + ${ticket.idTicket}"></h3>
                 <h2 th:text="${ticket.titolo}"></h2>
-                <p th:text="'Status: ' + (${ticket.stato} == 1 ? 'Created' : (${ticket.stato} == 2 ? 'In Progress' : 'Closed'))"></p>
+                <p th:text="'Stato: ' + (${ticket.stato} == 1 ? 'Creato' : (${ticket.stato} == 2 ? 'In Risoluzione' : 'Chiuso'))"></p>
             </div>
         </div>
+
     </section>
 </main>
 
@@ -106,17 +111,17 @@
                 <h2>Create New Ticket</h2>
             </div>
             <div>
-                <button class="bottone-supporto">Chiudi</button>
+                <button class="bottone-chiudi">Chiudi</button>
             </div>
         </div>
 
         <form action="/creaTicket" method="post">
             <div class="form-group">
-                <label for="titolo">Title:</label>
+                <label for="titolo">Titolo:</label>
                 <input type="text" id="titolo" name="titolo" required maxlength="50">
             </div>
             <div class="form-group">
-                <label for="descrizione">Description:</label>
+                <label for="descrizione">Descrizione:</label>
                 <textarea id="descrizione" name="descrizione" required maxlength="500"></textarea>
                 <div class="char-counter">0/500 caratteri</div>
             </div>
@@ -125,12 +130,39 @@
     </div>
 </div>
 
+<div id="ticketDetailsModal" class="modal">
+    <div class="modal-content">
+        <div class="title-div">
+            <div>
+                <h2>Ticket Details</h2>
+            </div>
+            <div>
+                <button class="bottone-chiudi" id="closeDetailsBtn">Chiudi</button>
+            </div>
+        </div>
+        <div class="ticket-details">
+            <div class="form-group">
+                <label>Titolo:</label>
+                <p id="detailsTitolo"></p>
+            </div>
+            <div class="form-group">
+                <label>Descrizione:</label>
+                <p id="detailsDescrizione"></p>
+            </div>
+            <div class="form-group">
+                <label>Stato:</label>
+                <p id="detailsStato"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 
 <script>
     const modal = document.getElementById("ticketModal");
     const openBtn = document.querySelector(".bottone-supporto");
-    const closeBtn = document.querySelector(".modal-content .bottone-supporto");
+    const closeBtn = document.querySelector(".modal-content .bottone-chiudi");
 
     openBtn.onclick = function() {
         modal.style.display = "block";
@@ -159,6 +191,30 @@
         this.style.height = 'auto';
         this.style.height = this.scrollHeight + 'px';
     });
+
+    const detailsModal = document.getElementById("ticketDetailsModal");
+    const tickets = document.querySelectorAll(".ticket");
+    const closeDetailsBtn = document.getElementById("closeDetailsBtn");
+
+    tickets.forEach(ticket => {
+        ticket.addEventListener("click", function() {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const description = this.dataset.description;
+            const status = this.dataset.status;
+
+            document.getElementById("detailsTitolo").textContent = title;
+            document.getElementById("detailsDescrizione").textContent = description;
+            document.getElementById("detailsStato").textContent =
+                status == 1 ? "Creato" : (status == 2 ? "In Risoluzione" : "Chiuso");
+
+            detailsModal.style.display = "block";
+        });
+    });
+
+    closeDetailsBtn.onclick = function() {
+        detailsModal.style.display = "none";
+    }
 </script>
 
 </html>

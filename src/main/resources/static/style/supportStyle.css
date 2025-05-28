@@ -7,14 +7,14 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding: 0 15px;
+    padding: 0;
 }
 
 .tickets-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    padding: 0 15px;
+    padding: 0;
 }
 
 .ticket {
@@ -65,6 +65,16 @@
 .bottone-supporto {
     background-color: #660708;
     padding: 10px 20px;
+    margin: 0 0 0 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transform-origin: center;
+}
+
+.bottone-chiudi {
+    background-color: #660708;
+    padding: 10px 20px;
+    margin: 0 20px 0 20px;
     border-radius: 10px;
     cursor: pointer;
     transform-origin: center;
@@ -178,4 +188,21 @@
 
 .submit-button:active {
     transform: scale(0.95);
+}
+
+.ticket-details {
+    padding: 0 10px;
+}
+
+.ticket-details .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.ticket-details .form-group p {
+    margin: 0;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
 }
