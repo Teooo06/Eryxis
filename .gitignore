@@ -40,7 +40,5 @@ build/
 
 ### Images ###
 *.png
-*.jpg
-*.JPG
 *.jpeg
 *.gif
